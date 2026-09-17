@@ -32,7 +32,8 @@ const SEGMENT_TAB_LABELS: Record<string, string> = {
   'travel-forex': '4. Travel & Forex',
   'fuel-commute': '5. Fuel & Commute',
   'rupay-upi': '6. RuPay UPI',
-  'ultra-premium': '7. Ultra-Premium'
+  'ultra-premium': '7. Ultra-Premium',
+  'high-yield-debit': '8. Debit Card Deals'
 };
 
 function loadReviewsForCard(cardId: string, baseReviews: ReviewItem[]): ReviewItem[] {
@@ -87,12 +88,47 @@ function getRewardChip(card: CreditCard): string {
   if (text.includes('5% cashback')) return '5% Accelerated Cashback';
   if (text.includes('Zero Forex Markup') && card.forexMarkup === 0) return '0% Forex + Travel Rewards';
   if (text.includes('5 EDGE Miles')) return 'Up to 10% Air Miles';
-  if (text.includes('4 EDGE Miles') || text.includes('2 EDGE Miles')) return 'Air Miles & VIP Perks';
+  if (text.includes('1% CashBack on Wallet Reloads')) return '1% Bill Pay & Wallets';
+  if (text.includes('Buy 1 Get 1 Free on Movie Tickets up to ₹250')) return 'BOGO Movies + 16 Lounges';
+  if (text.includes('0% Foreign Currency Markup on international POS')) return '0% Forex + 2% Fi Coins';
+  if (text.includes('Flat 1% to 2% assured Jewels')) return '1-2% Jewels UPI Cashback';
+  if (text.includes('Buy 1 Get 1 Free on BookMyShow up to ₹500')) return 'BOGO ₹500 IMAX & Lounges';
+  if (text.includes('5X SBI Rewardz points on international usage')) return '8 Lounges + 5X Rewardz';
   return card.acceleratedRewardRate.split('(')[0].trim().slice(0, 24);
 }
 
 function getCardCapInfo(card: CreditCard): { chip: string; details: string } {
   switch (card.id) {
+    case 'hdfc-millennia-debit':
+      return {
+        chip: 'Cap: ₹400/mo (₹4.8k/yr)',
+        details: '₹400 direct statement cashback per calendar month on 1% wallet reloads and credit card bill payments via PayZapp/NetBanking.'
+      };
+    case 'idfc-wealth-debit':
+      return {
+        chip: 'Cap: ₹500/mo (Movies)',
+        details: '2 free BOGO tickets up to ₹250 each per calendar month on BookMyShow/Paytm (₹6,000/yr). 16 domestic airport/rail lounges.'
+      };
+    case 'fi-federal-debit':
+      return {
+        chip: 'Cap: No Upper Cap',
+        details: 'Uncapped 0% forex markup on all overseas transactions and foreign currency spends. 1 domestic airport lounge visit/quarter.'
+      };
+    case 'jupiter-csb-edge-debit':
+      return {
+        chip: 'Cap: ₹500/mo (Jewels)',
+        details: '1% to 2% assured Jewels cashback on merchant UPI QR code scans and debit POS. Direct digital gold or bank cash conversion.'
+      };
+    case 'indusind-exclusive-debit':
+      return {
+        chip: 'Cap: ₹500/mo (Movies)',
+        details: 'Buy 1 Get 1 free movie ticket up to ₹500 per month on BookMyShow (covers IMAX/3D). 8 domestic airport lounges per year.'
+      };
+    case 'sbi-platinum-debit':
+      return {
+        chip: 'Cap: 8 Lounges / Year',
+        details: '2 complimentary domestic airport lounges per quarter (8 per year) for a nominal ₹350 + GST annual fee. Uncapped 5X Rewardz abroad.'
+      };
     case 'phonepe-sbi-select-black':
       return {
         chip: 'Cap: ₹1,500/mo (PhonePe)',
@@ -338,17 +374,45 @@ export const CreditCardGuide: React.FC<CreditCardGuideProps> = ({
           <span>The Holistic Indian Consumer Credit Card Buying Guide</span>
         </div>
         <h2 className="text-2xl sm:text-4xl font-extrabold text-slate-900 tracking-tight">
-          Structured Credit Card Fact Sheets & Objective Verdicts
+          Credit & Debit Card Buying Guide & Fact Sheets
         </h2>
         <p className="text-sm text-slate-600 leading-relaxed">
-          Zero affiliate bias or marketing fluff. Compare audited joining fees, reward earn rates, monthly caps, 
-          lounge access criteria, and statutory MITC disclosures to pick the right card.
+          Zero affiliate bias or marketing fluff. Sourced by our autonomous agent and audited against bank MITC tariff sheets.
+          Every card and deal scoring &gt; 90 features a comprehensive Fact Sheet below.
         </p>
+
+        {/* Quick Filter Pill Switcher */}
+        <div className="flex flex-wrap items-center justify-center gap-2 pt-2">
+          <button
+            onClick={() => setSelectedSegmentId('entry-level')}
+            className={`px-3 py-1 rounded-full text-xs font-semibold transition-all cursor-pointer ${
+              selectedSegmentId !== 'high-yield-debit'
+                ? 'bg-emerald-50 text-emerald-800 border border-emerald-300 shadow-2xs'
+                : 'bg-white text-slate-600 border border-slate-200 hover:bg-slate-50'
+            }`}
+          >
+            Credit Cards (18 Cards • Segments 1-7)
+          </button>
+          <button
+            onClick={() => setSelectedSegmentId('high-yield-debit')}
+            className={`px-3 py-1 rounded-full text-xs font-semibold transition-all cursor-pointer ${
+              selectedSegmentId === 'high-yield-debit'
+                ? 'bg-purple-50 text-purple-800 border border-purple-300 shadow-2xs font-bold'
+                : 'bg-white text-slate-600 border border-slate-200 hover:bg-slate-50'
+            }`}
+          >
+            💳 High-Yield Debit Card Deals (6 Deals • Segment 8)
+          </button>
+          <span className="inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-bold bg-amber-50 text-amber-800 border border-amber-200">
+            <Sparkles className="w-3 h-3 text-amber-600" />
+            <span>All Cards Vetted (Mission Score &gt; 90)</span>
+          </span>
+        </div>
       </div>
 
       {/* Segment Selector Tabs */}
       <div className="bg-slate-100/80 p-1.5 rounded-2xl border border-slate-200/80 shadow-inner">
-        <div className="flex flex-wrap sm:grid sm:grid-cols-4 lg:grid-cols-7 gap-1.5">
+        <div className="flex flex-wrap sm:grid sm:grid-cols-4 lg:grid-cols-8 gap-1.5">
           {CREDIT_CARD_SEGMENTS.map((seg) => {
             const isSelected = seg.id === selectedSegmentId;
             const tabLabel = SEGMENT_TAB_LABELS[seg.id] || seg.segmentTitle;
@@ -356,9 +420,11 @@ export const CreditCardGuide: React.FC<CreditCardGuideProps> = ({
               <button
                 key={seg.id}
                 onClick={() => setSelectedSegmentId(seg.id)}
-                className={`flex-1 min-w-[130px] sm:min-w-0 py-2.5 px-2 text-center rounded-xl text-xs transition-all ${
+                className={`flex-1 min-w-[125px] sm:min-w-0 py-2.5 px-2 text-center rounded-xl text-xs transition-all ${
                   isSelected
-                    ? 'bg-white text-slate-950 font-bold shadow-xs border border-slate-200/90'
+                    ? seg.id === 'high-yield-debit'
+                      ? 'bg-white text-purple-950 font-bold shadow-xs border border-purple-200'
+                      : 'bg-white text-slate-950 font-bold shadow-xs border border-slate-200/90'
                     : 'text-slate-600 hover:text-slate-900 hover:bg-white/60 font-medium'
                 }`}
               >
@@ -448,15 +514,27 @@ export const CreditCardGuide: React.FC<CreditCardGuideProps> = ({
                 <div className="space-y-2">
                   <div className="flex flex-wrap items-center justify-between gap-2">
                     <div className="flex flex-wrap items-center gap-2">
+                      <span className={`text-[11px] font-bold px-2.5 py-0.5 rounded-md border ${
+                        card.cardType === 'debit'
+                          ? 'bg-purple-50 text-purple-800 border-purple-200'
+                          : 'bg-slate-100 text-slate-700 border-slate-200'
+                      }`}>
+                        {card.cardType === 'debit' ? 'High-Yield Debit Card Deal' : 'Credit Card'}
+                      </span>
                       <span className="text-[11px] font-semibold px-2.5 py-0.5 rounded-md bg-slate-100 text-slate-700 border border-slate-200">
                         {card.bank}
                       </span>
                       <span className="text-[11px] font-semibold px-2.5 py-0.5 rounded-md bg-slate-100 text-slate-700 border border-slate-200">
                         {card.network}
                       </span>
-                      {isFirst && (
-                        <span className="inline-flex items-center gap-1 text-[11px] font-bold px-2.5 py-0.5 rounded-full bg-emerald-50 text-emerald-800 border border-emerald-300 shadow-xs">
+                      {card.missionScore && card.missionScore >= 90 && (
+                        <span className="inline-flex items-center gap-1 text-[11px] font-bold px-2.5 py-0.5 rounded-full bg-emerald-50 text-emerald-800 border border-emerald-300 shadow-2xs">
                           <Sparkles className="w-3 h-3 text-emerald-600" />
+                          <span>🎯 Mission Score: {card.missionScore}/100 • Agent Ingested</span>
+                        </span>
+                      )}
+                      {isFirst && (
+                        <span className="inline-flex items-center gap-1 text-[11px] font-bold px-2.5 py-0.5 rounded-full bg-indigo-50 text-indigo-800 border border-indigo-200 shadow-xs">
                           #1 Segment Pick
                         </span>
                       )}

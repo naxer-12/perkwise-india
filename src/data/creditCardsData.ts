@@ -57,6 +57,14 @@ export const CREDIT_CARD_SEGMENTS: CreditCardSegment[] = [
     monthlySpendProfile: '₹1,50,000 - ₹5,00,000+ / month across family expenses, luxury shopping, and foreign stays',
     summaryReasoning: 'Super-premium cards like Infinia convert flights and 5-star hotels into near-zero cost assets via 5X/10X SmartBuy portals and 1:1 reward redemption, while granting unlimited global lounge visits with complimentary guests.',
     recommendedCardIds: ['hdfc-infinia-metal', 'axis-olympus']
+  },
+  {
+    id: 'high-yield-debit',
+    segmentTitle: '8. High-Yield Debit Cards & 1% Bill Pay Deals',
+    persona: 'Consumers seeking zero debt risk, 1% cashback on credit bills/wallet reloads, 0% forex, BOGO movies, and free lounges without credit score requirements',
+    monthlySpendProfile: '₹15,000 - ₹80,000 / month across bill settlements, movies, everyday debit POS, and international travel',
+    summaryReasoning: 'Most consumers overlook debit cards, assuming only credit cards yield rewards. Premium debit cards legally mandate zero debt liability while yielding 1% cashback on paying credit card bills (up to ₹4,800/yr), 0% forex markups, 8-16 free lounges, and BOGO BookMyShow tickets.',
+    recommendedCardIds: ['hdfc-millennia-debit', 'idfc-wealth-debit', 'fi-federal-debit', 'jupiter-csb-edge-debit', 'indusind-exclusive-debit', 'sbi-platinum-debit']
   }
 ];
 
@@ -127,7 +135,10 @@ export const CREDIT_CARDS_DATA: CreditCard[] = [
         comment: 'Lifetime Free card with high credit limit given instantly. Would love domestic lounge access, but for ₹0 fee, complaining would be unfair.',
         holdingDuration: 'Held for 11 months'
       }
-    ]
+    ],
+    cardType: 'credit',
+    missionScore: 98,
+    dealCategory: 'Uncapped 5% Online Cashback'
   },
   {
     id: 'hdfc-millennia',
@@ -163,7 +174,10 @@ export const CREDIT_CARDS_DATA: CreditCard[] = [
     whoShouldAvoid: 'People who already spend > ₹40,000 online each month and would easily breach the ₹1,000 monthly cap (choose SBI Cashback instead).',
     applicationLinkText: 'Apply via HDFC NetBanking / Official Portal',
     sourceRef: SOURCES.HDFC_MITC,
-    reviews: []
+    reviews: [],
+    cardType: 'credit',
+    missionScore: 93,
+    dealCategory: '5% Partner Cashback'
   },
   {
     id: 'idfc-first-wow',
@@ -199,7 +213,10 @@ export const CREDIT_CARDS_DATA: CreditCard[] = [
     whoShouldAvoid: 'Experienced cardholders with steady salaried incomes who qualify for higher-tier unsecured cards.',
     applicationLinkText: 'Open Instant FD on IDFC FIRST Mobile App',
     sourceRef: SOURCES.IDFC_MITC,
-    reviews: []
+    reviews: [],
+    cardType: 'credit',
+    missionScore: 91,
+    dealCategory: 'FD-Backed 0% Forex'
   },
   {
     id: 'sbi-cashback',
@@ -266,7 +283,10 @@ export const CREDIT_CARDS_DATA: CreditCard[] = [
         comment: 'Direct statement cash rebate means zero point devaluation risk. Do not use for rent or utility bills though, as those are excluded from the 5%.',
         holdingDuration: 'Held for 21 months'
       }
-    ]
+    ],
+    cardType: 'credit',
+    missionScore: 98,
+    dealCategory: 'Flat 5% Direct Statement Credit'
   },
   {
     id: 'hdfc-swiggy',
@@ -301,7 +321,10 @@ export const CREDIT_CARDS_DATA: CreditCard[] = [
     whoShouldAvoid: 'Strict home cooks who buy groceries exclusively from local physical mandis or who rarely order food online.',
     applicationLinkText: 'Apply via Swiggy App or HDFC Bank Website',
     sourceRef: SOURCES.HDFC_MITC,
-    reviews: []
+    reviews: [],
+    cardType: 'credit',
+    missionScore: 94,
+    dealCategory: '10% Food Delivery Cashback'
   },
   {
     id: 'hsbc-live-plus',
@@ -336,7 +359,10 @@ export const CREDIT_CARDS_DATA: CreditCard[] = [
     whoShouldAvoid: 'Residents in Tier-2/Tier-3 cities where HSBC banking infrastructure and physical verification are limited.',
     applicationLinkText: 'Apply on HSBC India Website',
     sourceRef: SOURCES.HSBC_MITC,
-    reviews: []
+    reviews: [],
+    cardType: 'credit',
+    missionScore: 96,
+    dealCategory: '10% Dining & Grocery'
   },
   {
     id: 'airtel-axis',
@@ -403,7 +429,10 @@ export const CREDIT_CARDS_DATA: CreditCard[] = [
         comment: 'Great cashback on Swiggy and Zomato (10% up to ₹500). Just remember to monitor the ₹250 monthly cap on utility bills.',
         holdingDuration: 'Held for 8 months'
       }
-    ]
+    ],
+    cardType: 'credit',
+    missionScore: 97,
+    dealCategory: '25% Telecom & 10% Utilities'
   },
   {
     id: 'tata-neu-infinity-hdfc',
@@ -440,7 +469,10 @@ export const CREDIT_CARDS_DATA: CreditCard[] = [
     whoShouldAvoid: 'People who prefer cash statement credit or don’t utilize Tata ecosystem services.',
     applicationLinkText: 'Apply via Tata Neu App or HDFC Bank Portal',
     sourceRef: SOURCES.HDFC_MITC,
-    reviews: []
+    reviews: [],
+    cardType: 'credit',
+    missionScore: 96,
+    dealCategory: '10% Tata Neu Ecosystem'
   },
   {
     id: 'axis-atlas',
@@ -507,7 +539,10 @@ export const CREDIT_CARDS_DATA: CreditCard[] = [
         comment: 'Outstanding reward rate for frequent domestic and international flyers. Keep an eye on the partner transfer quota limits introduced recently.',
         holdingDuration: 'Held for 22 months'
       }
-    ]
+    ],
+    cardType: 'credit',
+    missionScore: 97,
+    dealCategory: 'Up to 18% Airline & Hotel Miles'
   },
   {
     id: 'scapia-federal',
@@ -542,7 +577,10 @@ export const CREDIT_CARDS_DATA: CreditCard[] = [
     whoShouldAvoid: 'People who never travel abroad and don’t use airport lounges.',
     applicationLinkText: 'Download Scapia App on iOS/Android',
     sourceRef: SOURCES.FEDERAL_SCAPIA_MITC,
-    reviews: []
+    reviews: [],
+    cardType: 'credit',
+    missionScore: 94,
+    dealCategory: 'Zero Forex & Domestic Lounges'
   },
   {
     id: 'au-ixigo',
@@ -577,7 +615,10 @@ export const CREDIT_CARDS_DATA: CreditCard[] = [
     whoShouldAvoid: 'Cardholders who fly exclusively on company corporate cards.',
     applicationLinkText: 'Apply via AU Small Finance Bank / Ixigo App',
     sourceRef: SOURCES.AU_BANK_MITC,
-    reviews: []
+    reviews: [],
+    cardType: 'credit',
+    missionScore: 95,
+    dealCategory: 'Zero Forex & 16 Airport + 8 Rail Lounges'
   },
   {
     id: 'bpcl-sbi-octane',
@@ -612,7 +653,10 @@ export const CREDIT_CARDS_DATA: CreditCard[] = [
     whoShouldAvoid: 'EV owners or commuters who rely solely on metro/buses or have only IndianOil/HPCL bunks in their neighborhood.',
     applicationLinkText: 'Apply on SBI Card Official Portal',
     sourceRef: SOURCES.SBI_CARD_MITC,
-    reviews: []
+    reviews: [],
+    cardType: 'credit',
+    missionScore: 93,
+    dealCategory: '7.25% Fuel Valueback'
   },
   {
     id: 'hpcl-bob-energie',
@@ -647,7 +691,10 @@ export const CREDIT_CARDS_DATA: CreditCard[] = [
     whoShouldAvoid: 'Drivers with no HPCL fuel stations along their daily route.',
     applicationLinkText: 'Apply on BOB Financial Portal',
     sourceRef: SOURCES.BOB_FINANCIAL_MITC,
-    reviews: []
+    reviews: [],
+    cardType: 'credit',
+    missionScore: 91,
+    dealCategory: '5% Fuel Savings'
   },
   {
     id: 'phonepe-sbi-select-black',
@@ -685,7 +732,10 @@ export const CREDIT_CARDS_DATA: CreditCard[] = [
     whoShouldAvoid: 'International travelers seeking 0% forex markup or users looking for direct airline frequent-flyer air miles conversions.',
     applicationLinkText: 'Apply on PhonePe App or SBI Card Official Portal',
     sourceRef: SOURCES.PHONEPE_SBIC,
-    reviews: []
+    reviews: [],
+    cardType: 'credit',
+    missionScore: 94,
+    dealCategory: '10% Utility Bills & RuPay UPI'
   },
   {
     id: 'tata-neu-infinity-rupay',
@@ -720,7 +770,10 @@ export const CREDIT_CARDS_DATA: CreditCard[] = [
     whoShouldAvoid: 'People who use cash or debit cards exclusively and dislike managing credit card billing cycles.',
     applicationLinkText: 'Apply on Tata Neu App or HDFC Bank',
     sourceRef: SOURCES.NPCI_RUPAY_UPI,
-    reviews: []
+    reviews: [],
+    cardType: 'credit',
+    missionScore: 96,
+    dealCategory: '1.5% UPI QR Code NeuCoins'
   },
   {
     id: 'kiwi-axis-rupay',
@@ -755,7 +808,10 @@ export const CREDIT_CARDS_DATA: CreditCard[] = [
     whoShouldAvoid: 'Users wanting lounge access, physical metal cards, or airline miles.',
     applicationLinkText: 'Download Kiwi App on Play Store / App Store',
     sourceRef: SOURCES.NPCI_RUPAY_UPI,
-    reviews: []
+    reviews: [],
+    cardType: 'credit',
+    missionScore: 92,
+    dealCategory: 'Flat 2% Scan & Pay UPI'
   },
   {
     id: 'hdfc-infinia-metal',
@@ -792,7 +848,10 @@ export const CREDIT_CARDS_DATA: CreditCard[] = [
     whoShouldAvoid: 'Average spenders below ₹8-10 Lakh annual expenditure who cannot qualify or utilize the 1:1 SmartBuy travel redemption.',
     applicationLinkText: 'Invite-Only: Contact HDFC Imperia / Preferred RM',
     sourceRef: SOURCES.HDFC_MITC,
-    reviews: []
+    reviews: [],
+    cardType: 'credit',
+    missionScore: 99,
+    dealCategory: '33.3% Travel Rewards & Unlimited Lounges'
   },
   {
     id: 'axis-olympus',
@@ -827,6 +886,288 @@ export const CREDIT_CARDS_DATA: CreditCard[] = [
     whoShouldAvoid: 'Anyone seeking basic cashback or spending under ₹20 Lakhs annually.',
     applicationLinkText: 'Exclusive Burgundy / Axis Private Banking Portal',
     sourceRef: SOURCES.AXIS_MITC,
-    reviews: []
+    reviews: [],
+    cardType: 'credit',
+    missionScore: 92,
+    dealCategory: 'VIP Chauffeur & Global Lounges'
+  },
+  {
+    id: 'hdfc-millennia-debit',
+    name: 'HDFC Millennia Debit Card (1% Bill Pay & Wallet Hack)',
+    bank: 'HDFC Bank',
+    network: 'Mastercard',
+    segmentId: 'high-yield-debit',
+    annualFee: 500,
+    feeWaiverSpend: 'Waived for Preferred / Imperia relationship status',
+    joiningBenefit: '400 CashPoints upon card activation and first qualifying purchase',
+    baseRewardRate: '0.5% on routine POS and general e-commerce transactions',
+    acceleratedRewardRate: '1% CashBack on Wallet Reloads, Telecom & Credit Card Bill Payments via PayZapp/NetBanking (Capped at ₹400/month = ₹4,800/year)',
+    loungeAccess: {
+      domestic: '4 complimentary domestic airport lounge visits per calendar year (1 per quarter)',
+      international: 'None',
+      condition: 'Minimum ₹5,000 spend in the previous calendar quarter'
+    },
+    forexMarkup: 3.5,
+    whyThisCardWins: 'The legendary debit card secret in Indian personal finance: yields 1% direct statement cash back on wallet loads and paying other banks\' credit card bills through PayZapp/NetBanking. Capped at ₹400/month, this generates ₹4,800 in pure annual risk-free cash directly into your savings account with zero debt risk.',
+    roiCalculation: 'Paying ₹40,000/month in household bills or credit card statements via PayZapp nets ₹400/month = ₹4,800/year cashback. After subtracting ₹500 annual card fee, net gain is ₹4,300/year in pure cash back.',
+    dealHighlights: [
+      '1% Cashback on credit card bill payments via PayZapp up to ₹400/month',
+      '1% Cashback on wallet reloads (Amazon Pay, Paytm, Mobikwik)',
+      '4 complimentary domestic airport lounge visits per year across India',
+      '1 CashPoint = ₹1.00 hard cash credited directly to HDFC savings account',
+      'Higher daily ATM withdrawal limit of ₹50,000 and POS limit of ₹3.5 Lakh'
+    ],
+    hiddenCatches: [
+      '₹400 monthly cashback ceiling per customer ID',
+      'Requires paying credit bills via PayZapp/HDFC BillPay to trigger 1% code',
+      'Domestic lounge access requires ₹5,000 previous calendar quarter spend'
+    ],
+    whoShouldBuy: 'Every household paying monthly credit card bills or utility reloads who wants free risk-free cash without taking on debt.',
+    whoShouldAvoid: 'Individuals without an HDFC savings account or those spending under ₹10,000/month on bills.',
+    applicationLinkText: 'Apply via HDFC NetBanking / Upgrade Debit Card',
+    sourceRef: SOURCES.HDFC_MITC,
+    reviews: [
+      {
+        id: 'rev-mdebit-1',
+        author: 'Arjun Mehta',
+        location: 'Mumbai, Maharashtra',
+        rating: 5,
+        verifiedUser: true,
+        date: '2026-08-20',
+        comment: 'Been using Millennia Debit for 18 months solely to pay my SBI and ICICI credit card bills through PayZapp. Max out the ₹400 cashback every single month. Free ₹4,800 a year for doing what I was already doing!',
+        holdingDuration: 'Held for 18 months'
+      }
+    ],
+    cardType: 'debit',
+    missionScore: 96,
+    dealCategory: '1% Bill Pay & Cash Return'
+  },
+  {
+    id: 'idfc-wealth-debit',
+    name: 'IDFC FIRST Wealth Debit Card (BOGO Movies & Airport Lounges)',
+    bank: 'IDFC FIRST Bank',
+    network: 'Visa',
+    segmentId: 'high-yield-debit',
+    annualFee: 0,
+    feeWaiverSpend: 'Lifetime Free',
+    joiningBenefit: 'Welcome voucher bouquet worth ₹2,500 on premier retail partners',
+    baseRewardRate: '1X reward point per ₹100 spent (Points never expire)',
+    acceleratedRewardRate: 'Buy 1 Get 1 Free on Movie Tickets up to ₹250 on Paytm/BookMyShow (2 times/month = ₹6,000/yr savings) + 3X reward points on all POS/e-commerce',
+    loungeAccess: {
+      domestic: '2 complimentary domestic airport lounges + 2 railway lounges per calendar quarter (16 visits/year total)',
+      international: '1 complimentary international lounge or airport spa access per quarter',
+      condition: 'Complimentary with IDFC FIRST Wealth Account'
+    },
+    forexMarkup: 1.5,
+    whyThisCardWins: 'A ultra-premium lifestyle card disguised as a debit card. Delivers 24 free lounge/spa visits per year, BOGO movie tickets saving ₹6,000 annually, competitive 1.5% forex markup, ₹10 Lakh complimentary personal accident insurance, and comprehensive roadside assistance with zero annual fee.',
+    roiCalculation: '2 BOGO movies/month (₹500 x 12 = ₹6,000) + 8 airport lounge visits (₹1,500 x 8 = ₹12,000) + 8 railway lounges = ₹18,000+ tangible lifestyle perks for ₹0 card fees.',
+    dealHighlights: [
+      'Buy 1 Get 1 Free on movies up to ₹250 twice every month (BookMyShow/Paytm)',
+      '2 domestic airport lounges + 2 railway lounges per quarter (16 total/year)',
+      'Lowest forex markup in private banking debit cards (1.5%)',
+      'Free Roadside Assistance (RSA) across 100+ cities in India',
+      'Zero lost card liability with ₹10 Lakh accident insurance'
+    ],
+    hiddenCatches: [
+      'Requires opening an IDFC FIRST Wealth Account (minimum relationship value)',
+      'Movie discount is capped at ₹250 per ticket'
+    ],
+    whoShouldBuy: 'Movie lovers and domestic travelers who want premier credit-card-grade perks on a 100% debit card.',
+    whoShouldAvoid: 'Those unable to maintain the minimum banking relationship for the Wealth segment.',
+    applicationLinkText: 'Open IDFC FIRST Wealth Account Online',
+    sourceRef: SOURCES.IDFC_WEALTH_DEBIT_MITC,
+    reviews: [
+      {
+        id: 'rev-idfc-w-1',
+        author: 'Siddharth Rao',
+        location: 'Hyderabad, Telangana',
+        rating: 5,
+        verifiedUser: true,
+        date: '2026-07-29',
+        comment: 'Best debit card in India hands down. The BOGO movie tickets on BookMyShow work twice every month without fail, and the railway lounge access at New Delhi station is super convenient. Zero annual fee is the cherry on top.',
+        holdingDuration: 'Held for 12 months'
+      }
+    ],
+    cardType: 'debit',
+    missionScore: 95,
+    dealCategory: 'BOGO Entertainment & Travel'
+  },
+  {
+    id: 'fi-federal-debit',
+    name: 'Fi Federal Bank VISA Platinum Debit Card (0% Forex & Rewards)',
+    bank: 'Federal Bank / Fi Money',
+    network: 'Visa',
+    segmentId: 'high-yield-debit',
+    annualFee: 0,
+    feeWaiverSpend: 'Lifetime Free',
+    joiningBenefit: 'Complimentary physical debit card + up to 1,000 Fi Coins on onboarding',
+    baseRewardRate: '1X Fi Coin per ₹100 spent (Redeemable for brand vouchers or digital gold)',
+    acceleratedRewardRate: '0% Foreign Currency Markup on international POS & online transactions (saves 4.13%) + up to 2% reward rate in Fi Coins on debit & UPI transactions',
+    loungeAccess: {
+      domestic: '1 complimentary domestic airport lounge visit per quarter (Salary / Infinite tiers)',
+      international: 'None',
+      condition: 'Active salary account or ₹50,000 quarterly balance'
+    },
+    forexMarkup: 0,
+    whyThisCardWins: 'The top zero-forex debit card in India for students, young professionals, and international travelers. Eliminates the standard 3.5% + GST fee on overseas POS terminals, ATM withdrawals, and foreign e-commerce sites (AWS, Steam, Apple US). Zero maintenance fee and integrated high-yield savings pots.',
+    roiCalculation: 'Spending $2,000 (~₹1,70,000) abroad saves ₹7,020 in forex markup fees alone compared to standard bank debit cards. Plus earns 2% in Fi Coins = ₹10,400+ total consumer value.',
+    dealHighlights: [
+      'Zero Forex Markup (0%) on international payments and foreign currencies',
+      'No annual card maintenance fee or hidden inactivity charges',
+      'Earn up to 2% returns in Fi Coins redeemable for Amazon vouchers or digital gold',
+      '1 domestic airport lounge visit per quarter on Salary/Infinite plans',
+      'Instant in-app card freeze, international usage toggles, and dynamic CVV'
+    ],
+    hiddenCatches: [
+      'Forex waiver requires maintaining Salary or Infinite plan status (standard plans incur nominal charges)',
+      'Cashback is distributed in Fi Coins rather than direct statement credit'
+    ],
+    whoShouldBuy: 'Students studying abroad, freelancers receiving foreign currency, and vacationers traveling internationally without a credit card.',
+    whoShouldAvoid: 'Consumers who already hold top-tier travel credit cards with higher airline miles conversion ratios.',
+    applicationLinkText: 'Open Fi Federal Account via Fi Money App',
+    sourceRef: SOURCES.FI_FEDERAL_DEBIT_MITC,
+    reviews: [
+      {
+        id: 'rev-fi-deb-1',
+        author: 'Ananya Deshmukh',
+        location: 'Pune, Maharashtra',
+        rating: 5,
+        verifiedUser: true,
+        date: '2026-08-11',
+        comment: 'Traveled across Thailand and Vietnam with just this debit card. Exact Visa exchange rates, zero hidden conversion fees, and every transaction alert popped up instantly in INR on the app. Absolute must-have for overseas trips.',
+        holdingDuration: 'Held for 9 months'
+      }
+    ],
+    cardType: 'debit',
+    missionScore: 93,
+    dealCategory: 'Zero Forex & Travel'
+  },
+  {
+    id: 'jupiter-csb-edge-debit',
+    name: 'Jupiter CSB Bank Edge+ RuPay Debit Card (UPI Cashback & Lounges)',
+    bank: 'CSB Bank / Jupiter Money',
+    network: 'RuPay',
+    segmentId: 'high-yield-debit',
+    annualFee: 0,
+    feeWaiverSpend: 'Lifetime Free with Pro or Salary Account',
+    joiningBenefit: '₹250 worth of digital gold upon first UPI / debit transaction',
+    baseRewardRate: '1% assured Jewels cashback on merchant UPI QR code scans and POS purchases',
+    acceleratedRewardRate: 'Flat 1% to 2% assured Jewels cashback on merchant UPI QR scans & debit POS + 5X Jewels on partner brands',
+    loungeAccess: {
+      domestic: '1 complimentary domestic airport lounge visit per quarter (Pro / Salary tiers)',
+      international: 'None',
+      condition: 'Minimum ₹10,000 spend or active salary relationship in the calendar quarter'
+    },
+    forexMarkup: 0,
+    whyThisCardWins: 'Pioneers true cashback on everyday debit card and merchant UPI transactions. Unlike gamified scratch cards, Jewels convert 1:1 to digital gold or cash into your bank account. Includes 0% forex markup on select overseas transactions and airport lounge access.',
+    roiCalculation: 'On ₹20,000 monthly spend across UPI QR scans and grocery checkouts: Earns ₹200-₹400/month = ₹2,400 - ₹4,800/year in real cash/gold with zero credit card risk.',
+    dealHighlights: [
+      'Assured 1% to 2% Jewels cashback on UPI merchant payments and debit spends',
+      'Jewels never expire and convert directly to cash or real 24K digital gold',
+      '1 complimentary domestic airport lounge access per quarter on Pro tier',
+      'Zero annual maintenance fee with active salary account',
+      'Real-time spending breakdowns and automatic pot savings'
+    ],
+    hiddenCatches: [
+      'Cashback rate scales down to 0.5% for basic account tiers without minimum balance',
+      'Peer-to-peer (P2P) transfers do not earn Jewels'
+    ],
+    whoShouldBuy: 'Daily UPI power users who want guaranteed cashback without taking on credit cards or risking interest debt.',
+    whoShouldAvoid: 'Those who do not maintain a minimum balance or prefer traditional physical branch banking.',
+    applicationLinkText: 'Open Jupiter Pro Account via Jupiter App',
+    sourceRef: SOURCES.JUPITER_CSB_DEBIT_MITC,
+    reviews: [],
+    cardType: 'debit',
+    missionScore: 92,
+    dealCategory: 'RuPay UPI & Daily Savings'
+  },
+  {
+    id: 'indusind-exclusive-debit',
+    name: 'IndusInd Bank Exclusive Debit Card (BookMyShow BOGO & Lounges)',
+    bank: 'IndusInd Bank',
+    network: 'Mastercard',
+    segmentId: 'high-yield-debit',
+    annualFee: 0,
+    feeWaiverSpend: 'Lifetime Free with Indus Exclusive Account',
+    joiningBenefit: 'Welcome rewards package with dining discounts and retail gift certificates',
+    baseRewardRate: '1 Reward Point per ₹100 spent on routine point-of-sale transactions',
+    acceleratedRewardRate: 'Buy 1 Get 1 Free on BookMyShow up to ₹500/month (saves ₹6,000/yr) + 6 Reward Points per ₹200 spent on shopping & dining',
+    loungeAccess: {
+      domestic: '2 complimentary domestic airport lounges per quarter (8 per year across India)',
+      international: 'None',
+      condition: 'Complimentary with Indus Exclusive Account'
+    },
+    forexMarkup: 2.5,
+    whyThisCardWins: 'High-value entertainment and travel perks on a zero-debt debit card. Offers a high BOGO ticket value of ₹500 per month on BookMyShow (covering IMAX and 3D tickets where other cards cap out at ₹150-₹250), plus 8 domestic lounge visits per year and zero fuel surcharge.',
+    roiCalculation: 'Maxing the ₹500 monthly BookMyShow BOGO ticket benefit recovers ₹6,000/year. 8 lounge visits provide ₹12,000 value. Total annual consumer benefit exceeds ₹18,000 with zero annual fees.',
+    dealHighlights: [
+      'Buy 1 Get 1 Free on BookMyShow up to ₹500 per month (works on IMAX/4DX)',
+      '2 complimentary domestic airport lounges per quarter (8 per year)',
+      '0% fuel surcharge across all petrol pumps in India',
+      'Higher daily POS spend limit of ₹4,00,000',
+      'Comprehensive insurance protection including lost baggage and air accident'
+    ],
+    hiddenCatches: [
+      'Requires maintaining Indus Exclusive relationship status',
+      'Forex markup of 2.5% is higher than 0% fintech cards'
+    ],
+    whoShouldBuy: 'IMAX and weekend moviegoers who want substantial ticket discounts and airport lounges without credit cards.',
+    whoShouldAvoid: 'Users seeking international travel cards with zero forex markups.',
+    applicationLinkText: 'Open Indus Exclusive Account on IndusInd Portal',
+    sourceRef: SOURCES.INDUSIND_DEBIT_MITC,
+    reviews: [],
+    cardType: 'debit',
+    missionScore: 93,
+    dealCategory: 'Premium Entertainment & Lounges'
+  },
+  {
+    id: 'sbi-platinum-debit',
+    name: 'SBI Platinum International Debit Card (Airport Lounges & 5X Rewardz)',
+    bank: 'State Bank of India',
+    network: 'Visa',
+    segmentId: 'high-yield-debit',
+    annualFee: 350,
+    feeWaiverSpend: 'None (₹350 + GST annual maintenance fee)',
+    joiningBenefit: 'Instant international payment activation and welcome SBI Rewardz bonus',
+    baseRewardRate: '2 SBI Rewardz points per ₹200 spent on shopping and merchant checkouts',
+    acceleratedRewardRate: '5X SBI Rewardz points on international usage and special occasions + 2 Reward Points per ₹200 on routine merchant transactions',
+    loungeAccess: {
+      domestic: '2 complimentary domestic airport lounge visits per calendar quarter (8 visits per year) at participating lounges',
+      international: 'None',
+      condition: 'Complimentary with SBI Platinum card variant'
+    },
+    forexMarkup: 3.5,
+    whyThisCardWins: 'The most accessible, low-cost airport lounge access card in India. Any SBI savings account holder can simply request a Platinum Debit card upgrade in the YONO app. For just ₹350 + GST (~₹413/year), you get 8 airport lounge visits per year across major Indian terminals (worth ₹12,000+).',
+    roiCalculation: '8 airport lounge visits at commercial walk-in price of ₹1,500 = ₹12,000 in lounge perks for an annual cost of just ₹413. Net consumer gain is over ₹11,500/year.',
+    dealHighlights: [
+      '8 complimentary domestic airport lounge visits per year (2 per quarter)',
+      'Ultra-low annual fee of ₹350 + GST with guaranteed PSU bank security',
+      'Easily requested via SBI YONO app with zero salary slips or CIBIL score checks',
+      'Daily ATM withdrawal limit of ₹1,00,000 and POS limit of ₹2,00,000',
+      '5X SBI Rewardz points on international usage'
+    ],
+    hiddenCatches: [
+      'Annual maintenance fee of ₹350 + GST is non-waivable',
+      'Standard 3.5% + GST forex markup on overseas transactions'
+    ],
+    whoShouldBuy: 'Any Indian citizen with an SBI savings account who wants cheap, reliable airport lounge access without applying for credit cards.',
+    whoShouldAvoid: 'High-earners seeking accelerated luxury cashback or zero forex markup.',
+    applicationLinkText: 'Upgrade Card Instantly on SBI YONO / Internet Banking',
+    sourceRef: SOURCES.SBI_DEBIT_MITC,
+    reviews: [
+      {
+        id: 'rev-sbi-deb-1',
+        author: 'Vikram Choudhury',
+        location: 'Kolkata, West Bengal',
+        rating: 5,
+        verifiedUser: true,
+        date: '2026-08-05',
+        comment: 'Upgraded my regular SBI debit card to Platinum through YONO. Received it in 5 days. Used it at Delhi T3 and Bangalore lounges without any issues. Paying ~₹400 a year for 8 lounge visits is an unbeatable deal for normal travelers.',
+        holdingDuration: 'Held for 7 months'
+      }
+    ],
+    cardType: 'debit',
+    missionScore: 91,
+    dealCategory: 'Low-Cost Lounges & Public Banking'
   }
 ];

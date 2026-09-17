@@ -4,7 +4,7 @@ export interface CrawledCandidate {
   title: string;
   discoveredAt: string;
   scanCycle: string;
-  entityType: 'Credit Card' | 'Fintech Scheme' | 'Hotel Loyalty' | 'Statutory Regulation' | 'Consumer Right';
+  entityType: 'Credit Card Deal' | 'High-Yield Debit Deal' | 'RuPay UPI Card' | 'Zero-Forex Travel Card' | 'Fintech Scheme';
   issuingEntity: string;
   missionScore: number; // 0 to 100
   verdict: 'APPROVED_AND_INGESTED' | 'REJECTED_ANTI_CONSUMER' | 'REJECTED_COMMERCIAL_NOISE';
@@ -38,12 +38,12 @@ export const DAILY_AGENT_CONFIG: DailyAgentConfig = {
   lastRunTimestamp: 'Today at 03:00 AM IST',
   nextRunCountdownHours: 13,
   cadenceRationale: 
-    'Searching and crawling for commercial deals, cards, and perks runs strictly ONCE A DAY. This intentional daily pacing filters out ephemeral promotional noise, respects server rate limits, and allows our reasoning engine to rigorously vet terms against our zero-affiliate mission before generating high-reading-UX Fact Sheets.',
+    'Searching and crawling for credit card and debit card deals runs strictly ONCE A DAY. This intentional daily pacing filters out ephemeral marketing noise, respects bank server rate limits, and allows our reasoning engine to rigorously vet MITC terms against our zero-affiliate mission before generating detailed Fact Sheets in the Buying Guide.',
   gazetteCadence: 
-    'Continuous Real-Time Webhooks & Polling. Unlike commercial deals, statutory gazettes (RBI Master Directions, NPCI UPI circulars, DGCA passenger rights) carry immediate legal enforceability and are synchronized in real-time.',
-  itemsScannedInLastRun: 68,
-  itemsApproved: 13,
-  itemsRejected: 55,
+    'Continuous Real-Time Webhooks & Polling. Statutory gazettes (RBI Master Directions, NPCI circulars, DGCA rules) carry legal enforceability and synchronize in real-time.',
+  itemsScannedInLastRun: 74,
+  itemsApproved: 17,
+  itemsRejected: 57,
   activeCrawlerStatus: 'Idle (Waiting for 03:00 IST Cron)'
 };
 
@@ -55,7 +55,7 @@ export const CRAWLED_CANDIDATES: CrawledCandidate[] = [
     title: 'PhonePe SBI Card Select Black Credit Card',
     discoveredAt: 'Discovered in today\'s 03:00 AM crawl cycle',
     scanCycle: 'Cycle #142 (September 17, 2026)',
-    entityType: 'Credit Card',
+    entityType: 'RuPay UPI Card',
     issuingEntity: 'SBI Card / PhonePe Private Limited',
     missionScore: 94,
     verdict: 'APPROVED_AND_INGESTED',
@@ -67,302 +67,413 @@ export const CRAWLED_CANDIDATES: CrawledCandidate[] = [
       hiddenFeesDisclosed: true,
       zeroAffiliateBias: true
     },
-    actionTaken: 'Synthesized into Linear-style Fact Sheet with verified MITC reference and published to RuPay UPI & Cashback segments with "New" status.',
+    actionTaken: 'Detailed information sheet added to Buying Guide under RuPay UPI segment with full Fact Sheet.',
     linkedResourceCardId: 'phonepe-sbi-select-black',
-    badge: 'Approved & Published',
+    badge: 'Approved & Ingested into Guide',
     customerInsightSummary: '10% on monthly electricity, broadband, and recharge bills + RuPay UPI QR payments, recovering fee within 2 months.'
   },
 
-  // 2. TRAI DND & Spam Regulations (NEW)
+  // 2. HDFC Millennia Debit Card (1% Bill Pay Hack)
   {
-    id: 'cand-trai-dnd-spam',
-    sourceUrl: 'https://www.trai.gov.in',
-    title: 'TRAI National DND & Anti-Spam Telemarketer Quarantine Mandate',
+    id: 'cand-hdfc-millennia-debit',
+    sourceUrl: 'https://www.hdfcbank.com/personal/pay/cards/debit-cards/millennia-debit-card',
+    title: 'HDFC Millennia Debit Card (1% Bill Pay & Wallet Hack)',
     discoveredAt: 'Discovered in today\'s 03:00 AM crawl cycle',
     scanCycle: 'Cycle #142 (September 17, 2026)',
-    entityType: 'Consumer Right',
-    issuingEntity: 'Telecom Regulatory Authority of India (TRAI)',
-    missionScore: 99,
+    entityType: 'High-Yield Debit Deal',
+    issuingEntity: 'HDFC Bank Limited',
+    missionScore: 96,
     verdict: 'APPROVED_AND_INGESTED',
     missionReasoning:
-      'Crucial consumer defense: Governs the statutory right to block predatory loan spam, unsolicited credit card telemarketing, and digital phishing via 1909 DND. Directs telecom providers to disconnect and blacklist repeated offenders for 2 years and enforces a 24-hour SLA to isolate unauthorized financial callers. No commercial interest; 100% consumer empowerment.',
+      'The top risk-free cash deal in Indian personal finance: yields direct 1% cashback on wallet loads and paying other banks\' credit card bills through PayZapp/NetBanking. Capped at ₹400/month, this yields ₹4,800/yr in pure risk-free cash back directly into your savings account with zero debt liability and 4 domestic airport lounge visits/yr.',
     evaluationChecklist: {
       hasStatutoryLicense: true,
       netConsumerRoiPositive: true,
       hiddenFeesDisclosed: true,
       zeroAffiliateBias: true
     },
-    actionTaken: 'Ingested into Daily Life Operations Hub as the definitive Spam & Financial Fraud Defense Blueprint.',
-    badge: 'Approved & Published',
-    customerInsightSummary: 'Statutory right to 1909 DND, 2-year carrier blacklisting of spam telemarketers, and 24h quarantine on financial phishing.'
+    actionTaken: 'Detailed information sheet added to Buying Guide under High-Yield Debit Cards segment.',
+    linkedResourceCardId: 'hdfc-millennia-debit',
+    badge: 'Approved & Ingested into Guide',
+    customerInsightSummary: '1% cash back on paying credit card bills & wallet loads up to ₹4,800/yr free cash into savings account.'
   },
 
-  // 3. RBI Integrated Ombudsman Scheme (NEW)
+  // 3. Cashback SBI Card
   {
-    id: 'cand-rbi-integrated-ombudsman',
-    sourceUrl: 'https://cms.rbi.org.in',
-    title: 'RBI Integrated Ombudsman Scheme: ₹20 Lakh Compensation & Card SLA Rules',
-    discoveredAt: 'Discovered in statutory gazette sync',
-    scanCycle: 'Statutory Real-Time Stream (September 17, 2026)',
-    entityType: 'Statutory Regulation',
-    issuingEntity: 'Reserve Bank of India (RBI)',
+    id: 'cand-sbi-cashback',
+    sourceUrl: 'https://www.sbicard.com/en/personal/credit-cards/rewards/cashback-sbi-card.page',
+    title: 'Cashback SBI Card (Flat 5% Statement Credit)',
+    discoveredAt: 'Discovered in today\'s 03:00 AM crawl cycle',
+    scanCycle: 'Cycle #142 (September 17, 2026)',
+    entityType: 'Credit Card Deal',
+    issuingEntity: 'SBI Card & Payment Services',
     missionScore: 98,
     verdict: 'APPROVED_AND_INGESTED',
     missionReasoning:
-      'Massive legal leverage for Indian bank customers: Grants the Banking Ombudsman statutory power to award up to ₹20 Lakh compensation for direct financial loss and ₹1 Lakh for mental harassment caused by wrongful bank charges, failed chargebacks, or unsolicited card issuance. Legally mandates a ₹500/day bank penalty for failure to close a credit card within 7 working days.',
+      'The highest pure cashback yield for online shoppers in India: 5% flat direct statement credit across 99% of online checkouts (Amazon, Flipkart, Myntra, electronics, flight tickets, Nykaa) up to ₹5,000/month cap (₹60,000/year max cashback). Replaces opaque reward points with real INR credit on the monthly statement.',
     evaluationChecklist: {
       hasStatutoryLicense: true,
       netConsumerRoiPositive: true,
       hiddenFeesDisclosed: true,
       zeroAffiliateBias: true
     },
-    actionTaken: 'Added to Statutory Provenance Registry with direct portal link to the RBI CMS dispute resolution portal.',
-    badge: 'Approved & Published',
-    customerInsightSummary: '₹20 Lakh award power, ₹1 Lakh harassment compensation, and automatic ₹500/day bank penalty if credit card closure exceeds 7 days.'
+    actionTaken: 'Detailed information sheet added to Buying Guide under Pure Cashback segment.',
+    linkedResourceCardId: 'sbi-cashback',
+    badge: 'Approved & Ingested into Guide',
+    customerInsightSummary: '5% flat direct statement credit on 99% of online checkouts up to ₹5,000/mo cap (₹60,000/yr).'
   },
 
-  // 4. IRDAI Cashless Everywhere Initiative (NEW)
+  // 4. IDFC FIRST Wealth Debit Card
   {
-    id: 'cand-irdai-cashless-everywhere',
-    sourceUrl: 'https://bimabharosa.irdai.gov.in',
-    title: 'IRDAI & GIC "Cashless Everywhere" Universal Hospitalization Framework',
-    discoveredAt: 'Discovered in statutory gazette sync',
-    scanCycle: 'Statutory Real-Time Stream (September 17, 2026)',
-    entityType: 'Statutory Regulation',
-    issuingEntity: 'Insurance Regulatory & Development Authority / GIC',
-    missionScore: 97,
-    verdict: 'APPROVED_AND_INGESTED',
-    missionReasoning:
-      'Gamechanger for medical treatment in India: Eliminates traditional "network hospital" barriers. Policyholders can now demand 100% cashless treatment at ANY hospital in India by intimating their insurer 48 hours before an elective admission, or within 48 hours of an emergency admission. Ends the painful cycle of borrowing money to pay hospital bills while waiting for reimbursements.',
-    evaluationChecklist: {
-      hasStatutoryLicense: true,
-      netConsumerRoiPositive: true,
-      hiddenFeesDisclosed: true,
-      zeroAffiliateBias: true
-    },
-    actionTaken: 'Published in Life Operations Hub under Health Insurance & Emergency Hospitalization SOPs.',
-    badge: 'Approved & Published',
-    customerInsightSummary: 'Right to 100% cashless hospitalization across any hospital in India with 48h advance notice or 48h emergency notification.'
-  },
-
-  // 5. PM Surya Ghar Muft Bijli Yojana (NEW)
-  {
-    id: 'cand-pm-surya-ghar-solar',
-    sourceUrl: 'https://pmsuryaghar.gov.in',
-    title: 'Ministry of Power PM Surya Ghar: ₹78,000 Direct Rooftop Solar Subsidy',
+    id: 'cand-idfc-wealth-debit',
+    sourceUrl: 'https://www.idfcfirstbank.com/personal-banking/debit-cards/wealth-debit-card',
+    title: 'IDFC FIRST Wealth Debit Card (BOGO Movies & Airport Lounges)',
     discoveredAt: 'Discovered in today\'s 03:00 AM crawl cycle',
     scanCycle: 'Cycle #142 (September 17, 2026)',
-    entityType: 'Statutory Regulation',
-    issuingEntity: 'Ministry of New & Renewable Energy / BEE',
-    missionScore: 96,
-    verdict: 'APPROVED_AND_INGESTED',
-    missionReasoning:
-      'Extremely high return on investment: Government gazette provides direct DBT bank transfer subsidy of ₹78,000 for residential 3kW rooftop solar installations. Offsets 300 units of monthly power consumption, reducing a typical Indian household\'s electricity bills from ₹3,500/month to near-zero (generating ₹38,000 - ₹45,000 in net annual savings with 3-year breakeven).',
-    evaluationChecklist: {
-      hasStatutoryLicense: true,
-      netConsumerRoiPositive: true,
-      hiddenFeesDisclosed: true,
-      zeroAffiliateBias: true
-    },
-    actionTaken: 'Added to Utilities & Home Operations section with official subsidy application steps.',
-    badge: 'Approved & Published',
-    customerInsightSummary: '₹78,000 direct DBT capital subsidy for 3kW rooftop solar, wiping out up to ₹42,000/year in household electricity bills permanently.'
-  },
-
-  // 6. NPCI UPI AutoPay & E-Mandate Rights (NEW)
-  {
-    id: 'cand-npci-upi-autopay',
-    sourceUrl: 'https://www.npci.org.in',
-    title: 'NPCI & RBI 24-Hour Pre-Debit Notice & 1-Click Mandate Revocation Rights',
-    discoveredAt: 'Discovered in statutory gazette sync',
-    scanCycle: 'Statutory Real-Time Stream (September 17, 2026)',
-    entityType: 'Consumer Right',
-    issuingEntity: 'NPCI & Reserve Bank of India',
+    entityType: 'High-Yield Debit Deal',
+    issuingEntity: 'IDFC FIRST Bank Limited',
     missionScore: 95,
     verdict: 'APPROVED_AND_INGESTED',
     missionReasoning:
-      'Direct statutory protection against subscription traps: Mandates that banks and payment aggregators must send an SMS and email notification at least 24 hours prior to deducting any recurring fee. In addition, consumers possess the legally binding right to pause or cancel any mandate directly from their UPI app (PhonePe, GPay, Paytm) with immediate effect, bypassing obstructive merchant cancellation flows.',
+      'Unprecedented lifestyle perks on a zero-debt debit card: Buy 1 Get 1 Free on Movie Tickets up to ₹250 twice every month on BookMyShow (saving ₹6,000/yr) + 2 domestic airport and 2 railway lounges per quarter (16 visits/year) + lowest private banking forex markup of 1.5% and free Roadside Assistance with ₹0 annual card fee.',
     evaluationChecklist: {
       hasStatutoryLicense: true,
       netConsumerRoiPositive: true,
       hiddenFeesDisclosed: true,
       zeroAffiliateBias: true
     },
-    actionTaken: 'Published as a core Financial Self-Defense guide in the Knowledge Hub.',
-    badge: 'Approved & Published',
-    customerInsightSummary: 'Mandatory 24h pre-debit SMS alert for all subscriptions, plus instant 1-click mandate cancellation inside UPI apps.'
+    actionTaken: 'Detailed information sheet added to Buying Guide under High-Yield Debit Cards segment.',
+    linkedResourceCardId: 'idfc-wealth-debit',
+    badge: 'Approved & Ingested into Guide',
+    customerInsightSummary: 'BOGO ₹250 movie tickets 2x/mo (₹6,000/yr savings) + 16 free airport & rail lounges/yr on a zero-fee debit card.'
   },
 
-  // 7. National Consumer Helpline & E-Daakhil (NEW)
+  // 5. Airtel Axis Bank Credit Card
   {
-    id: 'cand-mca-nch-consumer-helpline',
-    sourceUrl: 'https://consumerhelpline.gov.in',
-    title: 'National Consumer Helpline 1915 & Paperless E-Daakhil Court Filing',
+    id: 'cand-airtel-axis',
+    sourceUrl: 'https://www.axisbank.com/retail/cards/credit-card/airtel-axis-bank-credit-card',
+    title: 'Airtel Axis Bank Credit Card (25% Telecom & 10% Utilities)',
     discoveredAt: 'Discovered in today\'s 03:00 AM crawl cycle',
     scanCycle: 'Cycle #142 (September 17, 2026)',
-    entityType: 'Consumer Right',
-    issuingEntity: 'Ministry of Consumer Affairs, Food & Public Distribution',
-    missionScore: 96,
-    verdict: 'APPROVED_AND_INGESTED',
-    missionReasoning:
-      'Zero-cost dispute resolution: Toll-free 1915 service resolves e-commerce refund refusals, airline flight refund delays, and defective product warranty denials with an 88% pre-litigation settlement rate within 45 days. If unresolved, the statutory E-Daakhil portal permits consumers to file cases online in district consumer commissions without retaining an advocate.',
-    evaluationChecklist: {
-      hasStatutoryLicense: true,
-      netConsumerRoiPositive: true,
-      hiddenFeesDisclosed: true,
-      zeroAffiliateBias: true
-    },
-    actionTaken: 'Added to Consumer Rights Directory with direct helpline guidelines and E-Daakhil procedural steps.',
-    badge: 'Approved & Published',
-    customerInsightSummary: 'Free 1915 helpline with 88% pre-court resolution rate for denied refunds, plus lawyer-free digital filing on E-Daakhil.'
-  },
-
-  // 8. EPFO EDLI ₹7 Lakh Free Life Insurance (NEW)
-  {
-    id: 'cand-epfo-edli-life-cover',
-    sourceUrl: 'https://www.epfindia.gov.in',
-    title: 'EPFO EDLI Scheme: Automatic ₹7,00,000 Free Life Insurance for Salaried Workers',
-    discoveredAt: 'Discovered in statutory gazette sync',
-    scanCycle: 'Statutory Real-Time Stream (September 17, 2026)',
-    entityType: 'Statutory Regulation',
-    issuingEntity: 'Ministry of Labour & Employment / EPFO',
+    entityType: 'Credit Card Deal',
+    issuingEntity: 'Axis Bank / Bharti Airtel',
     missionScore: 97,
     verdict: 'APPROVED_AND_INGESTED',
     missionReasoning:
-      'Unclaimed statutory benefit: Every active member of the Employees\' Provident Fund (EPF) is automatically insured for up to ₹7,00,000 (minimum ₹2,50,000) under the EDLI Scheme. The premium is paid 100% by the employer (0.5% of wages), requiring ₹0 deduction from the employee. Applies even if death occurs in the first month of employment. Ingested to prevent families from losing out on valid statutory claims.',
+      'High recurring household utility value: 25% cashback on Airtel mobile, broadband, and DTH bills (capped at ₹250/mo), 10% on electricity, gas, and water bills via Airtel Thanks BBPS (capped at ₹250/mo), and 10% on Swiggy, Zomato, and BigBasket (capped at ₹500/mo). Generates up to ₹12,000/year in household bill savings for an annual fee of just ₹500.',
     evaluationChecklist: {
       hasStatutoryLicense: true,
       netConsumerRoiPositive: true,
       hiddenFeesDisclosed: true,
       zeroAffiliateBias: true
     },
-    actionTaken: 'Added to Workplace & Corporate Perks Blueprint with claim documentation checklist.',
-    badge: 'Approved & Published',
-    customerInsightSummary: 'Free ₹7 Lakh statutory term life cover for all EPF-contributing employees with zero salary deductions.'
+    actionTaken: 'Detailed information sheet added to Buying Guide under Utilities & Food segment.',
+    linkedResourceCardId: 'airtel-axis',
+    badge: 'Approved & Ingested into Guide',
+    customerInsightSummary: '25% on Airtel bills + 10% on utility bills + 10% on food delivery, yielding up to ₹12,000/yr in recurring cash savings.'
   },
 
-  // 9. SEBI Direct Mutual Funds & SCORES 2.0 (NEW)
+  // 6. Fi Federal Bank VISA Platinum Debit Card
   {
-    id: 'cand-sebi-direct-funds-scores',
-    sourceUrl: 'https://scores.sebi.gov.in',
-    title: 'SEBI Direct Mutual Fund Plan Savings & 21-Day SCORES 2.0 Resolution SLA',
+    id: 'cand-fi-federal-debit',
+    sourceUrl: 'https://fi.money/features/debit-card',
+    title: 'Fi Federal Bank VISA Platinum Debit Card (0% Forex & Rewards)',
     discoveredAt: 'Discovered in today\'s 03:00 AM crawl cycle',
     scanCycle: 'Cycle #142 (September 17, 2026)',
-    entityType: 'Statutory Regulation',
-    issuingEntity: 'Securities and Exchange Board of India (SEBI)',
-    missionScore: 96,
-    verdict: 'APPROVED_AND_INGESTED',
-    missionReasoning:
-      'Massive long-term wealth multiplier: SEBI regulations mandate "Direct Plans" with zero distributor commissions, saving retail investors 0.75% to 1.25% in annual total expense ratios (TER). On a ₹20,000 monthly SIP over 20 years, switching from Regular to Direct plans puts an extra ₹35 Lakhs to ₹48 Lakhs directly into the investor\'s pocket. Backed by SCORES 2.0 with automatic 21-day timebound escalation.',
-    evaluationChecklist: {
-      hasStatutoryLicense: true,
-      netConsumerRoiPositive: true,
-      hiddenFeesDisclosed: true,
-      zeroAffiliateBias: true
-    },
-    actionTaken: 'Synthesized into Investments & Wealth Architecture with Direct vs Regular compound comparison calculator.',
-    badge: 'Approved & Published',
-    customerInsightSummary: 'Zero distributor commission saves 1% annually, compounding to an extra ₹35 Lakhs+ on a 20-year SIP with 21-day SEBI dispute SLA.'
-  },
-
-  // 10. NHAI FASTag Local Pass & Chargeback SLAs (NEW)
-  {
-    id: 'cand-nhai-fastag-local-pass',
-    sourceUrl: 'https://ihmcl.co.in',
-    title: 'NHAI FASTag 20km Local Pass (~₹330/mo) & 7-Day Auto-Chargeback Mandate',
-    discoveredAt: 'Discovered in today\'s 03:00 AM crawl cycle',
-    scanCycle: 'Cycle #142 (September 17, 2026)',
-    entityType: 'Statutory Regulation',
-    issuingEntity: 'National Highways Authority of India (NHAI)',
-    missionScore: 94,
-    verdict: 'APPROVED_AND_INGESTED',
-    missionReasoning:
-      'High recurring savings for commuters: Statutory National Highways Fee Rules entitle private non-commercial vehicle owners residing within 20 km of a toll plaza to an unlimited monthly local pass (~₹330/month vs ₹150 per single crossing), saving daily commuters over ₹3,000 to ₹4,500 every month. In addition, incorrect double toll deductions must be refunded within 7 working days via the 1033 helpline.',
-    evaluationChecklist: {
-      hasStatutoryLicense: true,
-      netConsumerRoiPositive: true,
-      hiddenFeesDisclosed: true,
-      zeroAffiliateBias: true
-    },
-    actionTaken: 'Ingested into Commuting & Fuel Operations Hub with local pass verification documentation.',
-    badge: 'Approved & Published',
-    customerInsightSummary: 'Unlimited toll crossings for ~₹330/month for residents within 20 km of a toll plaza + 7-day auto-refund for wrong debits.'
-  },
-
-  // 11. CBIC Baggage Rules & Used Laptop Duty Exemption (NEW)
-  {
-    id: 'cand-cbic-customs-duty-free',
-    sourceUrl: 'https://www.cbic.gov.in',
-    title: 'CBIC International Baggage Rules: 1 Used Laptop & ₹50,000 Duty-Free Right',
-    discoveredAt: 'Discovered in today\'s 03:00 AM crawl cycle',
-    scanCycle: 'Cycle #142 (September 17, 2026)',
-    entityType: 'Consumer Right',
-    issuingEntity: 'Central Board of Indirect Taxes & Customs',
+    entityType: 'Zero-Forex Travel Card',
+    issuingEntity: 'The Federal Bank Limited / Fi Money',
     missionScore: 93,
     verdict: 'APPROVED_AND_INGESTED',
     missionReasoning:
-      'Vital protection against airport harassment: Notification No. 30/2016-Customs explicitly establishes that any passenger of age 18 or above (except crew) is legally entitled to bring one used personal laptop duty-free, in addition to ₹50,000 worth of general articles and 2 liters of alcohol. Clear statutory citation protects travelers from unlawful customs duty demands upon arrival at Indian international airports.',
+      'Zero forex markup without taking on debt or needing credit underwriting: Eliminates the standard 3.5% + GST foreign currency fee on international POS payments, ATM cash withdrawals, and overseas websites. Earns up to 2% rewards in Fi Coins redeemable for Amazon vouchers or digital gold, with zero annual maintenance charges.',
     evaluationChecklist: {
       hasStatutoryLicense: true,
       netConsumerRoiPositive: true,
       hiddenFeesDisclosed: true,
       zeroAffiliateBias: true
     },
-    actionTaken: 'Published in Travel & Forex Operations Hub as the International Arrival Rights Checklist.',
-    badge: 'Approved & Published',
-    customerInsightSummary: 'Statutory right to bring 1 personal laptop + ₹50,000 general goods + 2L alcohol duty-free through green channel.'
+    actionTaken: 'Detailed information sheet added to Buying Guide under High-Yield Debit Cards segment.',
+    linkedResourceCardId: 'fi-federal-debit',
+    badge: 'Approved & Ingested into Guide',
+    customerInsightSummary: '0% Forex markup on international cards & ATM spends without credit checks or annual fees.'
   },
 
-  // 12. Federal Bank Scapia (Approved Card)
+  // 7. HSBC Live+ Credit Card
   {
-    id: 'cand-federal-scapia',
+    id: 'cand-hsbc-live-plus',
+    sourceUrl: 'https://www.hsbc.co.in/credit-cards/products/live-plus/',
+    title: 'HSBC Live+ Credit Card (10% Dining, Food & Groceries)',
+    discoveredAt: 'Discovered in today\'s 03:00 AM crawl cycle',
+    scanCycle: 'Cycle #142 (September 17, 2026)',
+    entityType: 'Credit Card Deal',
+    issuingEntity: 'The Hongkong and Shanghai Banking Corporation',
+    missionScore: 96,
+    verdict: 'APPROVED_AND_INGESTED',
+    missionReasoning:
+      'The definitive dining and grocery card: 10% accelerated cashback across all offline restaurants, dining outlets, grocery stores (Reliance Smart, Nature\'s Basket), and food delivery apps (Swiggy, Zomato, Blinkit, Zepto) up to ₹1,000/month. Generates ₹12,000/year cashback on non-discretionary everyday food expenditures.',
+    evaluationChecklist: {
+      hasStatutoryLicense: true,
+      netConsumerRoiPositive: true,
+      hiddenFeesDisclosed: true,
+      zeroAffiliateBias: true
+    },
+    actionTaken: 'Detailed information sheet added to Buying Guide under Cashback & Online segment.',
+    linkedResourceCardId: 'hsbc-live-plus',
+    badge: 'Approved & Ingested into Guide',
+    customerInsightSummary: '10% cashback on all dining, food delivery, and supermarkets up to ₹1,000/month (₹12,000/year).'
+  },
+
+  // 8. Tata Neu Infinity RuPay Credit Card
+  {
+    id: 'cand-tata-neu-infinity-rupay',
+    sourceUrl: 'https://www.tataneu.com/credit-card',
+    title: 'Tata Neu Infinity RuPay Credit Card (UPI Edition)',
+    discoveredAt: 'Discovered in today\'s 03:00 AM crawl cycle',
+    scanCycle: 'Cycle #142 (September 17, 2026)',
+    entityType: 'RuPay UPI Card',
+    issuingEntity: 'HDFC Bank / Tata Digital',
+    missionScore: 96,
+    verdict: 'APPROVED_AND_INGESTED',
+    missionReasoning:
+      'Top-tier UPI credit card return: 1.5% NeuCoins on all merchant UPI QR code scan-and-pay transactions, plus 10% NeuCoins on Tata Neu (BigBasket, 1mg, Air India Express, Croma, Westside, Tata CliQ). 1 NeuCoin = ₹1.00 hard value redeemable across the entire Tata ecosystem.',
+    evaluationChecklist: {
+      hasStatutoryLicense: true,
+      netConsumerRoiPositive: true,
+      hiddenFeesDisclosed: true,
+      zeroAffiliateBias: true
+    },
+    actionTaken: 'Detailed information sheet added to Buying Guide under RuPay UPI segment.',
+    linkedResourceCardId: 'tata-neu-infinity-rupay',
+    badge: 'Approved & Ingested into Guide',
+    customerInsightSummary: '1.5% on all UPI QR code merchant transactions + 10% on BigBasket, 1mg, Croma & Air India Express.'
+  },
+
+  // 9. AU Ixigo Travel Credit Card
+  {
+    id: 'cand-au-ixigo',
+    sourceUrl: 'https://www.aubank.in/personal-banking/credit-cards/ixigo-au-credit-card',
+    title: 'AU Ixigo Co-Branded Travel Credit Card (0% Forex & 16 Lounges)',
+    discoveredAt: 'Discovered in today\'s 03:00 AM crawl cycle',
+    scanCycle: 'Cycle #142 (September 17, 2026)',
+    entityType: 'Zero-Forex Travel Card',
+    issuingEntity: 'AU Small Finance Bank',
+    missionScore: 95,
+    verdict: 'APPROVED_AND_INGESTED',
+    missionReasoning:
+      'The ultimate dual-transit card: 0% foreign currency markup on all international transactions, 16 complimentary domestic airport lounge visits per year, and 8 complimentary railway lounge visits per year. 10% instant discount on train bookings with zero payment gateway processing fees.',
+    evaluationChecklist: {
+      hasStatutoryLicense: true,
+      netConsumerRoiPositive: true,
+      hiddenFeesDisclosed: true,
+      zeroAffiliateBias: true
+    },
+    actionTaken: 'Detailed information sheet added to Buying Guide under Travel & Forex segment.',
+    linkedResourceCardId: 'au-ixigo',
+    badge: 'Approved & Ingested into Guide',
+    customerInsightSummary: '0% Forex markup + 16 Airport Lounges + 8 Railway Lounges per year for low ₹999 fee.'
+  },
+
+  // 10. Federal Bank Scapia Credit Card
+  {
+    id: 'cand-scapia-federal',
     sourceUrl: 'https://www.federalbank.co.in/scapia-credit-card',
     title: 'Federal Bank Scapia Co-Branded Travel Credit Card',
     discoveredAt: 'Discovered in prior daily crawl cycle',
     scanCycle: 'Cycle #141 (September 16, 2026)',
-    entityType: 'Credit Card',
+    entityType: 'Zero-Forex Travel Card',
     issuingEntity: 'The Federal Bank Limited',
+    missionScore: 94,
+    verdict: 'APPROVED_AND_INGESTED',
+    missionReasoning:
+      'Zero annual fee travel card: Contractually binds Federal Bank to 0% foreign currency markup on all overseas transactions, saving travelers 4.13% (3.5% fee + GST). Transparent ₹5,000 monthly spend rule unlocks unlimited domestic airport lounge access with zero joining or renewal charges.',
+    evaluationChecklist: {
+      hasStatutoryLicense: true,
+      netConsumerRoiPositive: true,
+      hiddenFeesDisclosed: true,
+      zeroAffiliateBias: true
+    },
+    actionTaken: 'Detailed information sheet added to Buying Guide under Travel & Forex segment.',
+    linkedResourceCardId: 'scapia-federal',
+    badge: 'Approved & Ingested into Guide',
+    customerInsightSummary: 'Zero forex markup on all overseas spending + domestic lounge access for ₹0 annual fee.'
+  },
+
+  // 11. Jupiter CSB Bank Edge+ RuPay Debit Card
+  {
+    id: 'cand-jupiter-csb-edge-debit',
+    sourceUrl: 'https://jupiter.money/debit-card',
+    title: 'Jupiter CSB Bank Edge+ RuPay Debit Card (UPI Cashback & Lounges)',
+    discoveredAt: 'Discovered in today\'s 03:00 AM crawl cycle',
+    scanCycle: 'Cycle #142 (September 17, 2026)',
+    entityType: 'High-Yield Debit Deal',
+    issuingEntity: 'CSB Bank Limited / Jupiter Money',
+    missionScore: 92,
+    verdict: 'APPROVED_AND_INGESTED',
+    missionReasoning:
+      'Guaranteed cashback on daily UPI & debit spends: Assured 1% to 2% Jewels cashback on merchant UPI QR code scans and POS purchases. Jewels convert 1:1 into digital gold or hard cash with zero expiry. Includes 0% forex markup on select overseas purchases and quarterly airport lounge visits.',
+    evaluationChecklist: {
+      hasStatutoryLicense: true,
+      netConsumerRoiPositive: true,
+      hiddenFeesDisclosed: true,
+      zeroAffiliateBias: true
+    },
+    actionTaken: 'Detailed information sheet added to Buying Guide under High-Yield Debit Cards segment.',
+    linkedResourceCardId: 'jupiter-csb-edge-debit',
+    badge: 'Approved & Ingested into Guide',
+    customerInsightSummary: '1-2% Jewels cashback on merchant UPI QR payments + digital gold conversion + domestic lounge access.'
+  },
+
+  // 12. IndusInd Bank Exclusive Debit Card
+  {
+    id: 'cand-indusind-exclusive-debit',
+    sourceUrl: 'https://www.indusind.com/in/en/personal/cards/debit-cards/exclusive-debit-card.html',
+    title: 'IndusInd Bank Exclusive Debit Card (BookMyShow BOGO & Lounges)',
+    discoveredAt: 'Discovered in today\'s 03:00 AM crawl cycle',
+    scanCycle: 'Cycle #142 (September 17, 2026)',
+    entityType: 'High-Yield Debit Deal',
+    issuingEntity: 'IndusInd Bank Limited',
+    missionScore: 93,
+    verdict: 'APPROVED_AND_INGESTED',
+    missionReasoning:
+      'High-value entertainment perks on debit: Buy 1 Get 1 Free on BookMyShow up to ₹500/month (saves ₹6,000/yr), covering premium IMAX and 3D weekend screenings where ordinary cards cap out at ₹150. Plus 8 complimentary domestic airport lounges per year and zero fuel surcharge with ₹0 annual maintenance fee.',
+    evaluationChecklist: {
+      hasStatutoryLicense: true,
+      netConsumerRoiPositive: true,
+      hiddenFeesDisclosed: true,
+      zeroAffiliateBias: true
+    },
+    actionTaken: 'Detailed information sheet added to Buying Guide under High-Yield Debit Cards segment.',
+    linkedResourceCardId: 'indusind-exclusive-debit',
+    badge: 'Approved & Ingested into Guide',
+    customerInsightSummary: 'BOGO Movie Tickets on BookMyShow up to ₹500/mo + 8 free airport lounges/yr with zero card fee.'
+  },
+
+  // 13. Kiwi Axis Bank RuPay Credit Card
+  {
+    id: 'cand-kiwi-axis-rupay',
+    sourceUrl: 'https://gokiwi.in',
+    title: 'Kiwi Axis Bank RuPay Credit Card (Virtual UPI Cashback)',
+    discoveredAt: 'Discovered in today\'s 03:00 AM crawl cycle',
+    scanCycle: 'Cycle #142 (September 17, 2026)',
+    entityType: 'RuPay UPI Card',
+    issuingEntity: 'Axis Bank / Kiwi Fintech',
+    missionScore: 92,
+    verdict: 'APPROVED_AND_INGESTED',
+    missionReasoning:
+      'Lifetime Free virtual credit card dedicated to UPI: Flat 2% cashback for Neon subscribers (1.5% base) on all merchant QR code scan-and-pay transactions via the Kiwi app. Instant virtual card generation within 2 minutes with zero paper documentation and zero joining/renewal fees.',
+    evaluationChecklist: {
+      hasStatutoryLicense: true,
+      netConsumerRoiPositive: true,
+      hiddenFeesDisclosed: true,
+      zeroAffiliateBias: true
+    },
+    actionTaken: 'Detailed information sheet added to Buying Guide under RuPay UPI segment.',
+    linkedResourceCardId: 'kiwi-axis-rupay',
+    badge: 'Approved & Ingested into Guide',
+    customerInsightSummary: 'Flat 1.5% - 2% on everyday UPI merchant QR scans on a Lifetime Free virtual card.'
+  },
+
+  // 14. SBI Platinum International Debit Card
+  {
+    id: 'cand-sbi-platinum-debit',
+    sourceUrl: 'https://www.sbi.co.in/web/personal-banking/cards/debit-card/sbi-platinum-international-debit-card',
+    title: 'SBI Platinum International Debit Card (8 Lounges for ₹350/yr)',
+    discoveredAt: 'Discovered in today\'s 03:00 AM crawl cycle',
+    scanCycle: 'Cycle #142 (September 17, 2026)',
+    entityType: 'High-Yield Debit Deal',
+    issuingEntity: 'State Bank of India',
     missionScore: 91,
     verdict: 'APPROVED_AND_INGESTED',
     missionReasoning:
-      'High consumer utility: Contractually binds Federal Bank to 0% foreign currency markup, saving travelers 4.13% (3.5% fee + 18% GST) on all overseas transactions. No annual maintenance charges. Transparent ₹5,000 monthly spend rule for domestic lounge access. Excellent fit for independent travel optimization.',
+      'The most accessible airport lounge card in India: Any SBI savings account holder can request an instant upgrade on the YONO app. For a nominal fee of just ₹350 + GST (~₹413/year), unlocks 8 domestic airport lounge visits per year across India (worth ₹12,000+), bypassing credit checks and income criteria.',
     evaluationChecklist: {
       hasStatutoryLicense: true,
       netConsumerRoiPositive: true,
       hiddenFeesDisclosed: true,
       zeroAffiliateBias: true
     },
-    actionTaken: 'Added to Travel & Forex segment Fact Sheet with MITC citation FED-SCAPIA-MITC-2026.',
-    linkedResourceCardId: 'scapia-federal',
-    badge: 'Approved & Published',
-    customerInsightSummary: 'Zero forex markup on all overseas card spending, saving 4.13% with zero annual fee.'
+    actionTaken: 'Detailed information sheet added to Buying Guide under High-Yield Debit Cards segment.',
+    linkedResourceCardId: 'sbi-platinum-debit',
+    badge: 'Approved & Ingested into Guide',
+    customerInsightSummary: '8 complimentary domestic airport lounges per year for just ₹350 + GST annual fee with zero CIBIL checks.'
   },
 
-  // 13. IRDAI Super Top-Up Architecture
+  // 15. BPCL SBI Card Octane
   {
-    id: 'cand-irdai-health-topup',
-    sourceUrl: 'https://www.irdai.gov.in/gazette/health-super-topup-regulations',
-    title: 'IRDAI Statutory Health Insurance Super Top-Up Architecture',
-    discoveredAt: 'Discovered in statutory gazette sync',
-    scanCycle: 'Statutory Real-Time Stream (September 17, 2026)',
-    entityType: 'Statutory Regulation',
-    issuingEntity: 'Insurance Regulatory and Development Authority of India',
+    id: 'cand-bpcl-sbi-octane',
+    sourceUrl: 'https://www.sbicard.com/en/personal/credit-cards/fuel/bpcl-sbi-card-octane.page',
+    title: 'BPCL SBI Card Octane (7.25% Fuel Valueback)',
+    discoveredAt: 'Discovered in today\'s 03:00 AM crawl cycle',
+    scanCycle: 'Cycle #142 (September 17, 2026)',
+    entityType: 'Credit Card Deal',
+    issuingEntity: 'SBI Card / Bharat Petroleum',
+    missionScore: 93,
+    verdict: 'APPROVED_AND_INGESTED',
+    missionReasoning:
+      'Top fuel savings instrument: 7.25% value back (25 reward points per ₹100 = 6.25% + 1% surcharge waiver) on BPCL petrol, diesel, and Bharatgas LPG cylinder bookings. Converts daily commute fuel burns into hundreds of liters of free fuel annually.',
+    evaluationChecklist: {
+      hasStatutoryLicense: true,
+      netConsumerRoiPositive: true,
+      hiddenFeesDisclosed: true,
+      zeroAffiliateBias: true
+    },
+    actionTaken: 'Detailed information sheet added to Buying Guide under Fuel & Commute segment.',
+    linkedResourceCardId: 'bpcl-sbi-octane',
+    badge: 'Approved & Ingested into Guide',
+    customerInsightSummary: '7.25% value back on BPCL fuel and Bharatgas LPG bookings, waiving the 1% surcharge.'
+  },
+
+  // 16. Amazon Pay ICICI Bank Credit Card
+  {
+    id: 'cand-amazon-pay-icici',
+    sourceUrl: 'https://www.icicibank.com/personal-banking/cards/credit-cards/amazon-pay-credit-card',
+    title: 'Amazon Pay ICICI Bank Credit Card (Lifetime Free & 5% Uncapped)',
+    discoveredAt: 'Discovered in today\'s 03:00 AM crawl cycle',
+    scanCycle: 'Cycle #142 (September 17, 2026)',
+    entityType: 'Credit Card Deal',
+    issuingEntity: 'ICICI Bank / Amazon India',
     missionScore: 98,
     verdict: 'APPROVED_AND_INGESTED',
     missionReasoning:
-      'Exceptional statutory consumer value: IRDAI regulation standardizes deductible thresholds across health insurers, allowing families with a base ₹5 Lakh employer policy to purchase a ₹1 Crore Super Top-Up for merely ~₹1,100/month. Mandates cashless approval within 60 minutes and caps pre-existing condition wait times. Published in Life Operations Hub.',
+      'Unsurpassed starter card value: 100% Lifetime Free forever with zero maintenance fees. Gives Prime members 5% uncapped cashback on all Amazon.in purchases and 2% on 100+ partner merchants, automatically crediting real cash to Amazon Pay balance every month with zero point conversion fees.',
     evaluationChecklist: {
       hasStatutoryLicense: true,
       netConsumerRoiPositive: true,
       hiddenFeesDisclosed: true,
       zeroAffiliateBias: true
     },
-    actionTaken: 'Ingested into Health & Insurance Life Operations Blueprint with direct IRDAI reference citation.',
-    badge: 'Approved & Published',
-    customerInsightSummary: 'Allows purchasing ₹1 Crore catastrophic health coverage for ~₹1,100/mo by anchoring on a ₹5 Lakh deductible.'
+    actionTaken: 'Detailed information sheet added to Buying Guide under Entry-Level segment.',
+    linkedResourceCardId: 'amazon-pay-icici',
+    badge: 'Approved & Ingested into Guide',
+    customerInsightSummary: '100% Lifetime Free forever with uncapped 5% cash back on Amazon purchases and zero maintenance fees.'
   },
 
-  // 14. Unregulated NBFC PayLater (REJECTED EXAMPLE)
+  // 17. HDFC Bank Infinia Credit Card (Metal Edition)
+  {
+    id: 'cand-hdfc-infinia-metal',
+    sourceUrl: 'https://www.hdfcbank.com/personal/pay/cards/credit-cards/infinia-credit-card',
+    title: 'HDFC Bank Infinia Credit Card Metal Edition (33.3% Travel Return)',
+    discoveredAt: 'Discovered in today\'s 03:00 AM crawl cycle',
+    scanCycle: 'Cycle #142 (September 17, 2026)',
+    entityType: 'Credit Card Deal',
+    issuingEntity: 'HDFC Bank Limited',
+    missionScore: 99,
+    verdict: 'APPROVED_AND_INGESTED',
+    missionReasoning:
+      'The crown jewel of Indian credit cards: 33.3% net return on flight and hotel bookings through SmartBuy (5X reward points, 1 point = ₹1.00 hard cash value for flights/hotels). Unlimited domestic and international Priority Pass lounge visits for primary cardholder and complimentary guests, 2% low forex markup, and 12,500 renewal reward points that fully offset the annual fee.',
+    evaluationChecklist: {
+      hasStatutoryLicense: true,
+      netConsumerRoiPositive: true,
+      hiddenFeesDisclosed: true,
+      zeroAffiliateBias: true
+    },
+    actionTaken: 'Detailed information sheet added to Buying Guide under Ultra-Premium segment.',
+    linkedResourceCardId: 'hdfc-infinia-metal',
+    badge: 'Approved & Ingested into Guide',
+    customerInsightSummary: '33.3% travel return on SmartBuy flights & hotels + unlimited worldwide lounge access with guest passes.'
+  },
+
+  // 18. Unregulated NBFC PayLater (REJECTED EXAMPLE)
   {
     id: 'cand-nbfc-paylater-trap',
     sourceUrl: 'https://fast-instant-credit-promotions.sample.in/checkout-boost',
@@ -386,7 +497,7 @@ export const CRAWLED_CANDIDATES: CrawledCandidate[] = [
     customerInsightSummary: 'Spotted and blocked deceptive 42% compounding interest buried behind "0% 15-day promotional teaser".'
   },
 
-  // 15. Commercial Affiliate Coupon Arbitrage (REJECTED EXAMPLE)
+  // 19. Commercial Affiliate Coupon Arbitrage (REJECTED EXAMPLE)
   {
     id: 'cand-affiliate-coupon-arbitrage',
     sourceUrl: 'https://mega-savings-cashback-offers.sample.com/deals',
@@ -408,5 +519,29 @@ export const CRAWLED_CANDIDATES: CrawledCandidate[] = [
     actionTaken: 'Rejected from indexing. PerkWise only indexes direct bank MITCs and statutory government schemes.',
     badge: 'Rejected — Commercial Arbitrage',
     customerInsightSummary: 'Filtered out commercial affiliate cookie trap with 38% tracking drop-off and 90-day cash holding lockup.'
+  },
+
+  // 20. Deceptive Co-Branded Card with 3.85% Forex & Hidden Penalty (REJECTED EXAMPLE)
+  {
+    id: 'cand-deceptive-card-trap',
+    sourceUrl: 'https://lifestyle-reward-promotions.sample.in/glam-card',
+    title: 'Deceptive "Lifetime Free" Co-Branded Card with ₹1,200 Inactivity Penalties',
+    discoveredAt: 'Discovered in today\'s 03:00 AM crawl cycle',
+    scanCycle: 'Cycle #142 (September 17, 2026)',
+    entityType: 'Fintech Scheme',
+    issuingEntity: 'Commercial Card Aggregator White-Label',
+    missionScore: 31,
+    verdict: 'REJECTED_ANTI_CONSUMER',
+    missionReasoning:
+      'DECEPTIVE TARIFF STRUCTURE: Billed as "Lifetime Free" on marketing splash pages, but the MITC tariff schedule levies a ₹1,200 "Annual Maintenance & Account Activity Fee" if total annual expenditure is less than ₹1,50,000. In addition, imposes an exorbitant 3.85% + GST forex markup on cross-border transactions and ₹150 redemption fee per reward claim. Rejected to protect consumer financial welfare.',
+    evaluationChecklist: {
+      hasStatutoryLicense: false,
+      netConsumerRoiPositive: false,
+      hiddenFeesDisclosed: false,
+      zeroAffiliateBias: false
+    },
+    actionTaken: 'Excluded from index. Notified in consumer protection alert log.',
+    badge: 'Rejected — Deceptive Fee Structure',
+    customerInsightSummary: 'Filtered out fake "Lifetime Free" card with hidden ₹1,200 inactivity penalty and 3.85% forex markup.'
   }
 ];

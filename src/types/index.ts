@@ -83,7 +83,7 @@ export interface CreditCard {
   network: 'Visa' | 'Mastercard' | 'RuPay' | 'American Express' | 'Diners Club';
   segmentId: string;
   annualFee: number;
-  feeWaiverSpend: number | 'None' | 'Lifetime Free';
+  feeWaiverSpend: number | string;
   joiningBenefit: string;
   baseRewardRate: string;
   acceleratedRewardRate: string;
@@ -102,6 +102,9 @@ export interface CreditCard {
   applicationLinkText: string;
   sourceRef: DataSource;
   reviews: ReviewItem[];
+  cardType?: 'credit' | 'debit';
+  missionScore?: number; // 0 to 100
+  dealCategory?: string;
 }
 
 export interface ChecklistItem {

@@ -253,96 +253,81 @@ export const DataProvenance: React.FC<DataProvenanceProps> = ({ onBackToGuide, c
       {/* VIEW 1: DAILY AUTONOMOUS CRAWLER AGENT COMMAND CENTER */}
       {viewMode === 'agent' && (
         <div className="space-y-8 animate-in fade-in duration-150">
-          {/* Cadence Explanatory Banner: Why Daily vs Real-Time */}
-          <div className="bg-gradient-to-br from-slate-900 via-slate-800 to-slate-950 text-white rounded-2xl p-6 sm:p-8 shadow-sm space-y-6">
-            <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6">
-              <div className="space-y-2 max-w-3xl">
-                <div className="inline-flex items-center gap-2 px-2.5 py-1 rounded-full text-xs font-semibold bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">
-                  <Bot className="w-3.5 h-3.5" />
-                  <span>Scheduled Intelligence Protocol</span>
-                </div>
-                <h2 className="text-xl sm:text-2xl font-black tracking-tight text-white">
-                  Why Daily Web Crawling & Real-Time Statutory Gazettes?
-                </h2>
-                <p className="text-xs sm:text-sm text-slate-300 leading-relaxed">
-                  <strong>Daily Crawling (Once Every 24h at 03:00 IST):</strong> Commercial card launches, hotel terms, and bank tariff sheets change periodically. Running the web sweeper once a day prevents rate-limiting, filters out ephemeral marketing noise, and gives our reasoning agent time to evaluate fine print against our consumer protection mission before publishing.
-                </p>
-                <p className="text-xs sm:text-sm text-slate-300 leading-relaxed">
-                  <strong>Real-Time Gazettes (Continuous Live Sync):</strong> Statutory directives from the RBI (zero liability for card fraud), DGCA (flight delay cash compensations), and NPCI carry immediate legal force. These are monitored continuously so consumers always hold authoritative legal leverage.
-                </p>
+          {/* Minimal Daily Sweep Controller Strip (Schedule Intelligence Protocol Card Removed) */}
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 p-4 sm:p-5 bg-white rounded-2xl border border-slate-200/80 shadow-2xs">
+            <div className="flex items-center gap-3">
+              <div className="w-10 h-10 rounded-xl bg-emerald-50 flex items-center justify-center text-emerald-600 border border-emerald-200 shrink-0">
+                <Bot className="w-5 h-5" />
               </div>
-
-              {/* Interactive Crawler Simulation Trigger */}
-              <div className="shrink-0 bg-white/5 p-4 rounded-xl border border-white/10 space-y-3 sm:w-80">
-                <div className="flex items-center justify-between text-xs">
-                  <span className="text-slate-400 font-medium">Daily Sweep Schedule</span>
-                  <span className="font-mono text-emerald-400 font-bold">03:00 AM IST</span>
+              <div>
+                <div className="flex items-center gap-2">
+                  <h3 className="text-sm font-bold text-slate-900">Daily Autonomous Credit & Debit Card Crawler</h3>
+                  <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-50 text-emerald-700 border border-emerald-200">
+                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
+                    Daily 03:00 AM IST
+                  </span>
                 </div>
-                <div className="text-xs text-slate-300">
-                  <span>Last Cycle: </span>
-                  <strong className="text-white">{agentLastRunLabel}</strong>
-                </div>
-
-                <button
-                  onClick={runAgentSimulation}
-                  disabled={agentSimulating}
-                  className={`w-full flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl text-xs font-bold transition-all cursor-pointer shadow-md ${
-                    agentSimulating 
-                      ? 'bg-slate-700 text-slate-400 cursor-not-allowed'
-                      : 'bg-emerald-500 hover:bg-emerald-400 text-slate-950 shadow-emerald-500/20'
-                  }`}
-                >
-                  {agentSimulating ? (
-                    <>
-                      <RefreshCw className="w-3.5 h-3.5 animate-spin text-slate-400" />
-                      <span>Running Agent Cycle...</span>
-                    </>
-                  ) : (
-                    <>
-                      <Zap className="w-3.5 h-3.5 text-slate-950" />
-                      <span>▶ Run Daily Agent Sweep (Simulate)</span>
-                    </>
-                  )}
-                </button>
+                <p className="text-xs text-slate-500 mt-0.5">
+                  Crawls commercial credit card and debit card deals once every 24 hours. Deals with <strong>Mission Score &gt; 90</strong> are ingested with full Fact Sheets directly into the Buying Guide.
+                </p>
               </div>
             </div>
 
-            {/* Simulation Progress Stepper */}
-            {agentStep > 0 && (
-              <div className="pt-4 border-t border-white/10 space-y-3 animate-in fade-in duration-200">
-                <div className="text-xs font-semibold text-emerald-300 flex items-center gap-2">
-                  <Sparkles className="w-3.5 h-3.5 animate-spin" />
-                  <span>Autonomous Agent Execution Trajectory:</span>
+            <div className="flex items-center gap-3 shrink-0">
+              <div className="text-right hidden md:block text-xs">
+                <span className="text-slate-400 block text-[11px]">Last Sweep Cycle</span>
+                <span className="font-semibold text-slate-700">{agentLastRunLabel}</span>
+              </div>
+              <button
+                onClick={runAgentSimulation}
+                disabled={agentSimulating}
+                className={`flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs font-bold transition-all cursor-pointer shadow-xs ${
+                  agentSimulating 
+                    ? 'bg-slate-100 text-slate-400 border border-slate-200 cursor-not-allowed'
+                    : 'bg-emerald-600 hover:bg-emerald-700 text-white shadow-emerald-600/20'
+                }`}
+              >
+                {agentSimulating ? (
+                  <>
+                    <RefreshCw className="w-3.5 h-3.5 animate-spin" />
+                    <span>Scanning Bank Portals...</span>
+                  </>
+                ) : (
+                  <>
+                    <Zap className="w-3.5 h-3.5" />
+                    <span>▶ Run Daily Agent Sweep (Simulate)</span>
+                  </>
+                )}
+              </button>
+            </div>
+          </div>
+
+          {/* Simulation Progress Stepper (Visible during simulation) */}
+          {agentStep > 0 && (
+            <div className="p-4 bg-emerald-50/70 rounded-2xl border border-emerald-200 text-xs space-y-2 animate-in fade-in duration-200">
+              <div className="flex items-center justify-between font-bold text-emerald-900">
+                <span className="flex items-center gap-1.5">
+                  <Sparkles className="w-3.5 h-3.5 text-emerald-600 animate-spin" />
+                  Autonomous Agent Deal Ingestion Trajectory
+                </span>
+                <span className="text-emerald-700 text-[11px]">Step {agentStep} of 4</span>
+              </div>
+              <div className="grid grid-cols-1 sm:grid-cols-4 gap-2">
+                <div className={`p-2 rounded-lg border transition-all ${agentStep >= 1 ? 'bg-white border-emerald-300 text-emerald-900 font-semibold shadow-2xs' : 'bg-transparent border-emerald-200 text-slate-400'}`}>
+                  1. Daily Web Sweep
                 </div>
-                <div className="grid grid-cols-1 sm:grid-cols-4 gap-2 text-xs">
-                  <div className={`p-2.5 rounded-lg border transition-all ${
-                    agentStep >= 1 ? 'bg-emerald-500/20 border-emerald-500/40 text-emerald-200' : 'bg-white/5 border-white/5 text-slate-500'
-                  }`}>
-                    <span className="font-bold block">1. Daily Web Sweep</span>
-                    <span className="text-[11px] opacity-80">Searching bank MITC portals & fintech links</span>
-                  </div>
-                  <div className={`p-2.5 rounded-lg border transition-all ${
-                    agentStep >= 2 ? 'bg-emerald-500/20 border-emerald-500/40 text-emerald-200' : 'bg-white/5 border-white/5 text-slate-500'
-                  }`}>
-                    <span className="font-bold block">2. Candidate Found</span>
-                    <span className="text-[11px] opacity-80">PhonePe SBI Card Select Black</span>
-                  </div>
-                  <div className={`p-2.5 rounded-lg border transition-all ${
-                    agentStep >= 3 ? 'bg-emerald-500/20 border-emerald-500/40 text-emerald-200' : 'bg-white/5 border-white/5 text-slate-500'
-                  }`}>
-                    <span className="font-bold block">3. Mission Reasoning</span>
-                    <span className="text-[11px] opacity-80">10% utility ROI verified • Score: 94/100</span>
-                  </div>
-                  <div className={`p-2.5 rounded-lg border transition-all ${
-                    agentStep >= 4 ? 'bg-emerald-500/30 border-emerald-500/60 text-emerald-200 font-bold' : 'bg-white/5 border-white/5 text-slate-500'
-                  }`}>
-                    <span className="font-bold block">4. Fact Sheet Synthesized</span>
-                    <span className="text-[11px] opacity-80">Published to RuPay UPI directory</span>
-                  </div>
+                <div className={`p-2 rounded-lg border transition-all ${agentStep >= 2 ? 'bg-white border-emerald-300 text-emerald-900 font-semibold shadow-2xs' : 'bg-transparent border-emerald-200 text-slate-400'}`}>
+                  2. Card Deal Identified
+                </div>
+                <div className={`p-2 rounded-lg border transition-all ${agentStep >= 3 ? 'bg-white border-emerald-300 text-emerald-900 font-semibold shadow-2xs' : 'bg-transparent border-emerald-200 text-slate-400'}`}>
+                  3. Mission Score Vetted (&gt;90)
+                </div>
+                <div className={`p-2 rounded-lg border transition-all ${agentStep >= 4 ? 'bg-emerald-600 border-emerald-600 text-white font-bold shadow-xs' : 'bg-transparent border-emerald-200 text-slate-400'}`}>
+                  4. Ingested into Buying Guide
                 </div>
               </div>
-            )}
-          </div>
+            </div>
+          )}
 
           {/* Daily Agent Cycle Stats Cards */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
@@ -493,18 +478,18 @@ export const DataProvenance: React.FC<DataProvenanceProps> = ({ onBackToGuide, c
                         <div className="text-right">
                           <span className="text-[10px] uppercase font-bold text-slate-400 block">Mission Score</span>
                           <span className={`text-2xl font-black font-mono ${
-                            cand.missionScore >= 80 ? 'text-emerald-600' : 'text-rose-600'
+                            cand.missionScore >= 90 ? 'text-emerald-600' : cand.missionScore >= 80 ? 'text-amber-600' : 'text-rose-600'
                           }`}>
                             {cand.missionScore} / 100
                           </span>
                         </div>
 
-                        {isApproved && cand.linkedResourceCardId && onBackToGuide && (
+                        {cand.missionScore >= 90 && cand.linkedResourceCardId && onBackToGuide && (
                           <button
                             onClick={() => onBackToGuide(cand.linkedResourceCardId)}
-                            className="inline-flex items-center gap-1 text-xs font-bold px-3 py-1.5 rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white transition-colors cursor-pointer"
+                            className="inline-flex items-center gap-1.5 text-xs font-bold px-3 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white transition-all shadow-xs cursor-pointer"
                           >
-                            <span>View Card Fact Sheet</span>
+                            <span>View Fact Sheet in Guide</span>
                             <ArrowRight className="w-3 h-3" />
                           </button>
                         )}

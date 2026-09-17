@@ -8,6 +8,7 @@ import {
 import { CATEGORIES_DATA } from '../data/categoriesData';
 import { ARTICLES_DATA } from '../data/articlesData';
 import { SOURCES_REGISTRY } from '../data/sourcesData';
+import { CREDIT_CARD_SEGMENTS, CREDIT_CARDS_DATA } from '../data/creditCardsData';
 import type { LifeCategory } from '../types';
 
 interface HeroProps {
@@ -92,15 +93,15 @@ export const Hero: React.FC<HeroProps> = ({
           </div>
           <span className="hidden sm:inline text-slate-300">•</span>
           <div className="flex items-center gap-1.5">
-            <span className="text-emerald-700 font-semibold">10</span> New Consumer Insights
+            <span className="text-emerald-700 font-semibold">{CREDIT_CARDS_DATA.length}</span> Audited Cards & Deals
           </div>
           <span className="hidden sm:inline text-slate-300">•</span>
           <div className="flex items-center gap-1.5">
-            <span className="text-slate-900 font-semibold">7</span> Card Segments
+            <span className="text-slate-900 font-semibold">{CREDIT_CARD_SEGMENTS.length}</span> Buying Segments
           </div>
           <span className="hidden sm:inline text-slate-300">•</span>
           <div className="flex items-center gap-1.5">
-            <span className="text-slate-900 font-semibold">11</span> Life Facets
+            <span className="text-slate-900 font-semibold">{CATEGORIES_DATA.length}</span> Life Facets
           </div>
           <span className="hidden sm:inline text-slate-300">•</span>
           <div className="flex items-center gap-1.5 text-emerald-700 font-semibold">
