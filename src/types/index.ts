@@ -46,6 +46,11 @@ export interface DataSource {
   isDiscovered?: boolean;
   discoveredAt?: string;
   discoveryRunSummary?: string;
+  // Simple English clarity fields
+  simpleTitle?: string;
+  whatPublished?: string;
+  consumerBenefit?: string;
+  officialPublisher?: string;
 }
 
 export interface SweepRunSummary {
@@ -56,6 +61,10 @@ export interface SweepRunSummary {
   oneLineSummary: string;
   discoveredSource: DataSource;
   triggerType: 'agent-sweep' | 'gazette-fetch';
+  simpleTitle?: string;
+  whatPublished?: string;
+  consumerBenefit?: string;
+  officialPublisher?: string;
 }
 
 export interface Article {

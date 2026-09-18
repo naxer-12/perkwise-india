@@ -142,6 +142,9 @@ export const Header: React.FC<HeaderProps> = ({
             >
               <Calculator className={`w-3.5 h-3.5 ${activeTab === 'calculator' ? 'text-emerald-600' : 'text-slate-400'}`} />
               <span>Calculator</span>
+              <span className="text-[9px] font-bold px-1.5 py-0.2 rounded bg-amber-100 text-amber-800 border border-amber-200">
+                Coming Soon
+              </span>
             </button>
 
             {/* 4. Daily Operations Hub */}
@@ -157,7 +160,7 @@ export const Header: React.FC<HeaderProps> = ({
               <span>Life Hacks</span>
             </button>
 
-            {/* 5. Live Gazette & Daily Agent */}
+            {/* 5. Official Rules & Daily Discoveries */}
             <button
               onClick={() => setActiveTab('provenance')}
               className={`flex items-center gap-1.5 px-3 py-2 text-xs font-medium rounded-lg transition-colors cursor-pointer ${
@@ -167,7 +170,7 @@ export const Header: React.FC<HeaderProps> = ({
               }`}
             >
               <ShieldCheck className={`w-3.5 h-3.5 ${activeTab === 'provenance' ? 'text-emerald-600' : 'text-slate-400'}`} />
-              <span>Gazette & Agent</span>
+              <span>Official Rules</span>
               <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse inline-block" />
             </button>
 
@@ -299,7 +302,7 @@ export const Header: React.FC<HeaderProps> = ({
             {/* Section 3: Tools & Verification */}
             <div className="space-y-1 pt-1 border-t border-slate-100">
               <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider px-2 block">
-                Tools & Real-Time Provenance
+                Tools & Official Rules
               </span>
               <button
                 onClick={() => { setActiveTab('calculator'); setMobileMenuOpen(false); }}
@@ -309,9 +312,11 @@ export const Header: React.FC<HeaderProps> = ({
               >
                 <div className="flex items-center gap-2">
                   <Calculator className="w-4 h-4 text-emerald-600" />
-                  <span>Savings Calculator & Wallet Stack</span>
+                  <span>Savings Calculator</span>
                 </div>
-                <ArrowRight className="w-3.5 h-3.5 text-slate-400" />
+                <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-amber-100 text-amber-800 border border-amber-200">
+                  Coming Soon
+                </span>
               </button>
               <button
                 onClick={() => { setActiveTab('provenance'); setMobileMenuOpen(false); }}
@@ -321,7 +326,7 @@ export const Header: React.FC<HeaderProps> = ({
               >
                 <div className="flex items-center gap-2">
                   <ShieldCheck className="w-4 h-4 text-emerald-600" />
-                  <span>Live Gazette & Daily Crawler Agent</span>
+                  <span>Official Rules & Discoveries</span>
                 </div>
                 <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
               </button>

@@ -15,7 +15,6 @@ import {
   Sparkles, 
   Info, 
   X, 
-  Bot, 
   Calendar, 
   AlertOctagon, 
   ArrowRight,
@@ -124,21 +123,10 @@ export const DataProvenance: React.FC<DataProvenanceProps> = ({ onBackToGuide, c
 
   // Filter crawled candidates
   const filteredCandidates = useMemo(() => {
+    if (candidateFilter === 'new-insights') {
+      return CRAWLED_CANDIDATES.filter(c => c.verdict === 'APPROVED_AND_INGESTED').slice(0, 10);
+    }
     return CRAWLED_CANDIDATES.filter((cand) => {
-      if (candidateFilter === 'new-insights') {
-        return (
-          cand.id.startsWith('cand-trai') ||
-          cand.id.startsWith('cand-rbi-') ||
-          cand.id.startsWith('cand-irdai-cashless') ||
-          cand.id.startsWith('cand-pm-surya') ||
-          cand.id.startsWith('cand-npci-upi-autopay') ||
-          cand.id.startsWith('cand-mca-') ||
-          cand.id.startsWith('cand-epfo-') ||
-          cand.id.startsWith('cand-sebi-') ||
-          cand.id.startsWith('cand-nhai-') ||
-          cand.id.startsWith('cand-cbic-')
-        );
-      }
       if (candidateFilter === 'approved') return cand.verdict === 'APPROVED_AND_INGESTED';
       if (candidateFilter === 'rejected') return cand.verdict !== 'APPROVED_AND_INGESTED';
       return true;
@@ -190,8 +178,12 @@ export const DataProvenance: React.FC<DataProvenanceProps> = ({ onBackToGuide, c
       ...itemToIngest.source,
       isDiscovered: true,
       discoveredAt: timeStr,
-      lastUpdated: `Just now (${timeStr} IST via Agent Sweep)`,
-      discoveryRunSummary: itemToIngest.oneLineSummary
+      lastUpdated: `Just now (${timeStr} IST via Official Sweep)`,
+      discoveryRunSummary: itemToIngest.oneLineSummary,
+      simpleTitle: itemToIngest.source.simpleTitle,
+      whatPublished: itemToIngest.source.whatPublished,
+      consumerBenefit: itemToIngest.source.consumerBenefit,
+      officialPublisher: itemToIngest.source.officialPublisher
     };
 
     const newSummary: SweepRunSummary = {
@@ -201,7 +193,11 @@ export const DataProvenance: React.FC<DataProvenanceProps> = ({ onBackToGuide, c
       domainSpace: itemToIngest.source.authorityType,
       oneLineSummary: itemToIngest.oneLineSummary,
       discoveredSource: newSource,
-      triggerType
+      triggerType,
+      simpleTitle: itemToIngest.source.simpleTitle,
+      whatPublished: itemToIngest.source.whatPublished,
+      consumerBenefit: itemToIngest.source.consumerBenefit,
+      officialPublisher: itemToIngest.source.officialPublisher
     };
 
     const updatedDiscovered = [newSource, ...discoveredSources];
@@ -299,140 +295,152 @@ export const DataProvenance: React.FC<DataProvenanceProps> = ({ onBackToGuide, c
     }
   };
 
-  // Render One-Line Sweep Run Summary Banner
+  // Render Clean Plain-English Discovery Banner
   const renderRunSummaryBanner = () => {
     if (!latestRunSummary) return null;
 
+    const source = latestRunSummary.discoveredSource;
+
     return (
-      <div className="bg-gradient-to-r from-emerald-50 via-teal-50/40 to-slate-50 border-2 border-emerald-300/90 rounded-2xl p-4 sm:p-5 shadow-xs space-y-3 animate-in fade-in slide-in-from-top-2">
-        <div className="flex flex-wrap items-center justify-between gap-3 pb-3 border-b border-emerald-200/70">
+      <div className="bg-white border-2 border-emerald-300 rounded-3xl p-5 sm:p-7 shadow-xs space-y-5 animate-in fade-in slide-in-from-top-2">
+        {/* Header strip */}
+        <div className="flex flex-wrap items-center justify-between gap-3 pb-3.5 border-b border-slate-100">
           <div className="flex items-center gap-2">
-            <span className="relative flex h-2.5 w-2.5">
-              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
-              <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald-500" />
+            <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-emerald-100 text-emerald-900 border border-emerald-300">
+              <Sparkles className="w-3.5 h-3.5 text-emerald-700" />
+              <span>Latest Verified Discovery</span>
             </span>
-            <span className="text-xs font-bold uppercase tracking-wider text-emerald-950">
-              Latest Web Sweep Run Summary
-            </span>
-            <span className="text-[10px] font-mono px-2 py-0.5 rounded-full bg-white border border-emerald-200 text-emerald-800 font-semibold shadow-2xs">
-              {latestRunSummary.triggerType === 'agent-sweep' ? '🤖 24h Autonomous Agent Sweep' : '⚡ Real-Time Gazette Fetch'}
+            <span className="text-xs text-slate-500 font-medium">
+              Checked {latestRunSummary.timestamp}
             </span>
           </div>
 
-          <div className="flex items-center gap-3 text-xs text-slate-500">
-            <span className="flex items-center gap-1 font-mono text-slate-600">
-              <Clock className="w-3.5 h-3.5 text-slate-400" />
-              <span>{latestRunSummary.timestamp}</span>
-            </span>
+          <div className="flex items-center gap-3 text-xs">
             {sweepHistory.length > 1 && (
               <button
                 onClick={() => setShowHistory(prev => !prev)}
-                className="flex items-center gap-1 font-semibold text-emerald-800 hover:text-emerald-950 cursor-pointer underline decoration-dotted"
+                className="flex items-center gap-1 font-semibold text-emerald-700 hover:text-emerald-900 cursor-pointer underline decoration-dotted"
               >
                 <History className="w-3.5 h-3.5" />
-                <span>{showHistory ? 'Hide Run History' : `Prior Runs (${sweepHistory.length - 1})`}</span>
+                <span>{showHistory ? 'Hide Previous Finds' : `See Previous Finds (${sweepHistory.length - 1})`}</span>
                 {showHistory ? <ChevronUp className="w-3.5 h-3.5" /> : <ChevronDown className="w-3.5 h-3.5" />}
               </button>
             )}
           </div>
         </div>
 
-        {/* 1-Line Run Summary Output */}
-        <div className="flex items-start gap-3 pt-1">
-          <div className="w-9 h-9 rounded-xl bg-emerald-600 text-white flex items-center justify-center shrink-0 shadow-xs font-black text-base">
-            ⚡
-          </div>
-          <div className="flex-1 min-w-0">
-            <div className="text-[11px] font-bold uppercase tracking-wider text-emerald-800 mb-0.5">
-              Run Output & Discovery Action
-            </div>
-            <p className="text-sm sm:text-base font-extrabold text-slate-900 tracking-tight leading-snug">
-              {latestRunSummary.oneLineSummary}
+        {/* Main Title & Action */}
+        <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-4">
+          <div className="space-y-1 flex-1 min-w-0">
+            <h3 className="text-xl sm:text-2xl font-black text-slate-900 tracking-tight leading-tight">
+              {source.simpleTitle || source.name}
+            </h3>
+            <p className="text-xs sm:text-sm text-slate-500 font-medium">
+              Official Publisher: <strong className="text-slate-700">{source.officialPublisher || source.authority}</strong>
             </p>
+          </div>
 
-            {/* Ingested Source Key Information */}
-            <div className="mt-2.5 flex flex-wrap items-center gap-2 text-xs">
-              <span className="inline-flex items-center gap-1 font-bold px-2.5 py-0.5 rounded-md bg-emerald-100/90 border border-emerald-300 text-emerald-900">
-                <Sparkles className="w-3 h-3 text-emerald-600" />
-                <span>New Source: {latestRunSummary.discoveredSource.name}</span>
-              </span>
-              <span className="font-mono text-[11px] text-slate-600 bg-white border border-slate-200 px-1.5 py-0.5 rounded">
-                {latestRunSummary.discoveredSource.referenceCode}
-              </span>
-              <span className="text-slate-400">•</span>
-              <span className="text-slate-700">
-                Domain: <strong>{latestRunSummary.domainSpace}</strong>
-              </span>
-              <span className="text-slate-400">•</span>
-              <span className="text-slate-600 font-mono text-[11px]">
-                {latestRunSummary.endpointsScanned} endpoints scanned
-              </span>
+          <div className="shrink-0 flex items-center gap-2.5">
+            <a
+              href={source.officialUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-white font-bold text-xs shadow-xs transition-all cursor-pointer"
+            >
+              <span>View Official Document</span>
+              <ExternalLink className="w-3.5 h-3.5 text-slate-300" />
+            </a>
 
-              <div className="ml-auto flex items-center gap-2 mt-2 sm:mt-0">
-                <a
-                  href={latestRunSummary.discoveredSource.officialUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg bg-white hover:bg-slate-50 border border-slate-200 text-blue-600 hover:text-blue-800 font-semibold text-xs transition-colors"
-                >
-                  <span>Official Portal</span>
-                  <ExternalLink className="w-3 h-3" />
-                </a>
+            {viewMode === 'agent' && (
+              <button
+                onClick={() => {
+                  setViewMode('gazette');
+                  setSelectedType('all');
+                  setSearchQuery(source.referenceCode);
+                }}
+                className="inline-flex items-center gap-1.5 px-3 py-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold text-xs transition-colors cursor-pointer"
+              >
+                <span>Find in Table ↓</span>
+              </button>
+            )}
+          </div>
+        </div>
 
-                {viewMode === 'agent' && (
-                  <button
-                    onClick={() => {
-                      setViewMode('gazette');
-                      setSelectedType('all');
-                      setSearchQuery(latestRunSummary.discoveredSource.referenceCode);
-                    }}
-                    className="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg bg-slate-900 hover:bg-slate-800 text-white font-semibold text-xs transition-colors cursor-pointer"
-                  >
-                    <span>View in Table →</span>
-                  </button>
-                )}
-              </div>
+        {/* 2 Clear, Readable Boxes in Everyday English */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          {/* Box 1: What Was Published */}
+          <div className="p-4 rounded-2xl bg-slate-50 border border-slate-200/80 space-y-1.5">
+            <div className="flex items-center gap-1.5 text-xs font-bold text-slate-700 uppercase tracking-wider">
+              <FileText className="w-4 h-4 text-slate-500" />
+              <span>What the Official Source Published</span>
+            </div>
+            <p className="text-xs sm:text-sm text-slate-800 leading-relaxed font-normal">
+              {source.whatPublished || source.reasoning}
+            </p>
+            <div className="pt-1 text-[11px] font-mono text-slate-500">
+              Reference Code: <strong className="text-slate-800">{source.referenceCode}</strong>
+            </div>
+          </div>
+
+          {/* Box 2: What It Means For You */}
+          <div className="p-4 rounded-2xl bg-emerald-50/70 border border-emerald-200 space-y-1.5">
+            <div className="flex items-center gap-1.5 text-xs font-bold text-emerald-900 uppercase tracking-wider">
+              <CheckCircle2 className="w-4 h-4 text-emerald-600" />
+              <span>What This Means for You</span>
+            </div>
+            <p className="text-xs sm:text-sm text-emerald-950 leading-relaxed font-medium">
+              {source.consumerBenefit || source.reasoning}
+            </p>
+            <div className="pt-1 text-[11px] text-emerald-800 font-medium">
+              ✓ Direct protection under Indian statutory law or bank charter.
             </div>
           </div>
         </div>
 
         {/* Expandable Prior Run History */}
         {showHistory && sweepHistory.length > 1 && (
-          <div className="mt-3 pt-3 border-t border-emerald-200/80 space-y-2 text-xs animate-in fade-in duration-150">
-            <div className="font-bold text-slate-800 flex items-center justify-between">
+          <div className="mt-4 pt-4 border-t border-slate-200 space-y-3 text-xs animate-in fade-in duration-150">
+            <div className="font-bold text-slate-900 flex items-center justify-between">
               <span className="flex items-center gap-1.5">
-                <History className="w-3.5 h-3.5 text-slate-500" />
-                <span>Prior Sweep Runs & Discovered Entities ({sweepHistory.length})</span>
+                <History className="w-4 h-4 text-slate-500" />
+                <span>Previously Discovered Rules & Terms ({sweepHistory.length})</span>
               </span>
               <button
                 onClick={handleResetDiscovered}
                 className="text-[11px] text-rose-600 hover:text-rose-800 underline cursor-pointer flex items-center gap-1"
               >
                 <RotateCcw className="w-3 h-3" />
-                <span>Reset Cache</span>
+                <span>Reset History</span>
               </button>
             </div>
-            <div className="space-y-1.5 max-h-48 overflow-y-auto pr-1">
+            <div className="space-y-2 max-h-56 overflow-y-auto pr-1">
               {sweepHistory.slice(1).map((run) => (
-                <div key={run.id} className="p-2.5 rounded-xl bg-white/90 border border-slate-200 text-slate-700 flex items-start justify-between gap-2">
-                  <div className="space-y-0.5 min-w-0">
-                    <div className="flex items-center gap-1.5 text-[11px]">
-                      <span className="font-mono text-slate-400">{run.timestamp}</span>
-                      <span className="text-slate-300">•</span>
-                      <span className="font-semibold text-emerald-800">{run.discoveredSource.referenceCode}</span>
-                      <span className="text-slate-300">•</span>
-                      <span className="text-slate-500">{run.domainSpace}</span>
+                <div key={run.id} className="p-3.5 rounded-2xl bg-slate-50 border border-slate-200 text-slate-800 flex items-start justify-between gap-3">
+                  <div className="space-y-1 min-w-0 flex-1">
+                    <div className="flex items-center gap-2 text-[11px]">
+                      <span className="font-semibold text-emerald-800 bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200">
+                        {run.discoveredSource.referenceCode}
+                      </span>
+                      <span className="text-slate-400">•</span>
+                      <span className="text-slate-500 font-medium">{run.discoveredSource.authority}</span>
+                      <span className="text-slate-400">•</span>
+                      <span className="text-slate-400 font-mono">{run.timestamp}</span>
                     </div>
-                    <p className="font-medium text-slate-900 leading-snug">{run.oneLineSummary}</p>
+                    <div className="font-bold text-slate-900">
+                      {run.discoveredSource.simpleTitle || run.discoveredSource.name}
+                    </div>
+                    <p className="text-xs text-slate-600 line-clamp-2">
+                      {run.discoveredSource.consumerBenefit || run.oneLineSummary}
+                    </p>
                   </div>
                   <a
                     href={run.discoveredSource.officialUrl}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="text-blue-600 hover:underline shrink-0 text-[11px] font-mono flex items-center gap-0.5"
+                    className="inline-flex items-center gap-1 text-blue-600 hover:text-blue-800 font-semibold shrink-0 text-xs px-2.5 py-1.5 rounded-lg bg-white border border-slate-200"
                   >
-                    <span>Portal</span>
-                    <ExternalLink className="w-2.5 h-2.5" />
+                    <span>Read Source</span>
+                    <ExternalLink className="w-3 h-3" />
                   </a>
                 </div>
               ))}
@@ -447,7 +455,7 @@ export const DataProvenance: React.FC<DataProvenanceProps> = ({ onBackToGuide, c
     <div className={`max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8 ${className}`}>
       {/* Toast Alert on Verification & Discovery */}
       {showToast && (
-        <div className="fixed bottom-6 right-6 z-50 max-w-lg bg-white border border-emerald-300 shadow-2xl rounded-2xl p-4 transition-all duration-300 animate-in fade-in slide-in-from-bottom-5">
+        <div className="fixed bottom-6 right-6 z-50 max-w-md bg-white border border-emerald-300 shadow-2xl rounded-2xl p-4 transition-all duration-300 animate-in fade-in slide-in-from-bottom-5">
           <div className="flex items-start gap-3">
             <div className="w-9 h-9 rounded-xl bg-emerald-100 flex items-center justify-center shrink-0 text-emerald-700 mt-0.5 shadow-2xs font-bold">
               <Sparkles className="w-5 h-5" />
@@ -455,29 +463,34 @@ export const DataProvenance: React.FC<DataProvenanceProps> = ({ onBackToGuide, c
             <div className="flex-1 min-w-0">
               <div className="flex items-center gap-2">
                 <span className="text-[10px] font-bold uppercase tracking-wider text-emerald-800 bg-emerald-100/70 px-2 py-0.5 rounded-full border border-emerald-300">
-                  New Web Source Ingested
+                  New Official Rule Discovered
                 </span>
                 <span className="text-[10px] font-mono text-slate-400">
                   {latestRunSummary?.timestamp || 'Just now'}
                 </span>
               </div>
               <h4 className="text-sm font-bold text-slate-900 mt-1 leading-snug">
-                {latestRunSummary ? latestRunSummary.oneLineSummary : `All ${allSources.length} statutory & bank sources verified active.`}
+                {latestRunSummary?.discoveredSource.simpleTitle || latestRunSummary?.oneLineSummary || `All ${allSources.length} sources verified active.`}
               </h4>
               {latestRunSummary && (
-                <div className="mt-2 flex flex-wrap items-center gap-2 text-xs">
-                  <span className="font-mono text-[11px] text-slate-700 bg-slate-100 px-2 py-0.5 rounded border border-slate-200">
-                    {latestRunSummary.discoveredSource.referenceCode}
-                  </span>
-                  <a
-                    href={latestRunSummary.discoveredSource.officialUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-blue-600 hover:text-blue-800 underline flex items-center gap-1 font-medium text-xs"
-                  >
-                    <span>Direct Portal</span>
-                    <ExternalLink className="w-3 h-3" />
-                  </a>
+                <div className="mt-1.5 space-y-1 text-xs">
+                  <p className="text-slate-600 line-clamp-2">
+                    {latestRunSummary.discoveredSource.consumerBenefit || latestRunSummary.discoveredSource.reasoning}
+                  </p>
+                  <div className="flex items-center gap-2 pt-0.5">
+                    <span className="font-mono text-[10.5px] text-slate-700 bg-slate-100 px-1.5 py-0.5 rounded border border-slate-200">
+                      {latestRunSummary.discoveredSource.referenceCode}
+                    </span>
+                    <a
+                      href={latestRunSummary.discoveredSource.officialUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-blue-600 hover:text-blue-800 underline flex items-center gap-1 font-semibold text-xs"
+                    >
+                      <span>Read Official Source</span>
+                      <ExternalLink className="w-3 h-3" />
+                    </a>
+                  </div>
                 </div>
               )}
             </div>
@@ -497,7 +510,7 @@ export const DataProvenance: React.FC<DataProvenanceProps> = ({ onBackToGuide, c
         <div className="flex flex-wrap items-center justify-between gap-4 mb-3">
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold bg-emerald-50 text-emerald-700 border border-emerald-200/70">
             <ShieldCheck className="w-3.5 h-3.5 text-emerald-600" />
-            <span>Autonomous Intelligence & Statutory Provenance</span>
+            <span>Official Rules & Verified Sources</span>
           </div>
 
           {onBackToGuide && (
@@ -505,19 +518,19 @@ export const DataProvenance: React.FC<DataProvenanceProps> = ({ onBackToGuide, c
               onClick={() => onBackToGuide()}
               className="text-xs font-semibold text-slate-600 hover:text-slate-900 flex items-center gap-1 transition-colors cursor-pointer"
             >
-              ← Back to Recommendations
+              ← Back to Card Guide
             </button>
           )}
         </div>
 
         <h1 className="text-2xl sm:text-4xl font-black text-slate-900 tracking-tight">
-          Data Provenance & Autonomous Crawler Agent Command Center
+          Official Rules & Daily Deal Discoveries
         </h1>
-        <p className="mt-2 text-sm sm:text-base text-slate-600 max-w-4xl leading-relaxed">
-          How PerkWise remains 100% objective, real-time, and free of marketing bias: Our <strong>Daily Web Crawler Agent</strong> sweeps official bank portals once a day to reason against our consumer-advocacy mission, while our <strong>Statutory Gazette Engine</strong> enforces RBI, NPCI, and DGCA mandates in sub-second real-time.
+        <p className="mt-2 text-sm sm:text-base text-slate-600 max-w-3xl leading-relaxed">
+          We track official publications from the RBI, IRDAI, TRAI, and leading Indian banks. Everything here links directly to the original government or bank document with zero affiliate bias.
         </p>
 
-        {/* Dual-Cadence Architectural Navigation Switcher */}
+        {/* 2-Tab Navigation Switcher */}
         <div className="mt-6 flex flex-wrap gap-2 p-1.5 bg-slate-100 rounded-2xl border border-slate-200/90 max-w-xl">
           <button
             onClick={() => setViewMode('agent')}
@@ -527,10 +540,10 @@ export const DataProvenance: React.FC<DataProvenanceProps> = ({ onBackToGuide, c
                 : 'text-slate-600 hover:text-slate-900'
             }`}
           >
-            <Bot className="w-4 h-4 text-emerald-600" />
-            <span>Daily Crawler Agent (24h Sweep)</span>
-            <span className="text-[10px] px-1.5 py-0.2 rounded bg-emerald-100 text-emerald-800 font-bold">
-              03:00 IST
+            <Sparkles className="w-4 h-4 text-emerald-600" />
+            <span>Daily Web Discoveries</span>
+            <span className="text-[10px] px-1.5 py-0.5 rounded bg-emerald-100 text-emerald-800 font-bold">
+              Every 24h
             </span>
           </button>
 
@@ -543,7 +556,7 @@ export const DataProvenance: React.FC<DataProvenanceProps> = ({ onBackToGuide, c
             }`}
           >
             <Scale className="w-4 h-4 text-indigo-600" />
-            <span>Real-Time Statutory Gazette</span>
+            <span>Official Rules Library</span>
             <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
           </button>
         </div>
@@ -552,29 +565,29 @@ export const DataProvenance: React.FC<DataProvenanceProps> = ({ onBackToGuide, c
       {/* VIEW 1: DAILY AUTONOMOUS CRAWLER AGENT COMMAND CENTER */}
       {viewMode === 'agent' && (
         <div className="space-y-8 animate-in fade-in duration-150">
-          {/* Minimal Daily Sweep Controller Strip (Schedule Intelligence Protocol Card Removed) */}
+          {/* Daily Web Scanner Controller Strip */}
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 p-4 sm:p-5 bg-white rounded-2xl border border-slate-200/80 shadow-2xs">
             <div className="flex items-center gap-3">
               <div className="w-10 h-10 rounded-xl bg-emerald-50 flex items-center justify-center text-emerald-600 border border-emerald-200 shrink-0">
-                <Bot className="w-5 h-5" />
+                <Sparkles className="w-5 h-5" />
               </div>
               <div>
                 <div className="flex items-center gap-2">
-                  <h3 className="text-sm font-bold text-slate-900">Daily Autonomous Credit & Debit Card Crawler</h3>
+                  <h3 className="text-sm font-bold text-slate-900">Daily Web Scanner for Bank Deals & Rules</h3>
                   <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-50 text-emerald-700 border border-emerald-200">
                     <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
-                    Daily 03:00 AM IST
+                    Daily Scan Active
                   </span>
                 </div>
                 <p className="text-xs text-slate-500 mt-0.5">
-                  Crawls commercial credit card and debit card deals once every 24 hours. Deals with <strong>Mission Score &gt; 90</strong> are ingested with full Fact Sheets directly into the Buying Guide.
+                  Scans bank MITCs, merchant offers, and regulatory circulars once a day. Any genuine rule or deal is summarized with direct links to official documents.
                 </p>
               </div>
             </div>
 
             <div className="flex items-center gap-3 shrink-0">
               <div className="text-right hidden md:block text-xs">
-                <span className="text-slate-400 block text-[11px]">Last Sweep Cycle</span>
+                <span className="text-slate-400 block text-[11px]">Last Scan</span>
                 <span className="font-semibold text-slate-700">{agentLastRunLabel}</span>
               </div>
               <button
@@ -589,40 +602,40 @@ export const DataProvenance: React.FC<DataProvenanceProps> = ({ onBackToGuide, c
                 {agentSimulating ? (
                   <>
                     <RefreshCw className="w-3.5 h-3.5 animate-spin" />
-                    <span>Scanning Bank Portals...</span>
+                    <span>Scanning Official Sites...</span>
                   </>
                 ) : (
                   <>
                     <Zap className="w-3.5 h-3.5" />
-                    <span>▶ Run Daily Agent Sweep (Simulate)</span>
+                    <span>⚡ Scan for New Rules & Deals Now</span>
                   </>
                 )}
               </button>
             </div>
           </div>
 
-          {/* Simulation Progress Stepper (Visible during simulation) */}
+          {/* Simulation Progress Stepper */}
           {agentStep > 0 && (
             <div className="p-4 bg-emerald-50/70 rounded-2xl border border-emerald-200 text-xs space-y-2 animate-in fade-in duration-200">
               <div className="flex items-center justify-between font-bold text-emerald-900">
                 <span className="flex items-center gap-1.5">
                   <Sparkles className="w-3.5 h-3.5 text-emerald-600 animate-spin" />
-                  Autonomous Agent Deal Ingestion Trajectory
+                  Live Web Scanner in Progress
                 </span>
                 <span className="text-emerald-700 text-[11px]">Step {agentStep} of 4</span>
               </div>
               <div className="grid grid-cols-1 sm:grid-cols-4 gap-2">
                 <div className={`p-2 rounded-lg border transition-all ${agentStep >= 1 ? 'bg-white border-emerald-300 text-emerald-900 font-semibold shadow-2xs' : 'bg-transparent border-emerald-200 text-slate-400'}`}>
-                  1. Daily Web Sweep
+                  1. Scanning Portals
                 </div>
                 <div className={`p-2 rounded-lg border transition-all ${agentStep >= 2 ? 'bg-white border-emerald-300 text-emerald-900 font-semibold shadow-2xs' : 'bg-transparent border-emerald-200 text-slate-400'}`}>
-                  2. Card Deal Identified
+                  2. Rule / Deal Found
                 </div>
                 <div className={`p-2 rounded-lg border transition-all ${agentStep >= 3 ? 'bg-white border-emerald-300 text-emerald-900 font-semibold shadow-2xs' : 'bg-transparent border-emerald-200 text-slate-400'}`}>
-                  3. Mission Score Vetted (&gt;90)
+                  3. Verifying Value
                 </div>
                 <div className={`p-2 rounded-lg border transition-all ${agentStep >= 4 ? 'bg-emerald-600 border-emerald-600 text-white font-bold shadow-xs' : 'bg-transparent border-emerald-200 text-slate-400'}`}>
-                  4. Ingested into Buying Guide
+                  4. Published to Guide
                 </div>
               </div>
             </div>
@@ -631,59 +644,59 @@ export const DataProvenance: React.FC<DataProvenanceProps> = ({ onBackToGuide, c
           {/* 1-Line Sweep Run Summary Banner */}
           {renderRunSummaryBanner()}
 
-          {/* Daily Agent Cycle Stats Cards */}
+          {/* Daily Sweep Stats Cards */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
             <div className="bg-white border border-slate-200/80 rounded-2xl p-5 shadow-xs">
               <div className="flex items-center justify-between text-xs font-semibold text-slate-500 uppercase">
-                <span>Sweep Cadence</span>
+                <span>Scan Cadence</span>
                 <Calendar className="w-4 h-4 text-slate-400" />
               </div>
-              <div className="mt-2 text-2xl font-black text-slate-900">Once / 24h</div>
+              <div className="mt-2 text-2xl font-black text-slate-900">Once / Day</div>
               <p className="mt-1 text-xs text-slate-500">Every night at 03:00 AM IST</p>
             </div>
 
             <div className="bg-white border border-slate-200/80 rounded-2xl p-5 shadow-xs">
               <div className="flex items-center justify-between text-xs font-semibold text-slate-500 uppercase">
-                <span>Sources Crawled Today</span>
-                <Bot className="w-4 h-4 text-emerald-600" />
+                <span>Official Portals Checked</span>
+                <Building2 className="w-4 h-4 text-emerald-600" />
               </div>
-              <div className="mt-2 text-2xl font-black text-slate-900">{DAILY_AGENT_CONFIG.itemsScannedInLastRun} URLs</div>
-              <p className="mt-1 text-xs text-slate-500">Bank tariff sheets, fintech releases & portals</p>
+              <div className="mt-2 text-2xl font-black text-slate-900">{DAILY_AGENT_CONFIG.itemsScannedInLastRun} Sites</div>
+              <p className="mt-1 text-xs text-slate-500">RBI, TRAI, IRDAI & top bank MITCs</p>
             </div>
 
             <div className="bg-white border border-slate-200/80 rounded-2xl p-5 shadow-xs">
               <div className="flex items-center justify-between text-xs font-semibold text-slate-500 uppercase">
-                <span>Approved & Published</span>
+                <span>Consumer Insights</span>
                 <CheckCircle2 className="w-4 h-4 text-emerald-600" />
               </div>
               <div className="mt-2 text-2xl font-black text-emerald-700">
-                {CRAWLED_CANDIDATES.filter(c => c.verdict === 'APPROVED_AND_INGESTED').length} Insights & Cards
+                {CRAWLED_CANDIDATES.filter(c => c.verdict === 'APPROVED_AND_INGESTED').length} Verified Rules
               </div>
-              <p className="mt-1 text-xs text-slate-500">Passed net ROI & zero-affiliate audit</p>
+              <p className="mt-1 text-xs text-slate-500">Clear savings and rights for you</p>
             </div>
 
             <div className="bg-white border border-slate-200/80 rounded-2xl p-5 shadow-xs">
               <div className="flex items-center justify-between text-xs font-semibold text-slate-500 uppercase">
-                <span>Rejected Filtered Out</span>
+                <span>Hidden Traps Filtered</span>
                 <AlertOctagon className="w-4 h-4 text-rose-500" />
               </div>
               <div className="mt-2 text-2xl font-black text-rose-700">
-                {CRAWLED_CANDIDATES.filter(c => c.verdict !== 'APPROVED_AND_INGESTED').length} Scams & Traps
+                {CRAWLED_CANDIDATES.filter(c => c.verdict !== 'APPROVED_AND_INGESTED').length} High-Fee Cards
               </div>
-              <p className="mt-1 text-xs text-slate-500">Predatory 36% APR loans & affiliate cookies</p>
+              <p className="mt-1 text-xs text-slate-500">Filtered out for 36%+ APR or hidden fees</p>
             </div>
           </div>
 
-          {/* Evaluated Candidates Audit Ledger */}
+          {/* Evaluated Candidates Section */}
           <div className="space-y-4">
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
               <div>
                 <h3 className="text-lg font-bold text-slate-900 flex items-center gap-2">
-                  <Bot className="w-4 h-4 text-emerald-600" />
-                  <span>Daily Agent Audit Ledger: Recent Candidates Evaluated</span>
+                  <Sparkles className="w-4 h-4 text-emerald-600" />
+                  <span>Recent Web Discoveries & Evaluations</span>
                 </h3>
                 <p className="text-xs text-slate-500 mt-0.5">
-                  Every discovered offering is judged against our mission statement before human or AI publication.
+                  Every offer and rule is checked to make sure it actually benefits you before it appears in our guide.
                 </p>
               </div>
 
@@ -706,7 +719,7 @@ export const DataProvenance: React.FC<DataProvenanceProps> = ({ onBackToGuide, c
                   }`}
                 >
                   <Sparkles className="w-3.5 h-3.5 text-amber-300" />
-                  <span>10 New Consumer Insights (10)</span>
+                  <span>Top 10 Consumer Deals (10)</span>
                 </button>
                 <button
                   onClick={() => setCandidateFilter('approved')}
@@ -714,7 +727,7 @@ export const DataProvenance: React.FC<DataProvenanceProps> = ({ onBackToGuide, c
                     candidateFilter === 'approved' ? 'bg-slate-900 text-white shadow-xs' : 'text-slate-600 hover:text-slate-900'
                   }`}
                 >
-                  Approved ({CRAWLED_CANDIDATES.filter(c => c.verdict === 'APPROVED_AND_INGESTED').length})
+                  Approved Deals ({CRAWLED_CANDIDATES.filter(c => c.verdict === 'APPROVED_AND_INGESTED').length})
                 </button>
                 <button
                   onClick={() => setCandidateFilter('rejected')}
@@ -738,7 +751,7 @@ export const DataProvenance: React.FC<DataProvenanceProps> = ({ onBackToGuide, c
                     className={`rounded-2xl border bg-white p-5 sm:p-6 transition-all hover:shadow-xs space-y-4 ${
                       isApproved 
                         ? 'border-emerald-200/90 ring-1 ring-emerald-300/20' 
-                        : 'border-rose-200/80 bg-rose-50/10'
+                        : 'border-rose-200/80 bg-rose-50/15'
                     }`}
                   >
                     <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-3">
@@ -749,12 +762,12 @@ export const DataProvenance: React.FC<DataProvenanceProps> = ({ onBackToGuide, c
                               ? 'bg-emerald-100 text-emerald-800 border-emerald-300' 
                               : 'bg-rose-100 text-rose-800 border-rose-300'
                           }`}>
-                            {cand.badge}
+                            {isApproved ? '✓ Verified Consumer Deal' : '✕ Filtered Out (Unfair Terms)'}
                           </span>
                           <span className="text-xs text-slate-500 font-mono">
                             {cand.scanCycle}
                           </span>
-                          <span className="text-xs text-slate-400">•</span>
+                          <span className="text-slate-300">•</span>
                           <span className="text-xs text-slate-600 font-medium">
                             {cand.issuingEntity}
                           </span>
@@ -763,111 +776,71 @@ export const DataProvenance: React.FC<DataProvenanceProps> = ({ onBackToGuide, c
                         <h4 className="text-base sm:text-lg font-bold text-slate-900 tracking-tight">
                           {cand.title}
                         </h4>
+                      </div>
 
+                      <div className="shrink-0 flex items-center gap-2">
                         <a
                           href={cand.sourceUrl}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="inline-flex items-center gap-1 text-xs text-blue-600 hover:text-blue-800 hover:underline font-mono truncate max-w-xl"
+                          className="inline-flex items-center gap-1.5 text-xs font-semibold px-3 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 transition-colors"
                         >
-                          <span>{cand.sourceUrl}</span>
-                          <ExternalLink className="w-3 h-3 shrink-0" />
+                          <span>Official Portal</span>
+                          <ExternalLink className="w-3 h-3 text-slate-400" />
                         </a>
-                      </div>
 
-                      {/* Mission Score Box */}
-                      <div className="flex items-center sm:flex-col items-end gap-2 shrink-0">
-                        <div className="text-right">
-                          <span className="text-[10px] uppercase font-bold text-slate-400 block">Mission Score</span>
-                          <span className={`text-2xl font-black font-mono ${
-                            cand.missionScore >= 90 ? 'text-emerald-600' : cand.missionScore >= 80 ? 'text-amber-600' : 'text-rose-600'
-                          }`}>
-                            {cand.missionScore} / 100
-                          </span>
-                        </div>
-
-                        {cand.missionScore >= 90 && cand.linkedResourceCardId && onBackToGuide && (
+                        {isApproved && cand.linkedResourceCardId && onBackToGuide && (
                           <button
                             onClick={() => onBackToGuide(cand.linkedResourceCardId)}
                             className="inline-flex items-center gap-1.5 text-xs font-bold px-3 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white transition-all shadow-xs cursor-pointer"
                           >
-                            <span>View Fact Sheet in Guide</span>
+                            <span>View in Card Guide</span>
                             <ArrowRight className="w-3 h-3" />
                           </button>
                         )}
                       </div>
                     </div>
 
-                    {/* 4-Pillar Mission Checklist */}
-                    <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 pt-2 border-t border-slate-100 text-xs">
-                      <div className="flex items-center gap-1.5 text-slate-700">
-                        {cand.evaluationChecklist.hasStatutoryLicense ? (
-                          <Check className="w-3.5 h-3.5 text-emerald-600 stroke-[3]" />
-                        ) : (
-                          <X className="w-3.5 h-3.5 text-rose-500 stroke-[3]" />
-                        )}
-                        <span className={cand.evaluationChecklist.hasStatutoryLicense ? 'font-medium' : 'text-rose-700 line-through'}>
-                          RBI/Statutory License
-                        </span>
+                    {/* 2 Clean, Spacious Plain-English Boxes */}
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-3.5 pt-1">
+                      {/* Box 1: What This Deal Gives You */}
+                      <div className="p-4 rounded-2xl bg-emerald-50/70 border border-emerald-200/80 space-y-1">
+                        <div className="text-xs font-bold text-emerald-950 flex items-center gap-1.5 uppercase tracking-wider">
+                          <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
+                          <span>Key Value for You</span>
+                        </div>
+                        <p className="text-xs sm:text-sm text-emerald-900 leading-relaxed font-medium">
+                          {cand.customerInsightSummary}
+                        </p>
                       </div>
 
-                      <div className="flex items-center gap-1.5 text-slate-700">
-                        {cand.evaluationChecklist.netConsumerRoiPositive ? (
-                          <Check className="w-3.5 h-3.5 text-emerald-600 stroke-[3]" />
-                        ) : (
-                          <X className="w-3.5 h-3.5 text-rose-500 stroke-[3]" />
-                        )}
-                        <span className={cand.evaluationChecklist.netConsumerRoiPositive ? 'font-medium' : 'text-rose-700 line-through'}>
-                          Net Positive ROI
-                        </span>
-                      </div>
-
-                      <div className="flex items-center gap-1.5 text-slate-700">
-                        {cand.evaluationChecklist.hiddenFeesDisclosed ? (
-                          <Check className="w-3.5 h-3.5 text-emerald-600 stroke-[3]" />
-                        ) : (
-                          <X className="w-3.5 h-3.5 text-rose-500 stroke-[3]" />
-                        )}
-                        <span className={cand.evaluationChecklist.hiddenFeesDisclosed ? 'font-medium' : 'text-rose-700 line-through'}>
-                          Fees Disclosed in MITC
-                        </span>
-                      </div>
-
-                      <div className="flex items-center gap-1.5 text-slate-700">
-                        {cand.evaluationChecklist.zeroAffiliateBias ? (
-                          <Check className="w-3.5 h-3.5 text-emerald-600 stroke-[3]" />
-                        ) : (
-                          <X className="w-3.5 h-3.5 text-rose-500 stroke-[3]" />
-                        )}
-                        <span className={cand.evaluationChecklist.zeroAffiliateBias ? 'font-medium' : 'text-rose-700 line-through'}>
-                          Zero Affiliate Links
-                        </span>
+                      {/* Box 2: Why We Approved or Filtered It Out */}
+                      <div className={`p-4 rounded-2xl border space-y-1 ${
+                        isApproved ? 'bg-slate-50 border-slate-200/80' : 'bg-rose-50/60 border-rose-200'
+                      }`}>
+                        <div className={`text-xs font-bold flex items-center gap-1.5 uppercase tracking-wider ${
+                          isApproved ? 'text-slate-800' : 'text-rose-900'
+                        }`}>
+                          {isApproved ? <ShieldCheck className="w-3.5 h-3.5 text-emerald-600 shrink-0" /> : <AlertOctagon className="w-3.5 h-3.5 text-rose-600 shrink-0" />}
+                          <span>{isApproved ? 'Why We Recommend It' : 'Why We Filtered This Out'}</span>
+                        </div>
+                        <p className={`text-xs sm:text-sm leading-relaxed ${
+                          isApproved ? 'text-slate-700' : 'text-rose-900 font-medium'
+                        }`}>
+                          {cand.missionReasoning}
+                        </p>
                       </div>
                     </div>
 
-                    {/* Direct Customer Benefit Highlight Box */}
-                    <div className="p-3.5 rounded-xl bg-emerald-50/90 border border-emerald-200/90 text-xs space-y-1">
-                      <div className="font-bold text-emerald-950 flex items-center gap-1.5">
-                        <Sparkles className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
-                        <span>Direct Consumer Benefit & Strategic Insight:</span>
-                      </div>
-                      <p className="text-emerald-900 leading-relaxed font-medium">
-                        {cand.customerInsightSummary}
-                      </p>
-                    </div>
-
-                    {/* Mission Reasoning Log */}
-                    <div className="p-3.5 rounded-xl bg-slate-50 border border-slate-200/70 text-xs space-y-1.5">
-                      <div className="font-bold text-slate-800 flex items-center gap-1.5">
-                        <Bot className="w-3.5 h-3.5 text-emerald-600" />
-                        <span>Daily Agent Reasoning Log:</span>
-                      </div>
-                      <p className="text-slate-700 leading-relaxed">
-                        {cand.missionReasoning}
-                      </p>
-                      <div className="pt-1 text-[11px] text-slate-500">
-                        <strong>Action Taken:</strong> {cand.actionTaken}
-                      </div>
+                    {/* Trust Footnote */}
+                    <div className="pt-2 border-t border-slate-100 flex flex-wrap items-center justify-between gap-2 text-[11px] text-slate-500">
+                      <span className="flex items-center gap-1">
+                        <Check className="w-3 h-3 text-emerald-600 stroke-[3]" />
+                        <span>Direct official terms verified • 0 affiliate cookies • Zero marketing bias</span>
+                      </span>
+                      <span className="font-mono text-slate-400">
+                        {cleanDomain(cand.sourceUrl)}
+                      </span>
                     </div>
                   </div>
                 );
@@ -877,7 +850,7 @@ export const DataProvenance: React.FC<DataProvenanceProps> = ({ onBackToGuide, c
         </div>
       )}
 
-      {/* VIEW 2: REAL-TIME STATUTORY GAZETTE REGISTRY */}
+      {/* VIEW 2: OFFICIAL RULES LIBRARY */}
       {viewMode === 'gazette' && (
         <div className="space-y-8 animate-in fade-in duration-150">
           {/* Live Re-Verification Control Banner */}
@@ -890,31 +863,31 @@ export const DataProvenance: React.FC<DataProvenanceProps> = ({ onBackToGuide, c
                     <span className={`relative inline-flex rounded-full h-3 w-3 ${isSyncing ? 'bg-amber-500' : 'bg-emerald-500'}`}></span>
                   </span>
                   <span className="text-xs font-bold uppercase tracking-wider text-slate-700">
-                    {isSyncing ? 'Synchronizing with Live Regulatory Feeds...' : 'Statutory Gazette Engine Active & Polling'}
+                    {isSyncing ? 'Checking Official Portals...' : 'Official Regulatory Feed Active'}
                   </span>
                   <span className="text-slate-300">•</span>
-                  <span className="text-xs font-mono text-slate-500">
-                    Node ID: DEL-IN-REG-26
+                  <span className="text-xs text-slate-500 font-medium">
+                    Verified Government & Bank Feeds
                   </span>
                 </div>
 
                 <div className="flex flex-wrap items-center gap-y-1 gap-x-4 text-xs sm:text-sm text-slate-600">
                   <div className="flex items-center gap-1.5">
                     <Clock className="w-4 h-4 text-slate-400" />
-                    <span>Last verified:</span>
+                    <span>Last checked:</span>
                     <strong className="text-slate-800 font-medium">{lastSyncTime}</strong>
                   </div>
                   <span className="hidden sm:inline text-slate-300">•</span>
                   <div className="flex items-center gap-1.5">
                     <CheckCircle2 className="w-4 h-4 text-emerald-600" />
                     <span>Status:</span>
-                    <span className="text-emerald-700 font-medium">All {allSources.length} Gazettes & MITC Schedules Active</span>
+                    <span className="text-emerald-700 font-medium">All {allSources.length} Rules & Bank Schedules Active</span>
                   </div>
                   {syncCount > 0 && (
                     <>
                       <span className="hidden sm:inline text-slate-300">•</span>
                       <span className="text-slate-500 font-mono text-xs">
-                        {syncCount} manual {syncCount === 1 ? 'audit' : 'audits'} completed
+                        {syncCount} manual {syncCount === 1 ? 'check' : 'checks'} completed
                       </span>
                     </>
                   )}
@@ -934,12 +907,12 @@ export const DataProvenance: React.FC<DataProvenanceProps> = ({ onBackToGuide, c
                   {isSyncing ? (
                     <>
                       <RefreshCw className="w-4 h-4 animate-spin text-amber-500" />
-                      <span>Checking Statutory Feeds...</span>
+                      <span>Checking Official Sites...</span>
                     </>
                   ) : (
                     <>
                       <Zap className="w-4 h-4 text-amber-400 fill-amber-400" />
-                      <span>⚡ Re-Verify Sources & Fetch Latest Gazettes</span>
+                      <span>⚡ Check for Updates Now</span>
                     </>
                   )}
                 </button>
@@ -953,8 +926,8 @@ export const DataProvenance: React.FC<DataProvenanceProps> = ({ onBackToGuide, c
                 <span className="font-mono font-medium text-slate-700">DOR.AUT.REC.27 (Active)</span>
               </div>
               <div>
-                <span className="text-slate-400 block mb-0.5">NPCI RuPay Interchange</span>
-                <span className="font-mono font-medium text-slate-700">Circular 114 / 088 (Zero MDR)</span>
+                <span className="text-slate-400 block mb-0.5">NPCI RuPay Rules</span>
+                <span className="font-mono font-medium text-slate-700">Zero MDR on UPI</span>
               </div>
               <div>
                 <span className="text-slate-400 block mb-0.5">DGCA Passenger Charter</span>
@@ -975,7 +948,7 @@ export const DataProvenance: React.FC<DataProvenanceProps> = ({ onBackToGuide, c
             <div className="bg-white border border-slate-200/80 rounded-2xl p-5 shadow-xs">
               <div className="flex items-center justify-between">
                 <span className="text-xs font-semibold text-slate-500 uppercase tracking-wider">
-                  Monitored Authorities
+                  Official Authorities
                 </span>
                 <div className="w-8 h-8 rounded-lg bg-emerald-50 text-emerald-600 flex items-center justify-center">
                   <Building2 className="w-4 h-4" />
@@ -984,7 +957,7 @@ export const DataProvenance: React.FC<DataProvenanceProps> = ({ onBackToGuide, c
               <div className="mt-3">
                 <span className="text-3xl font-extrabold text-slate-900 tracking-tight">{allSources.length}</span>
                 <p className="mt-1 text-xs text-slate-600">
-                  Statutory regulators, government ministries, merchant SLAs & verified bank MITC schedules.
+                  Statutory regulators, government ministries & verified bank MITC schedules.
                 </p>
               </div>
             </div>
@@ -1001,7 +974,7 @@ export const DataProvenance: React.FC<DataProvenanceProps> = ({ onBackToGuide, c
               <div className="mt-3">
                 <span className="text-3xl font-extrabold text-slate-900 tracking-tight">100%</span>
                 <p className="mt-1 text-xs text-slate-600">
-                  Exclusively pointing to <code className="text-slate-800 font-mono">.gov.in</code>, <code className="text-slate-800 font-mono">rbi.org.in</code> and certified bank portals.
+                  Exclusively pointing to <code className="text-slate-800 font-mono">.gov.in</code>, <code className="text-slate-800 font-mono">rbi.org.in</code> and verified bank portals.
                 </p>
               </div>
             </div>
@@ -1035,7 +1008,7 @@ export const DataProvenance: React.FC<DataProvenanceProps> = ({ onBackToGuide, c
               <div className="mt-3">
                 <span className="text-3xl font-extrabold text-slate-900 tracking-tight">Real-Time</span>
                 <p className="mt-1 text-xs text-slate-600">
-                  Sub-second webhooks against primary regulatory circulars.
+                  Synchronized with primary regulatory circulars.
                 </p>
               </div>
             </div>
@@ -1047,7 +1020,7 @@ export const DataProvenance: React.FC<DataProvenanceProps> = ({ onBackToGuide, c
               <div>
                 <h3 className="text-lg font-bold text-slate-900 tracking-tight flex items-center gap-2">
                   <FileText className="w-4 h-4 text-slate-700" />
-                  <span>Statutory Reference Registry & MITC Tariff Database</span>
+                  <span>Official Rules Library & Bank MITC Schedules</span>
                 </h3>
                 <p className="text-xs sm:text-sm text-slate-500 mt-0.5">
                   Showing {filteredSources.length} of {allSources.length} verified statutory authorities, merchant terms and tariff schedules
@@ -1061,7 +1034,7 @@ export const DataProvenance: React.FC<DataProvenanceProps> = ({ onBackToGuide, c
                   type="text"
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  placeholder="Search circulars, banks, rules, findings..."
+                  placeholder="Search rules, circulars, banks, findings..."
                   className="w-full pl-9 pr-8 py-2 bg-white border border-slate-200 rounded-xl text-xs sm:text-sm text-slate-900 placeholder:text-slate-400 focus:outline-hidden focus:ring-2 focus:ring-slate-900/10 focus:border-slate-400 transition-all"
                 />
                 {searchQuery && (
@@ -1149,9 +1122,9 @@ export const DataProvenance: React.FC<DataProvenanceProps> = ({ onBackToGuide, c
                 <table className="w-full text-left border-collapse">
                   <thead>
                     <tr className="bg-slate-50/80 border-b border-slate-200/80 text-[11px] font-bold uppercase tracking-wider text-slate-500">
-                      <th className="py-3.5 px-4 sm:px-6 w-[28%]">Source & Gazette Code</th>
-                      <th className="py-3.5 px-4 w-[20%]">Issuing Authority</th>
-                      <th className="py-3.5 px-4 w-[32%]">Why This Source Is Cited & Agent Findings</th>
+                      <th className="py-3.5 px-4 sm:px-6 w-[28%]">Rule & Reference Code</th>
+                      <th className="py-3.5 px-4 w-[18%]">Issuing Authority</th>
+                      <th className="py-3.5 px-4 w-[34%]">What Was Published & Consumer Benefit</th>
                       <th className="py-3.5 px-4 w-[12%]">Official Portal</th>
                       <th className="py-3.5 px-4 sm:px-6 w-[8%] text-right">Status</th>
                     </tr>
@@ -1187,7 +1160,7 @@ export const DataProvenance: React.FC<DataProvenanceProps> = ({ onBackToGuide, c
                               </div>
                             )}
                             <div className="font-semibold text-slate-900 leading-snug">
-                              {source.name}
+                              {source.simpleTitle || source.name}
                             </div>
                             <div className="mt-1.5">
                               <span className="inline-block font-mono text-[10.5px] bg-slate-100 text-slate-700 px-2 py-0.5 rounded border border-slate-200/60">
@@ -1199,7 +1172,7 @@ export const DataProvenance: React.FC<DataProvenanceProps> = ({ onBackToGuide, c
                           {/* Issuing Authority & Type */}
                           <td className="py-4 px-4 align-top">
                             <div className="font-medium text-slate-900">
-                              {source.authority}
+                              {source.officialPublisher || source.authority}
                             </div>
                             <div className="mt-1.5">
                               <span className={`inline-block text-[10px] font-semibold px-2 py-0.5 rounded-md border ${getAuthorityBadgeColor(source.authorityType)}`}>
@@ -1208,14 +1181,29 @@ export const DataProvenance: React.FC<DataProvenanceProps> = ({ onBackToGuide, c
                             </div>
                           </td>
 
-                          {/* Reasoning & Run Finding */}
-                          <td className="py-4 px-4 align-top">
-                            <p className="text-slate-600 leading-relaxed text-xs">
-                              {source.reasoning}
-                            </p>
+                          {/* What Was Published & Benefit */}
+                          <td className="py-4 px-4 align-top space-y-2">
+                            {source.whatPublished ? (
+                              <p className="text-slate-800 leading-relaxed text-xs">
+                                <strong className="text-slate-900">Published: </strong>
+                                {source.whatPublished}
+                              </p>
+                            ) : (
+                              <p className="text-slate-600 leading-relaxed text-xs">
+                                {source.reasoning}
+                              </p>
+                            )}
+
+                            {source.consumerBenefit && (
+                              <div className="p-2 rounded-xl bg-emerald-50/90 border border-emerald-200/80 text-[11px] text-emerald-950 leading-snug">
+                                <strong className="text-emerald-800">Benefit for you: </strong>
+                                {source.consumerBenefit}
+                              </div>
+                            )}
+
                             {source.discoveryRunSummary && (
-                              <div className="mt-2 text-[11px] font-mono text-emerald-950 bg-emerald-100/70 p-2 rounded-lg border border-emerald-200 leading-snug">
-                                <span className="font-bold text-emerald-800">Sweep Run Finding: </span>
+                              <div className="text-[11px] font-mono text-slate-600 bg-slate-100 p-1.5 rounded-lg leading-snug">
+                                <span className="font-semibold text-slate-700">Latest finding: </span>
                                 {source.discoveryRunSummary}
                               </div>
                             )}
@@ -1227,13 +1215,13 @@ export const DataProvenance: React.FC<DataProvenanceProps> = ({ onBackToGuide, c
                               href={source.officialUrl}
                               target="_blank"
                               rel="noopener noreferrer"
-                              className="inline-flex items-center gap-1 font-mono text-xs font-medium text-blue-600 hover:text-blue-800 hover:underline group/link"
+                              className="inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-800 text-xs font-semibold group/link transition-colors"
                             >
                               <span>{cleanDomain(source.officialUrl)}</span>
-                              <ExternalLink className="w-3.5 h-3.5 text-blue-500 group-hover/link:translate-x-0.5 group-hover/link:-translate-y-0.5 transition-transform" />
+                              <ExternalLink className="w-3.5 h-3.5 text-slate-500 group-hover/link:translate-x-0.5 transition-transform" />
                             </a>
                             <span className="block text-[10px] text-slate-400 mt-1">
-                              Direct Portal (0 Affiliate)
+                              Official Document
                             </span>
                           </td>
 

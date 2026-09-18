@@ -92,21 +92,74 @@ export const SavingsCalculator: React.FC<SavingsCalculatorProps> = ({ onGoToCard
   const netAnnualProfit = Math.round(totalAnnualOptimizedSavings - annualFeesCost);
 
   return (
-    <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-8">
-      {/* Header */}
-      <div className="text-center max-w-3xl mx-auto space-y-2">
-        <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-emerald-100 text-emerald-800 border border-emerald-300">
-          <Calculator className="w-3.5 h-3.5" />
-          <span>Interactive Spend & ROI Simulator</span>
+    <div className="relative min-h-[600px] max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+      {/* Centered Elegant Coming Soon Modal / Card */}
+      <div className="sticky top-28 z-30 flex items-center justify-center p-4 sm:p-6 pointer-events-auto">
+        <div className="max-w-md w-full bg-white/95 backdrop-blur-xl border border-slate-200/90 shadow-2xl rounded-3xl p-6 sm:p-8 text-center space-y-5 animate-in fade-in zoom-in-95 duration-200">
+          <div className="w-14 h-14 rounded-2xl bg-amber-50 text-amber-600 border border-amber-200 flex items-center justify-center mx-auto shadow-xs">
+            <Calculator className="w-7 h-7 text-amber-600" />
+          </div>
+
+          <div className="space-y-2">
+            <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-amber-100 text-amber-900 border border-amber-300">
+              <span className="w-2 h-2 rounded-full bg-amber-500 animate-pulse" />
+              Feature Coming Soon
+            </span>
+            <h3 className="text-xl sm:text-2xl font-black text-slate-900 tracking-tight">
+              Personalized Spend & Rewards Calculator
+            </h3>
+            <p className="text-xs sm:text-sm text-slate-600 leading-relaxed">
+              We are fine-tuning the calculator with the latest bank reward caps and category exclusions to give you 100% accurate savings numbers.
+            </p>
+          </div>
+
+          <div className="p-4 rounded-2xl bg-slate-50 border border-slate-200/80 text-xs text-slate-700 text-left space-y-2">
+            <div className="font-bold text-slate-900 flex items-center gap-1.5">
+              <Sparkles className="w-3.5 h-3.5 text-amber-500" />
+              <span>What’s coming in this tool:</span>
+            </div>
+            <div className="flex items-start gap-2">
+              <span className="text-emerald-600 font-bold mt-0.5">✓</span>
+              <span>Exact cashback calculations based on your monthly household spending</span>
+            </div>
+            <div className="flex items-start gap-2">
+              <span className="text-emerald-600 font-bold mt-0.5">✓</span>
+              <span>Annual fee vs. reward breakeven simulator</span>
+            </div>
+            <div className="flex items-start gap-2">
+              <span className="text-emerald-600 font-bold mt-0.5">✓</span>
+              <span>Zero-affiliate, mathematically vetted multi-card suggestions</span>
+            </div>
+          </div>
+
+          {onGoToCards && (
+            <button
+              onClick={onGoToCards}
+              className="w-full py-3 px-4 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs sm:text-sm transition-all shadow-sm flex items-center justify-center gap-2 cursor-pointer"
+            >
+              <span>Explore Card Buying Guide Instead</span>
+              <ArrowRight className="w-4 h-4" />
+            </button>
+          )}
         </div>
-        <h2 className="text-2xl sm:text-4xl font-extrabold text-slate-900 tracking-tight">
-          Calculate Your Annual Household Money-Back
-        </h2>
-        <p className="text-xs sm:text-sm text-slate-600">
-          Adjust the sliders below to reflect your household’s actual monthly expenditure. 
-          See how much cash you are currently leaving on the table compared to a disciplined multi-card stack.
-        </p>
       </div>
+
+      {/* Blurred background content */}
+      <div className="filter blur-md opacity-40 select-none pointer-events-none space-y-8 -mt-96" aria-hidden="true">
+        {/* Header */}
+        <div className="text-center max-w-3xl mx-auto space-y-2">
+          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-emerald-100 text-emerald-800 border border-emerald-300">
+            <Calculator className="w-3.5 h-3.5" />
+            <span>Interactive Spend & ROI Simulator</span>
+          </div>
+          <h2 className="text-2xl sm:text-4xl font-extrabold text-slate-900 tracking-tight">
+            Calculate Your Annual Household Money-Back
+          </h2>
+          <p className="text-xs sm:text-sm text-slate-600">
+            Adjust the sliders below to reflect your household’s actual monthly expenditure. 
+            See how much cash you are currently leaving on the table compared to a disciplined multi-card stack.
+          </p>
+        </div>
 
       {/* Main Simulator Card */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
@@ -383,6 +436,7 @@ export const SavingsCalculator: React.FC<SavingsCalculatorProps> = ({ onGoToCard
           </div>
         </div>
       </div>
+    </div>
     </div>
   );
 };
