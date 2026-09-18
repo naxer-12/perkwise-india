@@ -171,14 +171,9 @@ export const CardDetailModal: React.FC<CardDetailModalProps> = ({
             <div className="absolute -bottom-24 -left-24 w-72 h-72 bg-indigo-500/15 rounded-full blur-3xl pointer-events-none" />
 
             <div className="relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-6 items-center">
-              {/* 3D Visual Card on the Left */}
+              {/* Visual Card on the Left */}
               <div className="lg:col-span-6 flex flex-col items-center justify-center">
                 <CardVisual card={card} variant="hero" interactive={true} />
-                <p className="text-[11px] text-slate-400 font-mono mt-3 flex items-center gap-1.5">
-                  <span>Hover to tilt in 3D</span>
-                  <span>•</span>
-                  <span>Click flip button ↺ to inspect back</span>
-                </p>
               </div>
 
               {/* High-Level Pitch & Headline on the Right */}

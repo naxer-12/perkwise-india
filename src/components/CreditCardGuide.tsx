@@ -1,14 +1,13 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { 
-  Award, 
+  Camera, 
   ChevronRight, 
   ExternalLink, 
   ShieldCheck, 
   Star, 
   Zap, 
   Sparkles, 
-  ArrowRight,
-  Maximize2
+  ArrowRight
 } from 'lucide-react';
 import { CREDIT_CARD_SEGMENTS, CREDIT_CARDS_DATA } from '../data/creditCardsData';
 import type { CreditCard, ReviewItem } from '../types';
@@ -210,20 +209,14 @@ export const CreditCardGuide: React.FC<CreditCardGuideProps> = ({
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
-      {/* Mintlify-Inspired Minimalist Section Header */}
-      <div className="space-y-4 max-w-3xl">
-        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold bg-emerald-50 text-emerald-800 border border-emerald-200">
-          <Award className="w-3.5 h-3.5 text-emerald-600" />
-          <span>Mintlify-Engineered Card Directory • Zero Affiliate Bias</span>
-        </div>
-
+      {/* Section Header */}
+      <div className="space-y-3 max-w-3xl">
         <h1 className="text-3xl sm:text-4xl font-extrabold text-slate-900 tracking-tight">
           Credit & Debit Card Buying Guide
         </h1>
 
         <p className="text-sm sm:text-base text-slate-600 leading-relaxed font-normal">
-          Every card and deal in our index is audited against official bank MITC tariff sheets and RBI directives. 
-          Click any card to inspect its <strong className="text-slate-800">3D visual showcase</strong>, financial returns fact sheet, card-specific eligibility criteria, and verified customer reviews.
+          Real card demonstrations, verified annual reward math, and step-by-step application pre-requisites.
         </p>
 
         {/* Clean Filter Strip */}
@@ -263,7 +256,7 @@ export const CreditCardGuide: React.FC<CreditCardGuideProps> = ({
 
           <div className="text-xs text-slate-500 font-medium px-2 py-1 flex items-center gap-1.5">
             <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 inline-block" />
-            <span>Click any card to inspect 3D showcase and its specific application pre-requisite steps</span>
+            <span>Click any card to inspect real card demonstration, fee math, and application steps</span>
           </div>
         </div>
       </div>
@@ -339,9 +332,9 @@ export const CreditCardGuide: React.FC<CreditCardGuideProps> = ({
                 </div>
 
                 {/* Inspect Overlay Cue */}
-                <div className="absolute top-3 right-3 opacity-0 group-hover:opacity-100 transition-opacity bg-slate-900/80 text-white text-[10px] font-bold px-2 py-1 rounded-md backdrop-blur-xs flex items-center gap-1">
-                  <Maximize2 className="w-3 h-3" />
-                  <span>3D Showcase</span>
+                <div className="absolute top-3 right-3 opacity-0 group-hover:opacity-100 transition-opacity bg-slate-900/85 text-white text-[10px] font-bold px-2 py-1 rounded-md backdrop-blur-xs flex items-center gap-1 shadow-md">
+                  <Camera className="w-3 h-3 text-emerald-400" />
+                  <span>Real Card Demo</span>
                 </div>
               </div>
 
