@@ -1,0 +1,75 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 252" width="100%" height="100%">
+  <defs>
+    <linearGradient id="swiggy_bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#121215" />
+      <stop offset="60%" stop-color="#18181c" />
+      <stop offset="100%" stop-color="#241e20" />
+    </linearGradient>
+    <linearGradient id="swiggy_orange" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FF5200" />
+      <stop offset="100%" stop-color="#FC8019" />
+    </linearGradient>
+    <linearGradient id="gold_chip" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#fef08a" />
+      <stop offset="50%" stop-color="#eab308" />
+      <stop offset="100%" stop-color="#ca8a04" />
+    </linearGradient>
+  </defs>
+
+  <!-- Card Base -->
+  <rect width="400" height="252" rx="16" fill="url(#swiggy_bg)" stroke="#27272a" stroke-width="1.5" />
+
+  <!-- Background Decorative Curved Ribbon in Swiggy Orange -->
+  <path d="M 280 0 C 320 80, 290 170, 400 220 L 400 0 Z" fill="url(#swiggy_orange)" opacity="0.12" />
+
+  <!-- Top Left: Bank Brand -->
+  <g transform="translate(24, 28)">
+    <rect width="18" height="18" rx="2" fill="#004c8f" />
+    <rect x="5" y="5" width="8" height="8" rx="1" fill="#ed2324" />
+    <rect x="7" y="2" width="4" height="14" fill="#ffffff" />
+    <rect x="2" y="7" width="14" height="4" fill="#ffffff" />
+    <text x="26" y="14" fill="#ffffff" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="12" font-weight="900" letter-spacing="1">HDFC BANK</text>
+  </g>
+
+  <!-- Top Right: Swiggy Partner Logo -->
+  <g transform="translate(300, 24)">
+    <!-- Swiggy Location Pin / Delivery Icon -->
+    <path d="M 12 0 C 5.37 0 0 5.37 0 12 C 0 19.5 9 27 12 28 C 15 27 24 19.5 24 12 C 24 5.37 18.63 0 12 0 Z" fill="url(#swiggy_orange)" />
+    <circle cx="12" cy="11" r="5" fill="#ffffff" />
+    <text x="30" y="18" fill="#ffffff" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="14" font-weight="800" letter-spacing="0.5">swiggy</text>
+  </g>
+
+  <!-- EMV Gold Chip -->
+  <g transform="translate(28, 76)">
+    <rect width="46" height="34" rx="4" fill="url(#gold_chip)" stroke="#92400e" stroke-width="0.8" />
+    <line x1="0" y1="11" x2="46" y2="11" stroke="#854d0e" stroke-width="0.7" opacity="0.6" />
+    <line x1="0" y1="23" x2="46" y2="23" stroke="#854d0e" stroke-width="0.7" opacity="0.6" />
+    <line x1="16" y1="0" x2="16" y2="34" stroke="#854d0e" stroke-width="0.7" opacity="0.6" />
+    <line x1="30" y1="0" x2="30" y2="34" stroke="#854d0e" stroke-width="0.7" opacity="0.6" />
+    <circle cx="23" cy="17" r="4" fill="#ca8a04" opacity="0.4" />
+  </g>
+
+  <!-- Contactless Waves -->
+  <g transform="translate(86, 85)" stroke="#a1a1aa" stroke-width="1.8" fill="none" opacity="0.85">
+    <path d="M 0 0 A 6 6 0 0 1 0 16" />
+    <path d="M 4 -3 A 10 10 0 0 1 4 19" />
+    <path d="M 8 -6 A 14 14 0 0 1 8 22" />
+  </g>
+
+  <!-- Card Name / Value Proposition -->
+  <text x="28" y="152" fill="#ffffff" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="14" font-weight="700" letter-spacing="0.5">SWIGGY HDFC BANK</text>
+  <text x="28" y="170" fill="#FC8019" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="10" font-weight="600" letter-spacing="1">10% CASHBACK ON FOOD &amp; DINING</text>
+
+  <!-- Masked Card Numbers -->
+  <text x="28" y="210" fill="#e4e4e7" font-family="'Courier New', Courier, monospace" font-size="15" font-weight="700" letter-spacing="3.5">•••• •••• •••• 6482</text>
+
+  <!-- Cardholder / Expiry -->
+  <text x="28" y="228" fill="#a1a1aa" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="9" font-weight="600" letter-spacing="1">VALID THRU 08/30</text>
+
+  <!-- Bottom Right: Mastercard Emblem -->
+  <g transform="translate(330, 195)">
+    <circle cx="16" cy="16" r="16" fill="#EB001B" />
+    <circle cx="34" cy="16" r="16" fill="#F79E1B" fill-opacity="0.88" />
+    <text x="25" y="38" text-anchor="middle" fill="#ffffff" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="8" font-weight="700" letter-spacing="0.5">mastercard</text>
+  </g>
+</svg>

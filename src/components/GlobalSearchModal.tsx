@@ -307,7 +307,7 @@ export const GlobalSearchModal: React.FC<GlobalSearchModalProps> = ({
 
                     <div className="flex items-center gap-2 shrink-0">
                       <span className="text-[11px] text-slate-400 font-medium hidden sm:inline">
-                        Inspect Real Card
+                        View Card
                       </span>
                       <CornerDownLeft className={`w-3.5 h-3.5 ${isSelected ? 'text-emerald-600' : 'text-slate-300'}`} />
                     </div>

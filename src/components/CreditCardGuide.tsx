@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { 
-  Camera, 
   ChevronRight, 
   ExternalLink, 
   ShieldCheck, 
@@ -256,7 +255,7 @@ export const CreditCardGuide: React.FC<CreditCardGuideProps> = ({
 
           <div className="text-xs text-slate-500 font-medium px-2 py-1 flex items-center gap-1.5">
             <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 inline-block" />
-            <span>Click any card to inspect real card demonstration, fee math, and application steps</span>
+            <span>Click any card to view detailed returns fact sheet and application steps</span>
           </div>
         </div>
       </div>
@@ -325,16 +324,10 @@ export const CreditCardGuide: React.FC<CreditCardGuideProps> = ({
               onClick={() => setSelectedCardForModal(card)}
               className="group bg-white rounded-2xl border border-slate-200/90 overflow-hidden flex flex-col justify-between hover:border-slate-400/80 hover:shadow-xl transition-all duration-300 cursor-pointer"
             >
-              {/* Card Visual Header (Mintlify Hero Thumbnail Style) */}
-              <div className="p-4 pb-2 bg-gradient-to-b from-slate-100/80 to-white/40 border-b border-slate-100 flex items-center justify-center relative overflow-hidden">
-                <div className="w-full max-w-[280px] h-[168px] transform group-hover:scale-[1.03] transition-transform duration-300">
-                  <CardVisual card={card} variant="thumbnail" interactive={false} />
-                </div>
-
-                {/* Inspect Overlay Cue */}
-                <div className="absolute top-3 right-3 opacity-0 group-hover:opacity-100 transition-opacity bg-slate-900/85 text-white text-[10px] font-bold px-2 py-1 rounded-md backdrop-blur-xs flex items-center gap-1 shadow-md">
-                  <Camera className="w-3 h-3 text-emerald-400" />
-                  <span>Real Card Demo</span>
+              {/* Card Visual Header */}
+              <div className="p-4 bg-slate-50 border-b border-slate-100 flex items-center justify-center">
+                <div className="w-full max-w-[280px] h-[168px] flex items-center justify-center">
+                  <CardVisual card={card} variant="thumbnail" />
                 </div>
               </div>
 
