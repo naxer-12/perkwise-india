@@ -34,12 +34,7 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
           <ul className="space-y-2 text-xs text-slate-400">
             <li>
               <button onClick={() => onNavigate('card-guide')} className="hover:text-emerald-400 transition-colors cursor-pointer">
-                Credit Card Buying Guide (7 Segments)
-              </button>
-            </li>
-            <li>
-              <button onClick={() => onNavigate('checklist')} className="hover:text-emerald-400 transition-colors cursor-pointer">
-                Prerequisites & V-KYC Checklist Form
+                Credit & Debit Card Buying Guide
               </button>
             </li>
             <li>

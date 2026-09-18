@@ -2,8 +2,7 @@ import React, { useMemo } from 'react';
 import { 
   ShieldCheck, 
   ArrowRight,
-  CreditCard,
-  CheckSquare
+  CreditCard
 } from 'lucide-react';
 import { CATEGORIES_DATA } from '../data/categoriesData';
 import { ARTICLES_DATA } from '../data/articlesData';
@@ -15,7 +14,7 @@ interface HeroProps {
   selectedCategory: LifeCategory | 'all';
   setSelectedCategory: (cat: LifeCategory | 'all') => void;
   onExploreCardsClick: () => void;
-  onStartChecklistClick: () => void;
+  onStartChecklistClick?: () => void;
   onInspectProvenance?: () => void;
 }
 
@@ -23,7 +22,6 @@ export const Hero: React.FC<HeroProps> = ({
   selectedCategory,
   setSelectedCategory,
   onExploreCardsClick,
-  onStartChecklistClick,
   onInspectProvenance
 }) => {
   const categoryCounts = useMemo(() => {
@@ -61,24 +59,16 @@ export const Hero: React.FC<HeroProps> = ({
         <div className="pt-2 flex flex-wrap items-center justify-center gap-3">
           <button
             onClick={onExploreCardsClick}
-            className="px-4 py-2.5 rounded-lg bg-emerald-600 hover:bg-emerald-500 text-white text-xs sm:text-sm font-semibold shadow-xs flex items-center gap-2 transition-all cursor-pointer hover:shadow-sm"
+            className="px-5 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white text-xs sm:text-sm font-semibold shadow-xs flex items-center gap-2 transition-all cursor-pointer hover:shadow-sm"
           >
             <CreditCard className="w-4 h-4" />
-            <span>Explore Credit Card Guide</span>
+            <span>Explore Credit & Debit Card Buying Guide</span>
             <ArrowRight className="w-4 h-4" />
           </button>
 
           <button
-            onClick={onStartChecklistClick}
-            className="px-4 py-2.5 rounded-lg bg-white hover:bg-slate-50 text-slate-700 border border-slate-300 text-xs sm:text-sm font-semibold shadow-2xs flex items-center gap-2 transition-all cursor-pointer hover:border-slate-400"
-          >
-            <CheckSquare className="w-4 h-4 text-emerald-600" />
-            <span>Check Application Prerequisites</span>
-          </button>
-
-          <button
             onClick={() => onInspectProvenance?.()}
-            className="px-4 py-2.5 rounded-lg bg-emerald-50/80 hover:bg-emerald-100 text-emerald-800 border border-emerald-200/80 text-xs sm:text-sm font-semibold shadow-2xs flex items-center gap-2 transition-all cursor-pointer"
+            className="px-4 py-2.5 rounded-xl bg-emerald-50/80 hover:bg-emerald-100 text-emerald-800 border border-emerald-200/80 text-xs sm:text-sm font-semibold shadow-2xs flex items-center gap-2 transition-all cursor-pointer"
           >
             <ShieldCheck className="w-4 h-4 text-emerald-600" />
             <span>Inspect Real-Time Data Provenance</span>

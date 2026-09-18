@@ -4,7 +4,6 @@ import {
   Search, 
   Bookmark, 
   CreditCard, 
-  CheckSquare, 
   Calculator, 
   Compass, 
   BookOpen, 
@@ -45,8 +44,6 @@ export const Header: React.FC<HeaderProps> = ({
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [onOpenSearch]);
-
-  const isCardsGroupActive = activeTab === 'card-guide' || activeTab === 'checklist';
 
   return (
     <header className="sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b border-slate-200/80 shadow-xs">
@@ -120,38 +117,19 @@ export const Header: React.FC<HeaderProps> = ({
               <span>Deals Hub</span>
             </button>
 
-            {/* 2. Cohesive Credit Cards & Eligibility Segmented Control */}
-            <div className={`flex items-center p-0.5 rounded-xl border transition-all ${
-              isCardsGroupActive 
-                ? 'bg-emerald-50/70 border-emerald-300 ring-1 ring-emerald-300/30' 
-                : 'bg-slate-100/80 border-slate-200/90'
-            }`}>
-              <button
-                onClick={() => setActiveTab('card-guide')}
-                className={`flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold rounded-lg transition-all cursor-pointer ${
-                  activeTab === 'card-guide'
-                    ? 'bg-white text-slate-900 shadow-xs'
-                    : 'text-slate-600 hover:text-slate-900'
-                }`}
-                title="Structured credit and debit card buying guide"
-              >
-                <CreditCard className={`w-3.5 h-3.5 ${activeTab === 'card-guide' ? 'text-emerald-600' : 'text-slate-400'}`} />
-                <span>Card Buying Guide</span>
-              </button>
-
-              <button
-                onClick={() => setActiveTab('checklist')}
-                className={`flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold rounded-lg transition-all cursor-pointer ${
-                  activeTab === 'checklist'
-                    ? 'bg-white text-slate-900 shadow-xs'
-                    : 'text-slate-600 hover:text-slate-900'
-                }`}
-                title="Check salary, CIBIL, and documentation readiness"
-              >
-                <CheckSquare className={`w-3.5 h-3.5 ${activeTab === 'checklist' ? 'text-emerald-600' : 'text-slate-400'}`} />
-                <span>Prerequisites</span>
-              </button>
-            </div>
+            {/* 2. Credit & Debit Card Buying Guide */}
+            <button
+              onClick={() => setActiveTab('card-guide')}
+              className={`flex items-center gap-1.5 px-3 py-2 text-xs font-medium rounded-lg transition-colors cursor-pointer ${
+                activeTab === 'card-guide' || activeTab === 'checklist'
+                  ? 'text-emerald-700 bg-emerald-50 font-semibold shadow-xs' 
+                  : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100/80'
+              }`}
+              title="Structured credit and debit card buying guide"
+            >
+              <CreditCard className={`w-3.5 h-3.5 ${activeTab === 'card-guide' || activeTab === 'checklist' ? 'text-emerald-600' : 'text-slate-400'}`} />
+              <span>Card Buying Guide</span>
+            </button>
 
             {/* 3. ROI Savings Calculator */}
             <button
@@ -314,20 +292,6 @@ export const Header: React.FC<HeaderProps> = ({
                 </div>
                 <span className="text-[10px] font-bold px-1.5 py-0.5 rounded bg-amber-100 text-amber-800">
                   Audited
-                </span>
-              </button>
-              <button
-                onClick={() => { setActiveTab('checklist'); setMobileMenuOpen(false); }}
-                className={`w-full flex items-center justify-between px-3 py-2 rounded-xl text-xs font-semibold cursor-pointer ${
-                  activeTab === 'checklist' ? 'bg-emerald-50 text-emerald-800' : 'text-slate-700 hover:bg-slate-50'
-                }`}
-              >
-                <div className="flex items-center gap-2">
-                  <CheckSquare className="w-4 h-4 text-emerald-600" />
-                  <span>Prerequisites & Application Checklist</span>
-                </div>
-                <span className="text-[10px] font-bold px-1.5 py-0.5 rounded bg-teal-100 text-teal-800">
-                  Interactive
                 </span>
               </button>
             </div>

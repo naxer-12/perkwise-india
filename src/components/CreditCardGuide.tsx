@@ -6,7 +6,6 @@ import {
   ShieldCheck, 
   Star, 
   Zap, 
-  CheckSquare, 
   Sparkles, 
   ArrowRight,
   Maximize2
@@ -262,13 +261,10 @@ export const CreditCardGuide: React.FC<CreditCardGuideProps> = ({
             </button>
           </div>
 
-          <button
-            onClick={() => onGoToChecklist()}
-            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-emerald-50 hover:bg-emerald-100 text-emerald-800 border border-emerald-200 text-xs font-semibold transition-all cursor-pointer"
-          >
-            <CheckSquare className="w-3.5 h-3.5 text-emerald-600" />
-            <span>Need General CIBIL Audit? Run 6-Stage Checklist →</span>
-          </button>
+          <div className="text-xs text-slate-500 font-medium px-2 py-1 flex items-center gap-1.5">
+            <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 inline-block" />
+            <span>Click any card to inspect 3D showcase and its specific application pre-requisite steps</span>
+          </div>
         </div>
       </div>
 
@@ -429,25 +425,37 @@ export const CreditCardGuide: React.FC<CreditCardGuideProps> = ({
                 className="px-5 py-3 bg-slate-50/80 border-t border-slate-100 flex items-center justify-between text-xs"
                 onClick={(e) => e.stopPropagation()}
               >
-                <button
-                  type="button"
-                  onClick={() => setSelectedCardForModal(card)}
-                  className="font-bold text-slate-700 hover:text-emerald-700 text-xs flex items-center gap-1 transition-colors cursor-pointer"
-                >
-                  <span>Fact Sheet & 3D Showcase</span>
-                  <ChevronRight className="w-3 h-3" />
-                </button>
+                <div className="flex items-center gap-2">
+                  <button
+                    type="button"
+                    onClick={() => setSelectedCardForModal(card)}
+                    className="font-bold text-slate-700 hover:text-emerald-700 text-xs flex items-center gap-1 transition-colors cursor-pointer"
+                  >
+                    <span>Fact Sheet</span>
+                    <ChevronRight className="w-3 h-3" />
+                  </button>
+                  <span className="text-slate-300">•</span>
+                  <button
+                    type="button"
+                    onClick={() => onGoToChecklist(card)}
+                    className="font-bold text-emerald-700 hover:text-emerald-800 text-xs flex items-center gap-1 transition-colors cursor-pointer"
+                    title={`Check prerequisites and application steps for ${card.name}`}
+                  >
+                    <span>Pre-Requisites</span>
+                    <ArrowRight className="w-3 h-3" />
+                  </button>
+                </div>
 
                 <a
                   href={card.sourceRef.officialUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-emerald-700 hover:text-emerald-800 font-semibold inline-flex items-center gap-1 transition-colors"
+                  className="text-slate-600 hover:text-emerald-800 font-semibold inline-flex items-center gap-1 transition-colors"
                   title={`Direct application on ${card.bank}`}
                 >
                   <Zap className="w-3 h-3 text-emerald-600" />
                   <span>Apply</span>
-                  <ExternalLink className="w-2.5 h-2.5 text-emerald-500" />
+                  <ExternalLink className="w-2.5 h-2.5 text-slate-400" />
                 </a>
               </div>
             </div>
@@ -463,18 +471,18 @@ export const CreditCardGuide: React.FC<CreditCardGuideProps> = ({
             <span>Avoid Unnecessary Rejections & Hard Inquiries</span>
           </div>
           <h3 className="text-xl sm:text-2xl font-bold">
-            Ready to Apply? Run the Application Readiness Audit First.
+            Ready to Apply? Inspect Card-Specific Pre-Requisite Steps First.
           </h3>
           <p className="text-xs sm:text-sm text-slate-300 leading-relaxed font-normal">
-            Applying without preparing salary slips, checking 6-month hard inquiries, or adhering to bank 90-day cooling-off windows leads to automatic algorithmic rejections. Use our interactive checklist to guarantee seamless V-KYC approval.
+            Applying without preparing salary slips, checking 6-month hard inquiries, or adhering to bank 90-day cooling-off windows leads to automatic algorithmic rejections. Review prerequisites on your chosen card before submitting personal data.
           </p>
         </div>
 
         <button
-          onClick={() => onGoToChecklist()}
+          onClick={() => onGoToChecklist(filteredCards[0] || cards[0])}
           className="shrink-0 px-6 py-3.5 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold text-sm transition-all transform hover:scale-105 shadow-lg shadow-emerald-500/20 flex items-center gap-2 cursor-pointer"
         >
-          <span>Launch Readiness Checklist</span>
+          <span>Launch Pre-Requisites Guide</span>
           <ArrowRight className="w-4 h-4" />
         </button>
       </div>
