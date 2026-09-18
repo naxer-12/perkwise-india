@@ -105,6 +105,8 @@ export interface CreditCard {
   cardType?: 'credit' | 'debit';
   missionScore?: number; // 0 to 100
   dealCategory?: string;
+  interestAPR?: number;
+  excludedSpends?: string[];
 }
 
 export interface ChecklistItem {

@@ -8,14 +8,18 @@ import { SavingsCalculator } from './components/SavingsCalculator';
 import { LifeOperationsHub } from './components/LifeOperationsHub';
 import { DataProvenance } from './components/DataProvenance';
 import { ArticleDetailModal } from './components/ArticleDetailModal';
+import { CardDetailModal } from './components/CardDetailModal';
+import { GlobalSearchModal } from './components/GlobalSearchModal';
 import { Footer } from './components/Footer';
-import type { Article, LifeCategory } from './types';
+import type { Article, CreditCard, LifeCategory } from './types';
 
 export function App() {
   const [activeTab, setActiveTab] = useState<'library' | 'card-guide' | 'checklist' | 'calculator' | 'life-operations' | 'provenance' | 'bookmarks'>('library');
   const [selectedCategory, setSelectedCategory] = useState<LifeCategory | 'all'>('all');
   const [searchQuery, setSearchQuery] = useState<string>('');
+  const [isSearchModalOpen, setIsSearchModalOpen] = useState<boolean>(false);
   const [activeArticle, setActiveArticle] = useState<Article | null>(null);
+  const [selectedCardForDetail, setSelectedCardForDetail] = useState<CreditCard | null>(null);
   const [targetCardForChecklist, setTargetCardForChecklist] = useState<string | null>(null);
   const [targetCardForGuide, setTargetCardForGuide] = useState<string | null>(null);
 
@@ -54,6 +58,7 @@ export function App() {
         bookmarkCount={bookmarks.length}
         searchQuery={searchQuery}
         setSearchQuery={setSearchQuery}
+        onOpenSearch={() => setIsSearchModalOpen(true)}
       />
 
       {/* Main Content Areas */}
@@ -149,7 +154,38 @@ export function App() {
         )}
       </main>
 
-      {/* Detail Modal */}
+      {/* Global Universal Search & Command Palette */}
+      <GlobalSearchModal
+        isOpen={isSearchModalOpen}
+        onClose={() => setIsSearchModalOpen(false)}
+        onSelectCard={(card) => {
+          setSelectedCardForDetail(card);
+          setTargetCardForGuide(card.id);
+          setActiveTab('card-guide');
+        }}
+        onSelectArticle={(article) => {
+          setActiveArticle(article);
+        }}
+        onSelectSource={(source) => {
+          window.open(source.officialUrl, '_blank');
+        }}
+      />
+
+      {/* Global Card Detail Showcase Modal */}
+      {selectedCardForDetail && (
+        <CardDetailModal
+          card={selectedCardForDetail}
+          onClose={() => setSelectedCardForDetail(null)}
+          onGoToChecklist={(card) => {
+            setSelectedCardForDetail(null);
+            setTargetCardForChecklist(card.id);
+            setActiveTab('checklist');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+          }}
+        />
+      )}
+
+      {/* Article Detail Modal */}
       {activeArticle && (
         <ArticleDetailModal
           article={activeArticle}
