@@ -100,12 +100,26 @@ export const GlobalSearchModal: React.FC<GlobalSearchModalProps> = ({
       );
     }).map(a => ({ type: 'article', data: a }));
 
-    const matchedSources: SearchResultItem[] = SOURCES_REGISTRY.filter(s => {
+    let allSources = SOURCES_REGISTRY;
+    try {
+      const savedDiscovered = localStorage.getItem('perkwise_discovered_sources');
+      if (savedDiscovered) {
+        const parsed = JSON.parse(savedDiscovered);
+        if (Array.isArray(parsed) && parsed.length > 0) {
+          allSources = [...parsed, ...SOURCES_REGISTRY];
+        }
+      }
+    } catch {
+      // fallback to SOURCES_REGISTRY
+    }
+
+    const matchedSources: SearchResultItem[] = allSources.filter(s => {
       return (
         s.name.toLowerCase().includes(q) ||
         s.authority.toLowerCase().includes(q) ||
         s.referenceCode.toLowerCase().includes(q) ||
-        s.reasoning.toLowerCase().includes(q)
+        s.reasoning.toLowerCase().includes(q) ||
+        (s.discoveryRunSummary && s.discoveryRunSummary.toLowerCase().includes(q))
       );
     }).map(s => ({ type: 'source', data: s }));
 

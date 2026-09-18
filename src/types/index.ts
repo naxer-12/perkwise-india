@@ -43,6 +43,19 @@ export interface DataSource {
   reasoning: string;
   lastUpdated: string;
   verificationStatus: 'Live & Verified' | 'Pending Gazette Review';
+  isDiscovered?: boolean;
+  discoveredAt?: string;
+  discoveryRunSummary?: string;
+}
+
+export interface SweepRunSummary {
+  id: string;
+  timestamp: string;
+  endpointsScanned: number;
+  domainSpace: string;
+  oneLineSummary: string;
+  discoveredSource: DataSource;
+  triggerType: 'agent-sweep' | 'gazette-fetch';
 }
 
 export interface Article {
