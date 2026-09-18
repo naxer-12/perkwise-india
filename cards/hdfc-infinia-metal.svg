@@ -1,0 +1,63 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 252" width="100%" height="100%">
+  <defs>
+    <linearGradient id="metal_bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#141416" />
+      <stop offset="50%" stop-color="#212124" />
+      <stop offset="100%" stop-color="#111113" />
+    </linearGradient>
+    <linearGradient id="gold_foil" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#fef08a" />
+      <stop offset="35%" stop-color="#d4af37" />
+      <stop offset="70%" stop-color="#b48b2a" />
+      <stop offset="100%" stop-color="#fef08a" />
+    </linearGradient>
+  </defs>
+
+  <rect width="400" height="252" rx="16" fill="url(#metal_bg)" stroke="#3f3f46" stroke-width="1.2" />
+
+  <!-- Brushed Metal Horizontal Streaks -->
+  <line x1="0" y1="30" x2="400" y2="30" stroke="#ffffff" stroke-width="0.3" opacity="0.08" />
+  <line x1="0" y1="75" x2="400" y2="75" stroke="#ffffff" stroke-width="0.3" opacity="0.06" />
+  <line x1="0" y1="130" x2="400" y2="130" stroke="#ffffff" stroke-width="0.3" opacity="0.08" />
+  <line x1="0" y1="180" x2="400" y2="180" stroke="#ffffff" stroke-width="0.3" opacity="0.06" />
+  <line x1="0" y1="220" x2="400" y2="220" stroke="#ffffff" stroke-width="0.3" opacity="0.08" />
+
+  <!-- HDFC Bank Gold Box Logo Top Left -->
+  <g transform="translate(26, 24)">
+    <rect width="108" height="24" rx="2" fill="none" stroke="url(#gold_foil)" stroke-width="1.2" />
+    <rect x="4" y="4" width="16" height="16" fill="none" stroke="url(#gold_foil)" stroke-width="1" />
+    <rect x="8" y="8" width="8" height="8" fill="url(#gold_foil)" />
+    <text x="26" y="17" fill="url(#gold_foil)" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="11" font-weight="900" letter-spacing="1">HDFC BANK</text>
+  </g>
+
+  <!-- EMV Gold Chip -->
+  <g transform="translate(28, 76)">
+    <rect width="46" height="34" rx="4" fill="url(#gold_foil)" stroke="#78350f" stroke-width="0.8" />
+    <line x1="0" y1="11" x2="46" y2="11" stroke="#78350f" stroke-width="0.7" opacity="0.6" />
+    <line x1="0" y1="23" x2="46" y2="23" stroke="#78350f" stroke-width="0.7" opacity="0.6" />
+    <line x1="16" y1="0" x2="16" y2="34" stroke="#78350f" stroke-width="0.7" opacity="0.6" />
+    <line x1="30" y1="0" x2="30" y2="34" stroke="#78350f" stroke-width="0.7" opacity="0.6" />
+  </g>
+
+  <!-- Contactless Waves in Gold -->
+  <g transform="translate(86, 85)" stroke="url(#gold_foil)" stroke-width="1.8" fill="none" opacity="0.9">
+    <path d="M 0 0 A 6 6 0 0 1 0 16" />
+    <path d="M 4 -3 A 10 10 0 0 1 4 19" />
+    <path d="M 8 -6 A 14 14 0 0 1 8 22" />
+  </g>
+
+  <!-- INFINIA Metal Edition Title -->
+  <text x="28" y="152" fill="url(#gold_foil)" font-family="serif" font-size="16" font-weight="900" letter-spacing="2">INFINIA</text>
+  <text x="100" y="152" fill="url(#gold_foil)" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="8" font-weight="800" letter-spacing="1.5">METAL EDITION</text>
+  <text x="28" y="170" fill="#fde047" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="10" font-weight="600" letter-spacing="1">33.3% SMARTBUY FLIGHTS &amp; HOTELS • 24X7 CONCIERGE</text>
+
+  <!-- Card Numbers -->
+  <text x="28" y="210" fill="url(#gold_foil)" font-family="'Courier New', Courier, monospace" font-size="15" font-weight="700" letter-spacing="3.5">•••• •••• •••• 9876</text>
+  <text x="28" y="228" fill="#d4af37" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="9" font-weight="600" letter-spacing="1">VAL 10/28 • TITANIUM METAL SPECIMEN</text>
+
+  <!-- Visa Infinite Logo in Gold -->
+  <g transform="translate(325, 202)">
+    <text x="0" y="18" fill="url(#gold_foil)" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="22" font-weight="900" font-style="italic" letter-spacing="1">VISA</text>
+    <text x="2" y="28" fill="url(#gold_foil)" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="7" font-weight="700" letter-spacing="2">INFINITE</text>
+  </g>
+</svg>
