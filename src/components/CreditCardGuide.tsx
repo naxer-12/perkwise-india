@@ -325,7 +325,7 @@ export const CreditCardGuide: React.FC<CreditCardGuideProps> = ({
               className="group bg-white rounded-2xl border border-slate-200/90 overflow-hidden flex flex-col justify-between hover:border-slate-400/80 hover:shadow-xl transition-all duration-300 cursor-pointer"
             >
               {/* Card Visual Header */}
-              <div className="p-4 bg-slate-50 border-b border-slate-100 flex items-center justify-center">
+              <div className="p-4 pt-5 pb-3 flex items-center justify-center">
                 <div className="w-full max-w-[280px] h-[168px] flex items-center justify-center">
                   <CardVisual card={card} variant="thumbnail" />
                 </div>

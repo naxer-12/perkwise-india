@@ -8,21 +8,21 @@ interface CardVisualProps {
 }
 
 const CARD_IMAGE_FILES: Record<string, string> = {
-  'phonepe-sbi-select-black': 'phonepe-sbi-select-black.jpg',
-  'sbi-cashback': 'sbi-cashback.jpg',
-  'amazon-pay-icici': 'amazon-pay-icici.jpg',
-  'hdfc-millennia': 'hdfc-millennia.jpg',
-  'hdfc-millennia-debit': 'hdfc-millennia-debit.jpg',
-  'airtel-axis': 'airtel-axis.jpg',
-  'tata-neu-infinity-rupay': 'tata-neu-infinity-rupay.jpg',
-  'tata-neu-infinity-hdfc': 'tata-neu-infinity-hdfc.jpg',
-  'hdfc-infinia-metal': 'hdfc-infinia-metal.jpg',
-  'axis-atlas': 'axis-atlas.jpg',
-  'idfc-wealth-debit': 'idfc-wealth-debit.jpg',
-  'scapia-federal': 'scapia-federal.jpg',
-  'hsbc-live-plus': 'hsbc-live-plus.jpg',
-  'au-ixigo': 'au-ixigo.jpg',
-  'bpcl-sbi-octane': 'bpcl-sbi-octane.jpg',
+  'phonepe-sbi-select-black': 'phonepe-sbi-select-black.png',
+  'sbi-cashback': 'sbi-cashback.png',
+  'amazon-pay-icici': 'amazon-pay-icici.png',
+  'hdfc-millennia': 'hdfc-millennia.png',
+  'hdfc-millennia-debit': 'hdfc-millennia-debit.png',
+  'airtel-axis': 'airtel-axis.png',
+  'tata-neu-infinity-rupay': 'tata-neu-infinity-rupay.png',
+  'tata-neu-infinity-hdfc': 'tata-neu-infinity-hdfc.png',
+  'hdfc-infinia-metal': 'hdfc-infinia-metal.png',
+  'axis-atlas': 'axis-atlas.png',
+  'idfc-wealth-debit': 'idfc-wealth-debit.png',
+  'scapia-federal': 'scapia-federal.png',
+  'hsbc-live-plus': 'hsbc-live-plus.png',
+  'au-ixigo': 'au-ixigo.png',
+  'bpcl-sbi-octane': 'bpcl-sbi-octane.png',
   'hdfc-swiggy': 'hdfc-swiggy.svg',
   'idfc-first-wow': 'idfc-first-wow.svg',
   'hpcl-bob-energie': 'hpcl-bob-energie.svg',
@@ -50,7 +50,7 @@ export const CardVisual: React.FC<CardVisualProps> = ({
   if (variant === 'thumbnail') {
     return (
       <div 
-        className="w-full h-full relative select-none rounded-xl overflow-hidden flex items-center justify-center bg-slate-100 border border-slate-200/80 shadow-xs"
+        className="w-full h-full relative select-none flex items-center justify-center bg-transparent"
         style={{ aspectRatio: '1.586' }}
       >
         {imageUrl && !imgFailed ? (
@@ -58,11 +58,11 @@ export const CardVisual: React.FC<CardVisualProps> = ({
             src={imageUrl} 
             alt={card.name} 
             onError={() => setImgFailed(true)}
-            className="w-full h-full object-cover object-center rounded-xl"
+            className="w-full h-auto max-h-full object-contain filter drop-shadow-md transition-transform duration-200 group-hover:scale-[1.02]"
             loading="lazy"
           />
         ) : (
-          <div className="w-full h-full p-4 flex flex-col justify-between bg-slate-900 text-white rounded-xl">
+          <div className="w-full h-full p-4 flex flex-col justify-between bg-slate-900 text-white rounded-xl shadow-md">
             <span className="text-[11px] font-bold uppercase text-slate-300">{card.bank}</span>
             <span className="text-xs font-bold leading-tight">{card.name}</span>
             <span className="text-[10px] font-mono text-slate-400 uppercase">{card.network}</span>
@@ -72,11 +72,11 @@ export const CardVisual: React.FC<CardVisualProps> = ({
     );
   }
 
-  // Hero variant: Clean, authentic card representation without 3D tilt/glare effects
+  // Hero variant: Clean, background-free card view
   return (
-    <div className="w-full flex flex-col items-center justify-center">
+    <div className="w-full flex flex-col items-center justify-center p-2">
       <div 
-        className="w-full max-w-[340px] sm:max-w-[380px] relative select-none rounded-2xl overflow-hidden shadow-lg border border-slate-200/80 bg-slate-900"
+        className="w-full max-w-[340px] sm:max-w-[380px] relative select-none flex items-center justify-center bg-transparent"
         style={{ aspectRatio: '1.586' }}
       >
         {imageUrl && !imgFailed ? (
@@ -84,10 +84,10 @@ export const CardVisual: React.FC<CardVisualProps> = ({
             src={imageUrl} 
             alt={card.name} 
             onError={() => setImgFailed(true)}
-            className="w-full h-full object-cover object-center rounded-2xl"
+            className="w-full h-auto max-h-[240px] object-contain filter drop-shadow-2xl"
           />
         ) : (
-          <div className="w-full h-full p-6 flex flex-col justify-between text-white">
+          <div className="w-full h-full p-6 flex flex-col justify-between text-white bg-slate-900 rounded-2xl shadow-xl">
             <span className="text-xs font-bold uppercase text-slate-300 tracking-wider">{card.bank}</span>
             <span className="text-lg font-bold leading-tight">{card.name}</span>
             <span className="text-xs font-mono text-slate-400 uppercase tracking-widest">{card.network}</span>
