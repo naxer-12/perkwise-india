@@ -36,10 +36,10 @@ export const Hero: React.FC<HeroProps> = ({
     <div className="relative bg-gradient-to-b from-slate-50/70 via-white to-white text-slate-900 pt-10 pb-12 sm:pt-14 sm:pb-16 px-4 sm:px-6 lg:px-8 border-b border-slate-200/80">
       <div className="max-w-4xl mx-auto text-center space-y-6">
         
-        {/* Prominent Live Verification Heartbeat Banner */}
-        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold bg-emerald-50 text-emerald-800 border border-emerald-200 shadow-2xs">
-          <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
-          <span>Real-Time Statutory Data • Verified Against RBI, NPCI & Bank Schedules • Zero Affiliate Bias</span>
+        {/* Audited Reference Badge */}
+        <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full text-xs font-medium bg-emerald-50 text-emerald-800 border border-emerald-200/80 shadow-2xs max-w-2xl mx-auto">
+          <span className="w-2 h-2 rounded-full bg-emerald-500 shrink-0" />
+          <span>Empirically audited reference sheets backed by official RBI Master Directions, NPCI mandates, Income Tax sections, and verified bank schedules.</span>
         </div>
 
         {/* Concise, Powerful Headline */}
@@ -50,9 +50,9 @@ export const Hero: React.FC<HeroProps> = ({
           </span>
         </h1>
 
-        {/* 1-Sentence Clean Subtext */}
-        <p className="max-w-2xl mx-auto text-sm sm:text-base text-slate-600 leading-relaxed font-normal">
-          India’s independent, source-backed directory to maximize credit rewards, hotel loyalty perks, government welfare schemes, and daily household operational savings.
+        {/* Human-Centered Subtext */}
+        <p className="max-w-3xl mx-auto text-sm sm:text-base text-slate-600 leading-relaxed font-normal">
+          India’s unbiased consumer awareness repository and mathematical personal finance compendium. Designed to optimize daily life operations, eliminate unnecessary fees, unlock member privileges, and elevate financial literacy across all strata of consumers.
         </p>
 
         {/* 1-Click Action Buttons */}

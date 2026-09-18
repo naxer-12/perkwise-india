@@ -214,9 +214,15 @@ export const CreditCardGuide: React.FC<CreditCardGuideProps> = ({
           Credit & Debit Card Buying Guide
         </h1>
 
-        <p className="text-sm sm:text-base text-slate-600 leading-relaxed font-normal">
-          Real card demonstrations, verified annual reward math, and step-by-step application pre-requisites.
-        </p>
+        <div className="bg-amber-50/70 border border-amber-200/80 rounded-xl px-3.5 py-2 text-xs text-slate-700 space-y-0.5">
+          <div className="font-bold text-amber-950 flex items-center gap-1.5">
+            <span className="w-1.5 h-1.5 rounded-full bg-amber-500 inline-block" />
+            <span>Avoid Rejections: Inspect Card Pre-Requisites First</span>
+          </div>
+          <p className="text-slate-600 leading-relaxed">
+            Applying without verifying salary slips, 6-month hard inquiries, or 90-day bank cooling-off windows triggers automated rejections. Click any card to review prerequisite steps before submitting personal data.
+          </p>
+        </div>
 
         {/* Clean Filter Strip */}
         <div className="flex flex-wrap items-center gap-2 pt-1">

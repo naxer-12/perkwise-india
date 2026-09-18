@@ -81,7 +81,7 @@ export const ResourceLibrary: React.FC<ResourceLibraryProps> = ({
         <div>
           <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-emerald-50 text-emerald-800 border border-emerald-200/80 mb-2">
             <BookOpen className="w-3.5 h-3.5 text-emerald-600" />
-            <span>{isBookmarksOnly ? 'Your Saved Reading List' : 'Audited Fact Sheets & Regulatory Guides'}</span>
+            <span>{isBookmarksOnly ? 'Your Saved Reading List' : 'Actionable Consumer Library'}</span>
           </div>
           <h2 className="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">
             {isBookmarksOnly 
@@ -208,7 +208,7 @@ export const ResourceLibrary: React.FC<ResourceLibraryProps> = ({
           <BookOpen className="w-10 h-10 text-slate-300 mx-auto" />
           <h3 className="text-base font-bold text-slate-800">No fact sheets match your search criteria</h3>
           <p className="text-xs text-slate-500 max-w-md mx-auto">
-            Try adjusting your search query, switching difficulty, or selecting "All Categories" to browse all audited fact sheets.
+            Try adjusting your search query, switching difficulty, or selecting "All Categories" to browse all guides and schemes.
           </p>
           <button
             onClick={() => {

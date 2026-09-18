@@ -47,18 +47,18 @@ export const Header: React.FC<HeaderProps> = ({
 
   return (
     <header className="sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b border-slate-200/80 shadow-xs">
-      {/* Top Status & Cadence Bar */}
+      {/* Top Notification Bar */}
       <div className="bg-slate-900 text-slate-300 text-[11px] py-1.5 px-4 text-center font-medium flex items-center justify-center gap-2 border-b border-slate-800">
         <span className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full text-[10px] font-semibold bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">
-          <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse inline-block" />
-          Real-Time Statutory Gazette
+          <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 inline-block" />
+          Independent &amp; Source-Backed
         </span>
         <span className="hidden md:inline text-slate-400">•</span>
         <span className="hidden md:inline">
-          Daily Web Crawler sweeps deals at 03:00 AM IST • 100% Unbiased & Zero-Affiliate
+          India’s independent, source-backed directory to maximize credit rewards, hotel loyalty perks, government welfare schemes, and daily household operational savings.
         </span>
         <span className="md:hidden">
-          Daily Crawler at 03:00 IST • 100% Unbiased
+          Maximize rewards, loyalty perks &amp; household operational savings
         </span>
       </div>
 
