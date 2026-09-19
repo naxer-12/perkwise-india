@@ -12,7 +12,8 @@ import {
   Lock, 
   Clock, 
   Check, 
-  Sparkles, 
+  Radio, 
+  Award,
   Info, 
   X, 
   Calendar, 
@@ -307,7 +308,7 @@ export const DataProvenance: React.FC<DataProvenanceProps> = ({ onBackToGuide, c
         <div className="flex flex-wrap items-center justify-between gap-3 pb-3.5 border-b border-slate-100">
           <div className="flex items-center gap-2">
             <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-emerald-100 text-emerald-900 border border-emerald-300">
-              <Sparkles className="w-3.5 h-3.5 text-emerald-700" />
+              <Radio className="w-3.5 h-3.5 text-emerald-700 animate-pulse-subtle" />
               <span>Latest Verified Discovery</span>
             </span>
             <span className="text-xs text-slate-500 font-medium">
@@ -458,7 +459,7 @@ export const DataProvenance: React.FC<DataProvenanceProps> = ({ onBackToGuide, c
         <div className="fixed bottom-6 right-6 z-50 max-w-md bg-white border border-emerald-300 shadow-2xl rounded-2xl p-4 transition-all duration-300 animate-in fade-in slide-in-from-bottom-5">
           <div className="flex items-start gap-3">
             <div className="w-9 h-9 rounded-xl bg-emerald-100 flex items-center justify-center shrink-0 text-emerald-700 mt-0.5 shadow-2xs font-bold">
-              <Sparkles className="w-5 h-5" />
+              <Radio className="w-5 h-5 animate-pulse-subtle" />
             </div>
             <div className="flex-1 min-w-0">
               <div className="flex items-center gap-2">
@@ -534,13 +535,13 @@ export const DataProvenance: React.FC<DataProvenanceProps> = ({ onBackToGuide, c
         <div className="mt-6 flex flex-wrap gap-2 p-1.5 bg-slate-100 rounded-2xl border border-slate-200/90 max-w-xl">
           <button
             onClick={() => setViewMode('agent')}
-            className={`flex-1 flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl text-xs font-bold transition-all cursor-pointer ${
+            className={`flex-1 flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl text-xs font-bold transition-all cursor-pointer group ${
               viewMode === 'agent'
                 ? 'bg-white text-slate-900 shadow-xs border border-slate-200'
                 : 'text-slate-600 hover:text-slate-900'
             }`}
           >
-            <Sparkles className="w-4 h-4 text-emerald-600" />
+            <Radio className="w-4 h-4 text-emerald-600 transition-transform duration-200 group-hover:scale-115 animate-pulse-subtle" />
             <span>Daily Web Discoveries</span>
             <span className="text-[10px] px-1.5 py-0.5 rounded bg-emerald-100 text-emerald-800 font-bold">
               Every 24h
@@ -549,13 +550,13 @@ export const DataProvenance: React.FC<DataProvenanceProps> = ({ onBackToGuide, c
 
           <button
             onClick={() => setViewMode('gazette')}
-            className={`flex-1 flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl text-xs font-bold transition-all cursor-pointer ${
+            className={`flex-1 flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl text-xs font-bold transition-all cursor-pointer group ${
               viewMode === 'gazette'
                 ? 'bg-white text-slate-900 shadow-xs border border-slate-200'
                 : 'text-slate-600 hover:text-slate-900'
             }`}
           >
-            <Scale className="w-4 h-4 text-indigo-600" />
+            <Scale className="w-4 h-4 text-indigo-600 transition-transform duration-200 group-hover:scale-115" />
             <span>Official Rules Library</span>
             <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
           </button>
@@ -569,7 +570,7 @@ export const DataProvenance: React.FC<DataProvenanceProps> = ({ onBackToGuide, c
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 p-4 sm:p-5 bg-white rounded-2xl border border-slate-200/80 shadow-2xs">
             <div className="flex items-center gap-3">
               <div className="w-10 h-10 rounded-xl bg-emerald-50 flex items-center justify-center text-emerald-600 border border-emerald-200 shrink-0">
-                <Sparkles className="w-5 h-5" />
+                <Radio className="w-5 h-5 animate-pulse-subtle" />
               </div>
               <div>
                 <div className="flex items-center gap-2">
@@ -619,7 +620,7 @@ export const DataProvenance: React.FC<DataProvenanceProps> = ({ onBackToGuide, c
             <div className="p-4 bg-emerald-50/70 rounded-2xl border border-emerald-200 text-xs space-y-2 animate-in fade-in duration-200">
               <div className="flex items-center justify-between font-bold text-emerald-900">
                 <span className="flex items-center gap-1.5">
-                  <Sparkles className="w-3.5 h-3.5 text-emerald-600 animate-spin" />
+                  <RefreshCw className="w-3.5 h-3.5 text-emerald-600 animate-spin" />
                   Live Web Scanner in Progress
                 </span>
                 <span className="text-emerald-700 text-[11px]">Step {agentStep} of 4</span>
@@ -692,8 +693,8 @@ export const DataProvenance: React.FC<DataProvenanceProps> = ({ onBackToGuide, c
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
               <div>
                 <h3 className="text-lg font-bold text-slate-900 flex items-center gap-2">
-                  <Sparkles className="w-4 h-4 text-emerald-600" />
-                  <span>Recent Web Discoveries & Evaluations</span>
+                  <Radio className="w-4 h-4 text-emerald-600 animate-pulse-subtle" />
+                  <span>Recent Web Discoveries &amp; Evaluations</span>
                 </h3>
                 <p className="text-xs text-slate-500 mt-0.5">
                   Every offer and rule is checked to make sure it actually benefits you before it appears in our guide.
@@ -718,7 +719,7 @@ export const DataProvenance: React.FC<DataProvenanceProps> = ({ onBackToGuide, c
                       : 'text-emerald-800 bg-emerald-100/70 hover:bg-emerald-100'
                   }`}
                 >
-                  <Sparkles className="w-3.5 h-3.5 text-amber-300" />
+                  <Award className="w-3.5 h-3.5 text-amber-300" />
                   <span>Top 10 Consumer Deals (10)</span>
                 </button>
                 <button
@@ -1070,8 +1071,8 @@ export const DataProvenance: React.FC<DataProvenanceProps> = ({ onBackToGuide, c
                       : 'bg-amber-50 text-amber-900 hover:bg-amber-100 border border-amber-300'
                   }`}
                 >
-                  <Sparkles className="w-3.5 h-3.5 text-amber-600" />
-                  <span>✨ Discovered in Sweep ({counts.discovered})</span>
+                  <Radio className="w-3.5 h-3.5 text-amber-600 animate-pulse-subtle" />
+                  <span>Discovered in Sweep ({counts.discovered})</span>
                 </button>
               )}
               <button
@@ -1149,7 +1150,7 @@ export const DataProvenance: React.FC<DataProvenanceProps> = ({ onBackToGuide, c
                             {source.isDiscovered && (
                               <div className="flex flex-wrap items-center gap-1.5 mb-1.5">
                                 <span className="inline-flex items-center gap-1 text-[10px] font-bold px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800 border border-emerald-300">
-                                  <Sparkles className="w-3 h-3 text-emerald-600" />
+                                  <Radio className="w-3 h-3 text-emerald-600 animate-pulse-subtle" />
                                   <span>Discovered in Sweep</span>
                                 </span>
                                 {isRecentlyDiscovered && (

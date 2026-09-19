@@ -1,5 +1,6 @@
 import React from 'react';
-import { Sparkles, ShieldCheck } from 'lucide-react';
+import { ShieldCheck } from 'lucide-react';
+import { PerkWiseLogo } from './PerkWiseLogo';
 
 interface FooterProps {
   onNavigate: (tab: 'library' | 'card-guide' | 'checklist' | 'calculator' | 'life-operations' | 'provenance') => void;
@@ -12,9 +13,7 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
         {/* Brand & Mission */}
         <div className="space-y-3 md:col-span-2">
           <div className="flex items-center gap-2.5">
-            <div className="w-8 h-8 rounded-lg bg-emerald-500 flex items-center justify-center text-slate-950 font-black">
-              <Sparkles className="w-4 h-4" />
-            </div>
+            <PerkWiseLogo size="sm" animated={false} />
             <span className="font-extrabold text-lg text-white tracking-tight">PerkWise India 🇮🇳</span>
           </div>
           <p className="text-xs text-slate-400 max-w-md leading-relaxed">

@@ -1,14 +1,17 @@
 import React, { useState } from 'react';
 import { 
   Calculator, 
-  Sparkles, 
   ArrowRight, 
   ShieldCheck, 
   ShoppingBag, 
   Zap, 
   Fuel, 
   Plane, 
-  RotateCcw
+  RotateCcw,
+  Utensils,
+  QrCode,
+  Wallet,
+  Coins
 } from 'lucide-react';
 
 interface SpendState {
@@ -115,7 +118,7 @@ export const SavingsCalculator: React.FC<SavingsCalculatorProps> = ({ onGoToCard
 
           <div className="p-4 rounded-2xl bg-slate-50 border border-slate-200/80 text-xs text-slate-700 text-left space-y-2">
             <div className="font-bold text-slate-900 flex items-center gap-1.5">
-              <Sparkles className="w-3.5 h-3.5 text-amber-500" />
+              <Coins className="w-3.5 h-3.5 text-amber-500 animate-pulse-subtle" />
               <span>What’s coming in this tool:</span>
             </div>
             <div className="flex items-start gap-2">
@@ -208,8 +211,8 @@ export const SavingsCalculator: React.FC<SavingsCalculatorProps> = ({ onGoToCard
           <div className="space-y-1.5">
             <div className="flex justify-between text-xs">
               <span className="font-semibold text-slate-800 flex items-center gap-1.5">
-                <Sparkles className="w-3.5 h-3.5 text-rose-500" />
-                Food Delivery & Dining (Swiggy, Zomato)
+                <Utensils className="w-3.5 h-3.5 text-rose-500" />
+                Food Delivery &amp; Dining (Swiggy, Zomato)
               </span>
               <span className="font-bold text-slate-900">₹{spends.foodDelivery.toLocaleString('en-IN')}/mo</span>
             </div>
@@ -333,8 +336,8 @@ export const SavingsCalculator: React.FC<SavingsCalculatorProps> = ({ onGoToCard
           <div className="space-y-1.5">
             <div className="flex justify-between text-xs">
               <span className="font-semibold text-slate-800 flex items-center gap-1.5">
-                <Sparkles className="w-3.5 h-3.5 text-emerald-600" />
-                Local Kirana & Street UPI QR Payments
+                <QrCode className="w-3.5 h-3.5 text-emerald-600" />
+                Local Kirana &amp; Street UPI QR Payments
               </span>
               <span className="font-bold text-slate-900">₹{spends.kiranaUpi.toLocaleString('en-IN')}/mo</span>
             </div>
@@ -368,7 +371,7 @@ export const SavingsCalculator: React.FC<SavingsCalculatorProps> = ({ onGoToCard
                 <span className="text-xs text-slate-400 font-normal ml-2">/ year</span>
               </div>
               <p className="text-xs text-slate-300 mt-1">
-                Net cash & flight/hotel value after deducting all card annual fees.
+                Net cash &amp; flight/hotel value after deducting all card annual fees.
               </p>
             </div>
 
@@ -393,7 +396,7 @@ export const SavingsCalculator: React.FC<SavingsCalculatorProps> = ({ onGoToCard
             {/* Recommended Combo Stack */}
             <div className="p-4 rounded-xl bg-slate-800/90 border border-slate-700 space-y-2">
               <div className="text-xs font-bold text-amber-400 flex items-center gap-1.5 uppercase tracking-wider">
-                <Sparkles className="w-3.5 h-3.5" />
+                <Wallet className="w-3.5 h-3.5 text-amber-400 animate-pulse-subtle" />
                 <span>Your Ideal 3-Card Wallet Stack</span>
               </div>
               <ul className="space-y-1.5 text-xs text-slate-300">

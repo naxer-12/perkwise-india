@@ -9,7 +9,7 @@ import {
   CheckCircle2, 
   Send, 
   MessageSquarePlus, 
-  Sparkles,
+  BadgeCheck,
   Building2
 } from 'lucide-react';
 import type { CreditCard, ReviewItem } from '../types';
@@ -223,8 +223,8 @@ export const ReviewFeedbackModal: React.FC<ReviewFeedbackModalProps> = ({
                   </span>
                 </span>
               ) : (
-                <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-xs font-semibold bg-emerald-50 text-emerald-800 border border-emerald-200/80">
-                  <Sparkles className="w-3 h-3 text-emerald-600" />
+                <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-xs font-semibold bg-emerald-50 text-emerald-800 border border-emerald-200/80 shadow-2xs">
+                  <BadgeCheck className="w-3.5 h-3.5 text-emerald-600 animate-pulse-subtle" />
                   <span>New</span>
                   <span className="text-emerald-700 font-normal hidden sm:inline">— No Verified Reviews Yet</span>
                 </span>
@@ -341,7 +341,7 @@ export const ReviewFeedbackModal: React.FC<ReviewFeedbackModalProps> = ({
                 </div>
                 <div className="space-y-1">
                   <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-emerald-100 text-emerald-800 border border-emerald-200">
-                    <Sparkles className="w-3 h-3 text-emerald-600" />
+                    <BadgeCheck className="w-3.5 h-3.5 text-emerald-600 animate-pulse-subtle" />
                     <span>New Card / Scheme — No Verified Reviews Yet</span>
                   </div>
                   <h4 className="text-sm font-semibold text-slate-800 pt-1">Be the First Cardholder to Review</h4>
@@ -445,10 +445,10 @@ export const ReviewFeedbackModal: React.FC<ReviewFeedbackModalProps> = ({
                         onMouseEnter={() => setHoverRating(star)}
                         onMouseLeave={() => setHoverRating(0)}
                         aria-label={`${star} out of 5 stars`}
-                        className="p-1 rounded-lg hover:bg-slate-100 transition-colors focus:outline-none focus:ring-2 focus:ring-amber-400"
+                        className="p-1 rounded-lg hover:bg-slate-100 transition-all focus:outline-none focus:ring-2 focus:ring-amber-400 group"
                       >
                         <Star 
-                          className={`w-5 h-5 transition-transform active:scale-95 ${
+                          className={`w-5 h-5 transition-all duration-150 group-hover:scale-125 group-hover:rotate-6 active:scale-95 ${
                             (hoverRating || rating) >= star 
                               ? 'fill-amber-400 text-amber-400' 
                               : 'text-slate-300'

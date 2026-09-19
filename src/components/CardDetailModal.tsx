@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { 
   X, 
-  Sparkles, 
+  Award, 
   ExternalLink, 
   ShieldCheck, 
   AlertTriangle, 
@@ -10,7 +10,8 @@ import {
   Zap, 
   MessageSquare,
   ChevronRight,
-  Lock
+  Lock,
+  FileText
 } from 'lucide-react';
 import type { CreditCard, ReviewItem } from '../types';
 import { CardVisual } from './CardVisual';
@@ -146,8 +147,8 @@ export const CardDetailModal: React.FC<CardDetailModalProps> = ({
             <span className="text-xs font-semibold text-slate-500">•</span>
             <span className="text-xs font-semibold text-slate-700">{card.network}</span>
             {card.missionScore && card.missionScore >= 90 && (
-              <span className="hidden sm:inline-flex items-center gap-1 text-[11px] font-bold px-2.5 py-0.5 rounded-full bg-emerald-100 text-emerald-900 border border-emerald-300">
-                <Sparkles className="w-3 h-3 text-emerald-700" />
+              <span className="hidden sm:inline-flex items-center gap-1.5 text-[11px] font-bold px-2.5 py-0.5 rounded-full bg-emerald-100 text-emerald-900 border border-emerald-300 shadow-2xs">
+                <Award className="w-3.5 h-3.5 text-emerald-700 animate-pulse-subtle" />
                 <span>Mission Score: {card.missionScore}/100</span>
               </span>
             )}
@@ -250,41 +251,41 @@ export const CardDetailModal: React.FC<CardDetailModalProps> = ({
             </div>
           </div>
 
-          {/* Mintlify-Style Nav Tabs */}
+          {/* Mintlify-Style Nav Tabs with Animated Icons */}
           <div className="flex border-b border-slate-200 gap-6">
             <button
               onClick={() => setActiveTab('fact-sheet')}
-              className={`pb-3 text-xs sm:text-sm font-bold border-b-2 transition-all cursor-pointer flex items-center gap-2 ${
+              className={`group pb-3 text-xs sm:text-sm font-bold border-b-2 transition-all cursor-pointer flex items-center gap-2 ${
                 activeTab === 'fact-sheet'
                   ? 'border-emerald-600 text-emerald-700'
                   : 'border-transparent text-slate-500 hover:text-slate-900'
               }`}
             >
-              <FileText className="w-4 h-4" />
-              <span>Fact Sheet & Financial Returns</span>
+              <FileText className="w-4 h-4 transition-transform duration-200 group-hover:scale-115" />
+              <span>Fact Sheet &amp; Financial Returns</span>
             </button>
 
             <button
               onClick={() => setActiveTab('prerequisites')}
-              className={`pb-3 text-xs sm:text-sm font-bold border-b-2 transition-all cursor-pointer flex items-center gap-2 ${
+              className={`group pb-3 text-xs sm:text-sm font-bold border-b-2 transition-all cursor-pointer flex items-center gap-2 ${
                 activeTab === 'prerequisites'
                   ? 'border-emerald-600 text-emerald-700'
                   : 'border-transparent text-slate-500 hover:text-slate-900'
               }`}
             >
-              <CheckSquare className="w-4 h-4" />
-              <span>Card Prerequisites & Approval Odds</span>
+              <CheckSquare className="w-4 h-4 transition-transform duration-200 group-hover:scale-115 group-hover:-rotate-3" />
+              <span>Card Prerequisites &amp; Approval Odds</span>
             </button>
 
             <button
               onClick={() => setActiveTab('reviews')}
-              className={`pb-3 text-xs sm:text-sm font-bold border-b-2 transition-all cursor-pointer flex items-center gap-2 ${
+              className={`group pb-3 text-xs sm:text-sm font-bold border-b-2 transition-all cursor-pointer flex items-center gap-2 ${
                 activeTab === 'reviews'
                   ? 'border-emerald-600 text-emerald-700'
                   : 'border-transparent text-slate-500 hover:text-slate-900'
               }`}
             >
-              <MessageSquare className="w-4 h-4" />
+              <MessageSquare className="w-4 h-4 transition-transform duration-200 group-hover:scale-115 group-hover:rotate-6" />
               <span>Cardholder Reviews</span>
               {hasReviews ? (
                 <span className="px-1.5 py-0.2 rounded-full text-[10px] font-bold bg-slate-100 text-slate-700">
@@ -691,7 +692,7 @@ export const CardDetailModal: React.FC<CardDetailModalProps> = ({
                             key={star}
                             type="button"
                             onClick={() => setNewRating(star)}
-                            className="p-1 text-amber-500 hover:scale-110 transition-transform cursor-pointer"
+                            className="p-1 text-amber-500 hover:scale-125 hover:rotate-6 transition-all duration-150 cursor-pointer"
                           >
                             <Star
                               className={`w-5 h-5 ${star <= newRating ? 'fill-amber-400 text-amber-400' : 'text-slate-300'}`}
@@ -763,26 +764,3 @@ export const CardDetailModal: React.FC<CardDetailModalProps> = ({
     </div>
   );
 };
-
-// Helper FileText icon component to ensure no missing icon
-function FileText(props: React.SVGProps<SVGSVGElement>) {
-  return (
-    <svg 
-      xmlns="http://www.w3.org/2000/svg" 
-      viewBox="0 0 24 24" 
-      fill="none" 
-      stroke="currentColor" 
-      strokeWidth="2" 
-      strokeLinecap="round" 
-      strokeLinejoin="round" 
-      className="w-4 h-4" 
-      {...props}
-    >
-      <path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/>
-      <path d="M14 2v4a2 2 0 0 0 2 2h4"/>
-      <path d="M10 9H8"/>
-      <path d="M16 13H8"/>
-      <path d="M16 17H8"/>
-    </svg>
-  );
-}

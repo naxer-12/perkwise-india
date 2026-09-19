@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { 
-  Sparkles, 
   Search, 
   Bookmark, 
   CreditCard, 
@@ -9,9 +8,11 @@ import {
   BookOpen, 
   Menu, 
   X, 
-  ShieldCheck,
+  ShieldCheck, 
   ArrowRight
 } from 'lucide-react';
+
+import { PerkWiseLogo } from './PerkWiseLogo';
 
 interface HeaderProps {
   activeTab: 'library' | 'card-guide' | 'checklist' | 'calculator' | 'life-operations' | 'provenance' | 'bookmarks';
@@ -50,7 +51,10 @@ export const Header: React.FC<HeaderProps> = ({
       {/* Top Notification Bar */}
       <div className="bg-slate-900 text-slate-300 text-[11px] py-1.5 px-4 text-center font-medium flex items-center justify-center gap-2 border-b border-slate-800">
         <span className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full text-[10px] font-semibold bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">
-          <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 inline-block" />
+          <span className="relative flex h-1.5 w-1.5">
+            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+            <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-emerald-400"></span>
+          </span>
           Independent &amp; Source-Backed
         </span>
         <span className="hidden md:inline text-slate-400">•</span>
@@ -69,18 +73,18 @@ export const Header: React.FC<HeaderProps> = ({
             onClick={() => { setActiveTab('library'); setMobileMenuOpen(false); }}
             className="flex items-center gap-3 cursor-pointer group select-none shrink-0"
           >
-            <div className="w-9 h-9 rounded-xl bg-gradient-to-tr from-emerald-600 to-teal-500 flex items-center justify-center text-white shadow-sm shadow-emerald-500/20 group-hover:scale-105 transition-transform">
-              <Sparkles className="w-5 h-5" />
-            </div>
+            <PerkWiseLogo size="md" animated={true} />
             <div>
               <div className="flex items-center gap-1.5">
-                <span className="font-black text-lg sm:text-xl tracking-tight text-slate-900">PerkWise</span>
+                <span className="font-black text-lg sm:text-xl tracking-tight text-slate-900 group-hover:text-emerald-700 transition-colors">
+                  PerkWise
+                </span>
                 <span className="text-[10px] sm:text-xs font-bold px-1.5 py-0.2 rounded bg-amber-100 text-amber-800 border border-amber-300">
                   INDIA 🇮🇳
                 </span>
               </div>
               <p className="text-[10px] font-medium text-slate-500 hidden xl:block leading-none mt-0.5">
-                Maxing Deals, Schemes & Daily Operations
+                Maxing Deals, Schemes &amp; Daily Operations
               </p>
             </div>
           </div>
@@ -92,11 +96,11 @@ export const Header: React.FC<HeaderProps> = ({
             className="hidden md:flex items-center justify-between flex-1 max-w-xs lg:max-w-sm px-3.5 py-2 text-xs bg-slate-100 hover:bg-slate-200/70 text-slate-500 hover:text-slate-900 rounded-xl border border-slate-200/90 transition-all cursor-pointer shadow-2xs group"
           >
             <div className="flex items-center gap-2.5 truncate">
-              <Search className="w-3.5 h-3.5 text-slate-400 group-hover:text-emerald-600 transition-colors shrink-0" />
+              <Search className="w-3.5 h-3.5 text-slate-400 group-hover:text-emerald-600 group-hover:scale-115 group-hover:rotate-6 transition-all duration-200 shrink-0" />
               <span className="truncate font-medium">Search cards, deals, sources...</span>
             </div>
             <div className="flex items-center gap-1 shrink-0">
-              <kbd className="px-1.5 py-0.5 text-[10px] font-mono font-semibold text-slate-500 bg-white border border-slate-200 rounded shadow-2xs">
+              <kbd className="px-1.5 py-0.5 text-[10px] font-mono font-semibold text-slate-500 bg-white border border-slate-200 rounded shadow-2xs group-hover:border-slate-300">
                 ⌘K
               </kbd>
             </div>
@@ -107,40 +111,40 @@ export const Header: React.FC<HeaderProps> = ({
             {/* 1. Deals & Perks Hub */}
             <button
               onClick={() => setActiveTab('library')}
-              className={`flex items-center gap-1.5 px-3 py-2 text-xs font-medium rounded-lg transition-colors cursor-pointer ${
+              className={`group flex items-center gap-1.5 px-3 py-2 text-xs font-medium rounded-lg transition-colors cursor-pointer ${
                 activeTab === 'library' 
                   ? 'text-emerald-700 bg-emerald-50 font-semibold shadow-xs' 
                   : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100/80'
               }`}
             >
-              <BookOpen className={`w-3.5 h-3.5 ${activeTab === 'library' ? 'text-emerald-600' : 'text-slate-400'}`} />
+              <BookOpen className={`w-3.5 h-3.5 transition-transform duration-200 group-hover:scale-115 group-hover:-rotate-6 ${activeTab === 'library' ? 'text-emerald-600' : 'text-slate-400 group-hover:text-slate-700'}`} />
               <span>Deals Hub</span>
             </button>
 
             {/* 2. Credit & Debit Card Buying Guide */}
             <button
               onClick={() => setActiveTab('card-guide')}
-              className={`flex items-center gap-1.5 px-3 py-2 text-xs font-medium rounded-lg transition-colors cursor-pointer ${
+              className={`group flex items-center gap-1.5 px-3 py-2 text-xs font-medium rounded-lg transition-colors cursor-pointer ${
                 activeTab === 'card-guide' || activeTab === 'checklist'
                   ? 'text-emerald-700 bg-emerald-50 font-semibold shadow-xs' 
                   : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100/80'
               }`}
               title="Structured credit and debit card buying guide"
             >
-              <CreditCard className={`w-3.5 h-3.5 ${activeTab === 'card-guide' || activeTab === 'checklist' ? 'text-emerald-600' : 'text-slate-400'}`} />
+              <CreditCard className={`w-3.5 h-3.5 transition-transform duration-200 group-hover:scale-115 group-hover:rotate-6 ${activeTab === 'card-guide' || activeTab === 'checklist' ? 'text-emerald-600' : 'text-slate-400 group-hover:text-slate-700'}`} />
               <span>Card Buying Guide</span>
             </button>
 
             {/* 3. ROI Savings Calculator */}
             <button
               onClick={() => setActiveTab('calculator')}
-              className={`flex items-center gap-1.5 px-3 py-2 text-xs font-medium rounded-lg transition-colors cursor-pointer ${
+              className={`group flex items-center gap-1.5 px-3 py-2 text-xs font-medium rounded-lg transition-colors cursor-pointer ${
                 activeTab === 'calculator' 
                   ? 'text-emerald-700 bg-emerald-50 font-semibold shadow-xs' 
                   : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100/80'
               }`}
             >
-              <Calculator className={`w-3.5 h-3.5 ${activeTab === 'calculator' ? 'text-emerald-600' : 'text-slate-400'}`} />
+              <Calculator className={`w-3.5 h-3.5 transition-transform duration-200 group-hover:scale-115 group-hover:-translate-y-0.5 ${activeTab === 'calculator' ? 'text-emerald-600' : 'text-slate-400 group-hover:text-slate-700'}`} />
               <span>Calculator</span>
               <span className="text-[9px] font-bold px-1.5 py-0.2 rounded bg-amber-100 text-amber-800 border border-amber-200">
                 Coming Soon
@@ -150,43 +154,46 @@ export const Header: React.FC<HeaderProps> = ({
             {/* 4. Daily Operations Hub */}
             <button
               onClick={() => setActiveTab('life-operations')}
-              className={`flex items-center gap-1.5 px-3 py-2 text-xs font-medium rounded-lg transition-colors cursor-pointer ${
+              className={`group flex items-center gap-1.5 px-3 py-2 text-xs font-medium rounded-lg transition-colors cursor-pointer ${
                 activeTab === 'life-operations' 
                   ? 'text-emerald-700 bg-emerald-50 font-semibold shadow-xs' 
                   : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100/80'
               }`}
             >
-              <Compass className={`w-3.5 h-3.5 ${activeTab === 'life-operations' ? 'text-emerald-600' : 'text-slate-400'}`} />
+              <Compass className={`w-3.5 h-3.5 transition-transform duration-500 group-hover:scale-115 group-hover:rotate-45 ${activeTab === 'life-operations' ? 'text-emerald-600' : 'text-slate-400 group-hover:text-slate-700'}`} />
               <span>Life Hacks</span>
             </button>
 
             {/* 5. Official Rules & Daily Discoveries */}
             <button
               onClick={() => setActiveTab('provenance')}
-              className={`flex items-center gap-1.5 px-3 py-2 text-xs font-medium rounded-lg transition-colors cursor-pointer ${
+              className={`group flex items-center gap-1.5 px-3 py-2 text-xs font-medium rounded-lg transition-colors cursor-pointer ${
                 activeTab === 'provenance' 
                   ? 'text-emerald-700 bg-emerald-50 font-semibold shadow-xs' 
                   : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100/80'
               }`}
             >
-              <ShieldCheck className={`w-3.5 h-3.5 ${activeTab === 'provenance' ? 'text-emerald-600' : 'text-slate-400'}`} />
+              <ShieldCheck className={`w-3.5 h-3.5 transition-transform duration-200 group-hover:scale-115 ${activeTab === 'provenance' ? 'text-emerald-600' : 'text-slate-400 group-hover:text-slate-700'}`} />
               <span>Official Rules</span>
-              <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse inline-block" />
+              <span className="relative flex h-1.5 w-1.5">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-emerald-500"></span>
+              </span>
             </button>
 
             {/* Bookmarks Button */}
             <button
               onClick={() => setActiveTab('bookmarks')}
-              className={`flex items-center gap-1.5 px-3 py-2 text-xs font-medium rounded-lg transition-colors cursor-pointer ${
+              className={`group flex items-center gap-1.5 px-3 py-2 text-xs font-medium rounded-lg transition-colors cursor-pointer ${
                 activeTab === 'bookmarks'
                   ? 'text-emerald-700 bg-emerald-50 font-semibold'
                   : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100'
               }`}
             >
-              <Bookmark className="w-3.5 h-3.5" />
+              <Bookmark className={`w-3.5 h-3.5 transition-transform duration-200 group-hover:scale-115 group-hover:-translate-y-0.5 ${activeTab === 'bookmarks' ? 'text-emerald-600' : 'text-slate-400 group-hover:text-slate-700'}`} />
               <span>Saved</span>
               {bookmarkCount > 0 && (
-                <span className="w-4 h-4 rounded-full bg-emerald-600 text-white text-[10px] flex items-center justify-center font-bold">
+                <span className="w-4 h-4 rounded-full bg-emerald-600 text-white text-[10px] flex items-center justify-center font-bold animate-pulse-subtle">
                   {bookmarkCount}
                 </span>
               )}

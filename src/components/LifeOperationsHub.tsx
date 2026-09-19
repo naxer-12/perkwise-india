@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { 
   Compass, 
-  Sparkles, 
   CheckCircle2, 
   ArrowRight, 
   ShieldCheck, 
@@ -73,13 +72,13 @@ export const LifeOperationsHub: React.FC<LifeOperationsHubProps> = ({
               <button
                 key={facet.id}
                 onClick={() => setSelectedFacetId(facet.id)}
-                className={`py-2.5 px-2 text-center rounded-xl text-xs font-semibold transition-all flex flex-col items-center gap-1.5 ${
+                className={`group py-2.5 px-2 text-center rounded-xl text-xs font-semibold transition-all flex flex-col items-center gap-1.5 cursor-pointer ${
                   isSelected
                     ? 'bg-white text-emerald-800 shadow-sm border border-slate-200/90'
                     : 'text-slate-600 hover:text-slate-900 hover:bg-white/60'
                 }`}
               >
-                <Icon className={`w-4 h-4 ${isSelected ? 'text-emerald-600' : 'text-slate-400'}`} />
+                <Icon className={`w-4 h-4 transition-transform duration-200 group-hover:scale-125 group-hover:-translate-y-0.5 ${isSelected ? 'text-emerald-600' : 'text-slate-400 group-hover:text-slate-700'}`} />
                 <span className="line-clamp-1 text-[11px]">{facet.title.split(':')[0].split(',')[0]}</span>
               </button>
             );
@@ -123,7 +122,7 @@ export const LifeOperationsHub: React.FC<LifeOperationsHubProps> = ({
 
           <div className="p-4 rounded-2xl bg-emerald-50/70 border border-emerald-200/70 space-y-1.5">
             <div className="text-xs font-bold text-emerald-900 uppercase tracking-wider flex items-center gap-1.5">
-              <Sparkles className="w-4 h-4 text-emerald-600" />
+              <Zap className="w-4 h-4 text-emerald-600 animate-pulse-subtle" />
               <span>The PerkWise Smart Arbitrage Solution</span>
             </div>
             <p className="text-xs text-emerald-950/80 leading-relaxed font-medium">

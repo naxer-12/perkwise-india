@@ -4,7 +4,7 @@ import {
   Bookmark, 
   Share2, 
   ShieldCheck, 
-  Sparkles, 
+  Zap, 
   CheckCircle2, 
   AlertTriangle, 
   Clock, 
@@ -390,8 +390,8 @@ export const ArticleDetailModal: React.FC<ArticleDetailModalProps> = ({
           {/* Core Takeaways & Value Checklist */}
           <div className="p-5 sm:p-6 rounded-2xl bg-white border border-slate-200/80 space-y-3 shadow-2xs">
             <div className="text-xs font-bold uppercase tracking-wider text-slate-800 flex items-center gap-1.5">
-              <Sparkles className="w-4 h-4 text-emerald-600" />
-              <span>Core Takeaways & Value Checklist</span>
+              <Zap className="w-4 h-4 text-amber-500 animate-pulse-subtle" />
+              <span>Core Takeaways &amp; Value Checklist</span>
             </div>
             <ul className="space-y-2.5 text-xs sm:text-sm text-slate-700">
               {article.keyTakeaways.map((takeaway, i) => (
