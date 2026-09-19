@@ -45,7 +45,7 @@ export const CardVisual: React.FC<CardVisualProps> = ({
     : './';
   const base = rawBase.endsWith('/') ? rawBase : `${rawBase}/`;
   const fileName = CARD_IMAGE_FILES[card.id];
-  const imageUrl = fileName ? `${base}cards/${fileName}` : null;
+  const imageUrl = card.customImageUrl || (fileName ? `${base}cards/${fileName}` : null);
 
   if (variant === 'thumbnail') {
     return (

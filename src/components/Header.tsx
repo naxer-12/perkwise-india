@@ -8,26 +8,29 @@ import {
   BookOpen, 
   Menu, 
   X, 
-  ShieldCheck, 
-  ArrowRight
+  ArrowRight,
+  Lock
 } from 'lucide-react';
 
 import { PerkWiseLogo } from './PerkWiseLogo';
+import type { SiteConfig } from '../types';
 
 interface HeaderProps {
-  activeTab: 'library' | 'card-guide' | 'checklist' | 'calculator' | 'life-operations' | 'provenance' | 'bookmarks';
-  setActiveTab: (tab: 'library' | 'card-guide' | 'checklist' | 'calculator' | 'life-operations' | 'provenance' | 'bookmarks') => void;
+  activeTab: 'library' | 'card-guide' | 'checklist' | 'calculator' | 'life-operations' | 'provenance' | 'bookmarks' | 'admin';
+  setActiveTab: (tab: 'library' | 'card-guide' | 'checklist' | 'calculator' | 'life-operations' | 'provenance' | 'bookmarks' | 'admin') => void;
   bookmarkCount: number;
   searchQuery: string;
   setSearchQuery: (query: string) => void;
   onOpenSearch?: () => void;
+  siteConfig?: SiteConfig;
 }
 
 export const Header: React.FC<HeaderProps> = ({
   activeTab,
   setActiveTab,
   bookmarkCount,
-  onOpenSearch
+  onOpenSearch,
+  siteConfig
 }) => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
@@ -49,22 +52,40 @@ export const Header: React.FC<HeaderProps> = ({
   return (
     <header className="sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b border-slate-200/80 shadow-xs">
       {/* Top Notification Bar */}
-      <div className="bg-slate-900 text-slate-300 text-[11px] py-1.5 px-4 text-center font-medium flex items-center justify-center gap-2 border-b border-slate-800">
-        <span className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full text-[10px] font-semibold bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">
-          <span className="relative flex h-1.5 w-1.5">
-            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-            <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-emerald-400"></span>
+      {(!siteConfig || siteConfig.showNotificationBar) && (
+        <div className="bg-slate-900 text-slate-300 text-[11px] py-1.5 px-4 text-center font-medium flex items-center justify-center gap-2 border-b border-slate-800">
+          <span className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full text-[10px] font-semibold bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">
+            <span className="relative flex h-1.5 w-1.5">
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+              <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-emerald-400"></span>
+            </span>
+            Independent &amp; Source-Backed
           </span>
-          Independent &amp; Source-Backed
-        </span>
-        <span className="hidden md:inline text-slate-400">•</span>
-        <span className="hidden md:inline">
-          India’s independent, source-backed directory to maximize credit rewards, hotel loyalty perks, government welfare schemes, and daily household operational savings.
-        </span>
-        <span className="md:hidden">
-          Maximize rewards, loyalty perks &amp; household operational savings
-        </span>
-      </div>
+          <span className="text-slate-400">•</span>
+          <span className="text-slate-300 font-normal">
+            {siteConfig?.notificationMessage || 'Zero Affiliate Bias • Verified Against Official Bank MITCs & RBI Schedules'}
+          </span>
+        </div>
+      )}
+
+      {/* Admin Mode Bar if in Admin */}
+      {activeTab === 'admin' && (
+        <div className="bg-purple-900 text-purple-100 text-xs py-1.5 px-4 flex items-center justify-between border-b border-purple-800">
+          <div className="flex items-center gap-2 max-w-7xl mx-auto w-full justify-between">
+            <div className="flex items-center gap-2 font-medium">
+              <Lock className="w-3.5 h-3.5 text-purple-300" />
+              <span>PerkWise Control Deck &amp; Admin Mode Active</span>
+              <span className="hidden sm:inline text-purple-300/70 text-[11px]">• Publishing &amp; component settings apply live</span>
+            </div>
+            <button
+              onClick={() => setActiveTab('card-guide')}
+              className="text-xs bg-purple-700 hover:bg-purple-600 text-white font-medium px-2.5 py-0.5 rounded cursor-pointer transition-colors"
+            >
+              Exit to Live Site →
+            </button>
+          </div>
+        </div>
+      )}
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16 gap-3">
@@ -109,77 +130,76 @@ export const Header: React.FC<HeaderProps> = ({
           {/* Desktop Navigation Links */}
           <nav className="hidden lg:flex items-center gap-1 xl:gap-2">
             {/* 1. Deals & Perks Hub */}
-            <button
-              onClick={() => setActiveTab('library')}
-              className={`group flex items-center gap-1.5 px-3 py-2 text-xs font-medium rounded-lg transition-colors cursor-pointer ${
-                activeTab === 'library' 
-                  ? 'text-emerald-700 bg-emerald-50 font-semibold shadow-xs' 
-                  : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100/80'
-              }`}
-            >
-              <BookOpen className={`w-3.5 h-3.5 transition-transform duration-200 group-hover:scale-115 group-hover:-rotate-6 ${activeTab === 'library' ? 'text-emerald-600' : 'text-slate-400 group-hover:text-slate-700'}`} />
-              <span>Deals Hub</span>
-            </button>
+            {(!siteConfig || siteConfig.showDealsHub) && (
+              <button
+                onClick={() => setActiveTab('library')}
+                className={`group flex items-center gap-1.5 px-3 py-2 text-xs font-medium rounded-lg transition-colors cursor-pointer ${
+                  activeTab === 'library' 
+                    ? 'text-emerald-700 bg-emerald-50 font-semibold shadow-xs' 
+                    : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100/80'
+                }`}
+              >
+                <BookOpen className={`w-3.5 h-3.5 transition-transform duration-200 group-hover:scale-115 group-hover:-rotate-6 ${activeTab === 'library' ? 'text-emerald-600' : 'text-slate-400 group-hover:text-slate-700'}`} />
+                <span>Deals Hub</span>
+              </button>
+            )}
 
             {/* 2. Credit & Debit Card Buying Guide */}
-            <button
-              onClick={() => setActiveTab('card-guide')}
-              className={`group flex items-center gap-1.5 px-3 py-2 text-xs font-medium rounded-lg transition-colors cursor-pointer ${
-                activeTab === 'card-guide' || activeTab === 'checklist'
-                  ? 'text-emerald-700 bg-emerald-50 font-semibold shadow-xs' 
-                  : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100/80'
-              }`}
-              title="Structured credit and debit card buying guide"
-            >
-              <CreditCard className={`w-3.5 h-3.5 transition-transform duration-200 group-hover:scale-115 group-hover:rotate-6 ${activeTab === 'card-guide' || activeTab === 'checklist' ? 'text-emerald-600' : 'text-slate-400 group-hover:text-slate-700'}`} />
-              <span>Card Buying Guide</span>
-            </button>
+            {(!siteConfig || siteConfig.showCardGuide) && (
+              <button
+                onClick={() => setActiveTab('card-guide')}
+                className={`group flex items-center gap-1.5 px-3 py-2 text-xs font-medium rounded-lg transition-colors cursor-pointer ${
+                  activeTab === 'card-guide' || activeTab === 'checklist'
+                    ? 'text-emerald-700 bg-emerald-50 font-semibold shadow-xs' 
+                    : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100/80'
+                }`}
+                title="Structured credit and debit card buying guide"
+              >
+                <CreditCard className={`w-3.5 h-3.5 transition-transform duration-200 group-hover:scale-115 group-hover:rotate-6 ${activeTab === 'card-guide' || activeTab === 'checklist' ? 'text-emerald-600' : 'text-slate-400 group-hover:text-slate-700'}`} />
+                <span>Card Buying Guide</span>
+              </button>
+            )}
 
             {/* 3. ROI Savings Calculator */}
-            <button
-              onClick={() => setActiveTab('calculator')}
-              className={`group flex items-center gap-1.5 px-3 py-2 text-xs font-medium rounded-lg transition-colors cursor-pointer ${
-                activeTab === 'calculator' 
-                  ? 'text-emerald-700 bg-emerald-50 font-semibold shadow-xs' 
-                  : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100/80'
-              }`}
-            >
-              <Calculator className={`w-3.5 h-3.5 transition-transform duration-200 group-hover:scale-115 group-hover:-translate-y-0.5 ${activeTab === 'calculator' ? 'text-emerald-600' : 'text-slate-400 group-hover:text-slate-700'}`} />
-              <span>Calculator</span>
-              <span className="text-[9px] font-bold px-1.5 py-0.2 rounded bg-amber-100 text-amber-800 border border-amber-200">
-                Coming Soon
-              </span>
-            </button>
+            {(!siteConfig || siteConfig.showCalculator) && (
+              <button
+                onClick={() => setActiveTab('calculator')}
+                className={`group flex items-center gap-1.5 px-3 py-2 text-xs font-medium rounded-lg transition-colors cursor-pointer ${
+                  activeTab === 'calculator' 
+                    ? 'text-emerald-700 bg-emerald-50 font-semibold shadow-xs' 
+                    : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100/80'
+                }`}
+              >
+                <Calculator className={`w-3.5 h-3.5 transition-transform duration-200 group-hover:scale-115 group-hover:-translate-y-0.5 ${activeTab === 'calculator' ? 'text-emerald-600' : 'text-slate-400 group-hover:text-slate-700'}`} />
+                <span>Calculator</span>
+                <span className="text-[9px] font-bold px-1.5 py-0.2 rounded bg-amber-100 text-amber-800 border border-amber-200">
+                  Coming Soon
+                </span>
+              </button>
+            )}
 
             {/* 4. Daily Operations Hub */}
-            <button
-              onClick={() => setActiveTab('life-operations')}
-              className={`group flex items-center gap-1.5 px-3 py-2 text-xs font-medium rounded-lg transition-colors cursor-pointer ${
-                activeTab === 'life-operations' 
-                  ? 'text-emerald-700 bg-emerald-50 font-semibold shadow-xs' 
-                  : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100/80'
-              }`}
-            >
-              <Compass className={`w-3.5 h-3.5 transition-transform duration-500 group-hover:scale-115 group-hover:rotate-45 ${activeTab === 'life-operations' ? 'text-emerald-600' : 'text-slate-400 group-hover:text-slate-700'}`} />
-              <span>Life Hacks</span>
-            </button>
+            {(!siteConfig || siteConfig.showLifeOperations) && (
+              <button
+                onClick={() => setActiveTab('life-operations')}
+                className={`group flex items-center gap-1.5 px-3 py-2 text-xs font-medium rounded-lg transition-colors cursor-pointer ${
+                  activeTab === 'life-operations' 
+                    ? 'text-emerald-700 bg-emerald-50 font-semibold shadow-xs' 
+                    : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100/80'
+                }`}
+              >
+                <Compass className={`w-3.5 h-3.5 transition-transform duration-500 group-hover:scale-115 group-hover:rotate-45 ${activeTab === 'life-operations' ? 'text-emerald-600' : 'text-slate-400 group-hover:text-slate-700'}`} />
+                <span>Life Hacks</span>
+              </button>
+            )}
 
-            {/* 5. Official Rules & Daily Discoveries */}
-            <button
-              onClick={() => setActiveTab('provenance')}
-              className={`group flex items-center gap-1.5 px-3 py-2 text-xs font-medium rounded-lg transition-colors cursor-pointer ${
-                activeTab === 'provenance' 
-                  ? 'text-emerald-700 bg-emerald-50 font-semibold shadow-xs' 
-                  : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100/80'
-              }`}
-            >
-              <ShieldCheck className={`w-3.5 h-3.5 transition-transform duration-200 group-hover:scale-115 ${activeTab === 'provenance' ? 'text-emerald-600' : 'text-slate-400 group-hover:text-slate-700'}`} />
-              <span>Official Rules</span>
-              <span className="relative flex h-1.5 w-1.5">
-                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-                <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-emerald-500"></span>
+            {/* Admin Console indicator if active */}
+            {activeTab === 'admin' && (
+              <span className="flex items-center gap-1.5 px-3 py-2 text-xs font-bold rounded-lg text-purple-700 bg-purple-50 border border-purple-200">
+                <Lock className="w-3.5 h-3.5 text-purple-600" />
+                <span>Admin Console</span>
               </span>
-            </button>
+            )}
 
             {/* Bookmarks Button */}
             <button
@@ -309,34 +329,24 @@ export const Header: React.FC<HeaderProps> = ({
             {/* Section 3: Tools & Verification */}
             <div className="space-y-1 pt-1 border-t border-slate-100">
               <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider px-2 block">
-                Tools & Official Rules
+                Tools &amp; Features
               </span>
-              <button
-                onClick={() => { setActiveTab('calculator'); setMobileMenuOpen(false); }}
-                className={`w-full flex items-center justify-between px-3 py-2 rounded-xl text-xs font-semibold cursor-pointer ${
-                  activeTab === 'calculator' ? 'bg-emerald-50 text-emerald-800' : 'text-slate-700 hover:bg-slate-50'
-                }`}
-              >
-                <div className="flex items-center gap-2">
-                  <Calculator className="w-4 h-4 text-emerald-600" />
-                  <span>Savings Calculator</span>
-                </div>
-                <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-amber-100 text-amber-800 border border-amber-200">
-                  Coming Soon
-                </span>
-              </button>
-              <button
-                onClick={() => { setActiveTab('provenance'); setMobileMenuOpen(false); }}
-                className={`w-full flex items-center justify-between px-3 py-2 rounded-xl text-xs font-semibold cursor-pointer ${
-                  activeTab === 'provenance' ? 'bg-emerald-50 text-emerald-800' : 'text-slate-700 hover:bg-slate-50'
-                }`}
-              >
-                <div className="flex items-center gap-2">
-                  <ShieldCheck className="w-4 h-4 text-emerald-600" />
-                  <span>Official Rules & Discoveries</span>
-                </div>
-                <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
-              </button>
+              {(!siteConfig || siteConfig.showCalculator) && (
+                <button
+                  onClick={() => { setActiveTab('calculator'); setMobileMenuOpen(false); }}
+                  className={`w-full flex items-center justify-between px-3 py-2 rounded-xl text-xs font-semibold cursor-pointer ${
+                    activeTab === 'calculator' ? 'bg-emerald-50 text-emerald-800' : 'text-slate-700 hover:bg-slate-50'
+                  }`}
+                >
+                  <div className="flex items-center gap-2">
+                    <Calculator className="w-4 h-4 text-emerald-600" />
+                    <span>Savings Calculator</span>
+                  </div>
+                  <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-amber-100 text-amber-800 border border-amber-200">
+                    Coming Soon
+                  </span>
+                </button>
+              )}
               <button
                 onClick={() => { setActiveTab('bookmarks'); setMobileMenuOpen(false); }}
                 className={`w-full flex items-center justify-between px-3 py-2 rounded-xl text-xs font-semibold cursor-pointer ${
@@ -349,6 +359,20 @@ export const Header: React.FC<HeaderProps> = ({
                 </div>
                 <span className="text-[11px] bg-slate-200 text-slate-700 px-2 py-0.5 rounded-full font-bold">
                   {bookmarkCount} items
+                </span>
+              </button>
+              <button
+                onClick={() => { setActiveTab('admin'); setMobileMenuOpen(false); }}
+                className={`w-full flex items-center justify-between px-3 py-2 rounded-xl text-xs font-semibold cursor-pointer ${
+                  activeTab === 'admin' ? 'bg-purple-50 text-purple-800' : 'text-slate-600 hover:bg-slate-50'
+                }`}
+              >
+                <div className="flex items-center gap-2">
+                  <Lock className="w-4 h-4 text-purple-600" />
+                  <span>Admin Portal</span>
+                </div>
+                <span className="text-[10px] font-semibold px-2 py-0.5 rounded bg-purple-100 text-purple-700">
+                  Control
                 </span>
               </button>
             </div>

@@ -1,6 +1,5 @@
 import React, { useMemo } from 'react';
 import { 
-  ShieldCheck, 
   ArrowRight,
   CreditCard
 } from 'lucide-react';
@@ -8,7 +7,7 @@ import { CATEGORIES_DATA } from '../data/categoriesData';
 import { ARTICLES_DATA } from '../data/articlesData';
 import { SOURCES_REGISTRY } from '../data/sourcesData';
 import { CREDIT_CARD_SEGMENTS, CREDIT_CARDS_DATA } from '../data/creditCardsData';
-import type { LifeCategory } from '../types';
+import type { LifeCategory, SiteConfig } from '../types';
 
 import { CategoryIcon } from './CategoryIcon';
 import { Layers } from 'lucide-react';
@@ -18,14 +17,16 @@ interface HeroProps {
   setSelectedCategory: (cat: LifeCategory | 'all') => void;
   onExploreCardsClick: () => void;
   onStartChecklistClick?: () => void;
-  onInspectProvenance?: () => void;
+  siteConfig?: SiteConfig;
+  cardsCount?: number;
 }
 
 export const Hero: React.FC<HeroProps> = ({
   selectedCategory,
   setSelectedCategory,
   onExploreCardsClick,
-  onInspectProvenance
+  siteConfig,
+  cardsCount
 }) => {
   const categoryCounts = useMemo(() => {
     const counts: Record<string, number> = {};
@@ -50,34 +51,33 @@ export const Hero: React.FC<HeroProps> = ({
 
         {/* Concise, Powerful Headline */}
         <h1 className="text-3xl sm:text-5xl lg:text-5xl font-extrabold tracking-tight text-slate-900 leading-[1.15]">
-          Stop Leaving Money on the Table.{' '}
-          <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-600 via-teal-600 to-slate-900">
-            Every Rupee, Loyalty Perk &amp; Scheme Optimized.
-          </span>
+          {siteConfig?.heroHeadline ? (
+            siteConfig.heroHeadline
+          ) : (
+            <>
+              Stop Leaving Money on the Table.{' '}
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-600 via-teal-600 to-slate-900">
+                Every Rupee, Loyalty Perk &amp; Scheme Optimized.
+              </span>
+            </>
+          )}
         </h1>
 
         {/* Human-Centered Subtext */}
         <p className="max-w-3xl mx-auto text-sm sm:text-base text-slate-600 leading-relaxed font-normal">
-          India’s unbiased consumer awareness repository and mathematical personal finance compendium. Designed to optimize daily life operations, eliminate unnecessary fees, unlock member privileges, and elevate financial literacy across all strata of consumers.
+          {siteConfig?.heroSubheadline || 
+            "India’s unbiased consumer awareness repository and mathematical personal finance compendium. Designed to optimize daily life operations, eliminate unnecessary fees, unlock member privileges, and elevate financial literacy across all strata of consumers."}
         </p>
 
-        {/* 1-Click Action Buttons */}
+        {/* 1-Click Action Button */}
         <div className="pt-2 flex flex-wrap items-center justify-center gap-3">
           <button
             onClick={onExploreCardsClick}
-            className="group px-5 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white text-xs sm:text-sm font-semibold shadow-xs flex items-center gap-2 transition-all cursor-pointer hover:shadow-sm"
+            className="group px-6 py-3 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white text-xs sm:text-sm font-semibold shadow-xs flex items-center gap-2 transition-all cursor-pointer hover:shadow-sm"
           >
             <CreditCard className="w-4 h-4 transition-transform duration-200 group-hover:scale-115 group-hover:rotate-6" />
             <span>Explore Credit &amp; Debit Card Buying Guide</span>
             <ArrowRight className="w-4 h-4 transition-transform duration-200 group-hover:translate-x-1" />
-          </button>
-
-          <button
-            onClick={() => onInspectProvenance?.()}
-            className="group px-4 py-2.5 rounded-xl bg-emerald-50/80 hover:bg-emerald-100 text-emerald-800 border border-emerald-200/80 text-xs sm:text-sm font-semibold shadow-2xs flex items-center gap-2 transition-all cursor-pointer"
-          >
-            <ShieldCheck className="w-4 h-4 text-emerald-600 transition-transform duration-200 group-hover:scale-115" />
-            <span>Inspect Real-Time Data Provenance</span>
           </button>
         </div>
 
@@ -92,7 +92,7 @@ export const Hero: React.FC<HeroProps> = ({
           </div>
           <span className="hidden sm:inline text-slate-300">•</span>
           <div className="flex items-center gap-1.5">
-            <span className="text-emerald-700 font-semibold">{CREDIT_CARDS_DATA.length}</span> Audited Cards &amp; Deals
+            <span className="text-emerald-700 font-semibold">{cardsCount || CREDIT_CARDS_DATA.length}</span> Audited Cards &amp; Deals
           </div>
           <span className="hidden sm:inline text-slate-300">•</span>
           <div className="flex items-center gap-1.5">

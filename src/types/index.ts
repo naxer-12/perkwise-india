@@ -129,6 +129,23 @@ export interface CreditCard {
   dealCategory?: string;
   interestAPR?: number;
   excludedSpends?: string[];
+  isCustom?: boolean;
+  isPublished?: boolean;
+  publishedAt?: string;
+  customImageUrl?: string;
+}
+
+export interface SiteConfig {
+  showNotificationBar: boolean;
+  notificationMessage?: string;
+  showDealsHub: boolean;
+  showCardGuide: boolean;
+  showCalculator: boolean;
+  showLifeOperations: boolean;
+  showHeroSection: boolean;
+  enableUserReviews: boolean;
+  heroHeadline?: string;
+  heroSubheadline?: string;
 }
 
 export interface ChecklistItem {

@@ -1,9 +1,9 @@
 import React from 'react';
-import { ShieldCheck } from 'lucide-react';
+import { ShieldCheck, Lock } from 'lucide-react';
 import { PerkWiseLogo } from './PerkWiseLogo';
 
 interface FooterProps {
-  onNavigate: (tab: 'library' | 'card-guide' | 'checklist' | 'calculator' | 'life-operations' | 'provenance') => void;
+  onNavigate: (tab: 'library' | 'card-guide' | 'checklist' | 'calculator' | 'life-operations' | 'provenance' | 'bookmarks' | 'admin') => void;
 }
 
 export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
@@ -23,7 +23,7 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
           </p>
           <div className="flex items-center gap-2 text-[11px] text-emerald-400 font-medium">
             <ShieldCheck className="w-3.5 h-3.5" />
-            <span>RBI Master Directions & DGCA Passenger Charter Aligned</span>
+            <span>RBI Master Directions &amp; DGCA Passenger Charter Aligned</span>
           </div>
         </div>
 
@@ -33,12 +33,12 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
           <ul className="space-y-2 text-xs text-slate-400">
             <li>
               <button onClick={() => onNavigate('card-guide')} className="hover:text-emerald-400 transition-colors cursor-pointer">
-                Credit & Debit Card Buying Guide
+                Credit &amp; Debit Card Buying Guide
               </button>
             </li>
             <li>
               <button onClick={() => onNavigate('calculator')} className="hover:text-emerald-400 transition-colors cursor-pointer">
-                Spend & Net ROI Simulator
+                Spend &amp; Net ROI Simulator
               </button>
             </li>
             <li>
@@ -47,9 +47,9 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
               </button>
             </li>
             <li>
-              <button onClick={() => onNavigate('provenance')} className="hover:text-emerald-400 transition-colors cursor-pointer flex items-center gap-1.5 text-emerald-400">
-                <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
-                <span>Data Provenance & Real-Time Sync</span>
+              <button onClick={() => onNavigate('admin')} className="hover:text-purple-400 transition-colors cursor-pointer flex items-center gap-1.5 text-slate-400">
+                <Lock className="w-3 h-3 text-purple-400" />
+                <span>Admin Console &amp; Publishing</span>
               </button>
             </li>
           </ul>

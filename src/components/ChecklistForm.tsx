@@ -10,6 +10,7 @@ import {
   RotateCcw
 } from 'lucide-react';
 import { CREDIT_CARDS_DATA } from '../data/creditCardsData';
+import { getEffectiveCards } from '../utils/cardStorage';
 import type { CreditCard } from '../types';
 import { CardVisual } from './CardVisual';
 
@@ -18,18 +19,21 @@ interface ChecklistFormProps {
   onClearTargetCard?: () => void;
   onSelectTargetCard?: (cardId: string | null) => void;
   onGoToGuide?: (targetCardId?: string) => void;
+  cards?: CreditCard[];
 }
 
 export const ChecklistForm: React.FC<ChecklistFormProps> = ({ 
   targetCardId,
   onSelectTargetCard,
-  onGoToGuide
+  onGoToGuide,
+  cards: propCards
 }) => {
+  const cardsList = propCards || getEffectiveCards();
   // Default to first card if no card selected
   const activeCardId = targetCardId || 'phonepe-sbi-select-black';
   const card: CreditCard = useMemo(() => {
-    return CREDIT_CARDS_DATA.find(c => c.id === activeCardId) || CREDIT_CARDS_DATA[0];
-  }, [activeCardId]);
+    return cardsList.find(c => c.id === activeCardId) || cardsList[0] || CREDIT_CARDS_DATA[0];
+  }, [activeCardId, cardsList]);
 
   const isDebit = card.cardType === 'debit';
 

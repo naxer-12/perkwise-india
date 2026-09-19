@@ -8,9 +8,9 @@ import {
   CornerDownLeft, 
   ExternalLink
 } from 'lucide-react';
-import { CREDIT_CARDS_DATA } from '../data/creditCardsData';
 import { ARTICLES_DATA } from '../data/articlesData';
 import { SOURCES_REGISTRY } from '../data/sourcesData';
+import { getEffectiveCards } from '../utils/cardStorage';
 import type { CreditCard, Article, DataSource } from '../types';
 
 interface GlobalSearchModalProps {
@@ -19,6 +19,7 @@ interface GlobalSearchModalProps {
   onSelectCard: (card: CreditCard) => void;
   onSelectArticle: (article: Article) => void;
   onSelectSource?: (source: DataSource) => void;
+  cards?: CreditCard[];
 }
 
 type SearchResultItem = 
@@ -31,7 +32,8 @@ export const GlobalSearchModal: React.FC<GlobalSearchModalProps> = ({
   onClose,
   onSelectCard,
   onSelectArticle,
-  onSelectSource
+  onSelectSource,
+  cards: propCards
 }) => {
   const [query, setQuery] = useState('');
   const [activeFilter, setActiveFilter] = useState<'all' | 'cards' | 'articles' | 'sources'>('all');
@@ -63,13 +65,14 @@ export const GlobalSearchModal: React.FC<GlobalSearchModalProps> = ({
 
   // Search indexing
   const results = useMemo<SearchResultItem[]>(() => {
+    const effectiveCards = propCards || getEffectiveCards();
     const q = query.trim().toLowerCase();
 
     // If query is empty, show curated top picks
     if (!q) {
-      const topCards: SearchResultItem[] = CREDIT_CARDS_DATA.slice(0, 4).map(c => ({ type: 'card', data: c }));
-      const topArticles: SearchResultItem[] = ARTICLES_DATA.slice(0, 3).map(a => ({ type: 'article', data: a }));
-      const topSources: SearchResultItem[] = SOURCES_REGISTRY.slice(0, 2).map(s => ({ type: 'source', data: s }));
+      const topCards: SearchResultItem[] = effectiveCards.slice(0, 4).map((c: CreditCard) => ({ type: 'card', data: c }));
+      const topArticles: SearchResultItem[] = ARTICLES_DATA.slice(0, 3).map((a: Article) => ({ type: 'article', data: a }));
+      const topSources: SearchResultItem[] = SOURCES_REGISTRY.slice(0, 2).map((s: DataSource) => ({ type: 'source', data: s }));
 
       if (activeFilter === 'cards') return topCards;
       if (activeFilter === 'articles') return topArticles;
@@ -77,7 +80,7 @@ export const GlobalSearchModal: React.FC<GlobalSearchModalProps> = ({
       return [...topCards, ...topArticles, ...topSources];
     }
 
-    const matchedCards: SearchResultItem[] = CREDIT_CARDS_DATA.filter(c => {
+    const matchedCards: SearchResultItem[] = effectiveCards.filter((c: CreditCard) => {
       return (
         c.name.toLowerCase().includes(q) ||
         c.bank.toLowerCase().includes(q) ||
@@ -86,9 +89,9 @@ export const GlobalSearchModal: React.FC<GlobalSearchModalProps> = ({
         (c.dealCategory && c.dealCategory.toLowerCase().includes(q)) ||
         c.acceleratedRewardRate.toLowerCase().includes(q) ||
         (c.cardType && c.cardType.toLowerCase().includes(q)) ||
-        (c.dealHighlights && c.dealHighlights.some(b => b.toLowerCase().includes(q)))
+        (c.dealHighlights && c.dealHighlights.some((b: string) => b.toLowerCase().includes(q)))
       );
-    }).map(c => ({ type: 'card', data: c }));
+    }).map((c: CreditCard) => ({ type: 'card', data: c }));
 
     const matchedArticles: SearchResultItem[] = ARTICLES_DATA.filter(a => {
       return (
@@ -128,7 +131,7 @@ export const GlobalSearchModal: React.FC<GlobalSearchModalProps> = ({
     if (activeFilter === 'sources') return matchedSources;
 
     return [...matchedCards, ...matchedArticles, ...matchedSources];
-  }, [query, activeFilter]);
+  }, [query, activeFilter, propCards]);
 
   const executeSelection = useCallback((item: SearchResultItem) => {
     onClose();

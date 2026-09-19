@@ -16,7 +16,8 @@ import {
   GraduationCap,
   Layers
 } from 'lucide-react';
-import { CREDIT_CARD_SEGMENTS, CREDIT_CARDS_DATA } from '../data/creditCardsData';
+import { CREDIT_CARD_SEGMENTS } from '../data/creditCardsData';
+import { getEffectiveCards } from '../utils/cardStorage';
 import type { CreditCard, ReviewItem } from '../types';
 import { CardVisual } from './CardVisual';
 import { CardDetailModal } from './CardDetailModal';
@@ -25,6 +26,7 @@ interface CreditCardGuideProps {
   onGoToChecklist: (card?: CreditCard) => void;
   onSelectCardForCalculator?: (cardName: string) => void;
   highlightCardId?: string | null;
+  cards?: CreditCard[];
 }
 
 const SEGMENT_TAB_LABELS: Record<string, string> = {
@@ -155,12 +157,35 @@ function getCardCapInfo(card: CreditCard): string {
 
 export const CreditCardGuide: React.FC<CreditCardGuideProps> = ({ 
   onGoToChecklist, 
-  highlightCardId 
+  highlightCardId,
+  cards: propCards 
 }) => {
   const [selectedSegmentId, setSelectedSegmentId] = useState<string>('all');
   const [filterType, setFilterType] = useState<'all' | 'credit' | 'debit'>('all');
   const [selectedCardForModal, setSelectedCardForModal] = useState<CreditCard | null>(null);
-  const [cards, setCards] = useState<CreditCard[]>(CREDIT_CARDS_DATA);
+  const [cards, setCards] = useState<CreditCard[]>(() => propCards || getEffectiveCards());
+
+  // Keep cards in sync with props or storage updates
+  useEffect(() => {
+    if (propCards) {
+      setCards(propCards.map(card => ({
+        ...card,
+        reviews: loadReviewsForCard(card.id, card.reviews)
+      })));
+    }
+  }, [propCards]);
+
+  useEffect(() => {
+    const handleCardsUpdated = () => {
+      const latest = getEffectiveCards();
+      setCards(latest.map(card => ({
+        ...card,
+        reviews: loadReviewsForCard(card.id, card.reviews)
+      })));
+    };
+    window.addEventListener('perkwise_cards_updated', handleCardsUpdated);
+    return () => window.removeEventListener('perkwise_cards_updated', handleCardsUpdated);
+  }, []);
 
   // Sync reviews from localStorage on initial hydration
   useEffect(() => {
