@@ -12,6 +12,8 @@ import { ARTICLES_DATA } from '../data/articlesData';
 import { SOURCES_REGISTRY } from '../data/sourcesData';
 import { getEffectiveCards } from '../utils/cardStorage';
 import type { CreditCard, Article, DataSource } from '../types';
+import { useTranslation } from '../i18n/useTranslation';
+import { getLocalizedCard, getLocalizedArticle } from '../i18n/contentTranslations';
 
 interface GlobalSearchModalProps {
   isOpen: boolean;
@@ -35,6 +37,7 @@ export const GlobalSearchModal: React.FC<GlobalSearchModalProps> = ({
   onSelectSource,
   cards: propCards
 }) => {
+  const { t, language } = useTranslation();
   const [query, setQuery] = useState('');
   const [activeFilter, setActiveFilter] = useState<'all' | 'cards' | 'articles' | 'sources'>('all');
   const [selectedIndex, setSelectedIndex] = useState(0);
@@ -187,7 +190,7 @@ export const GlobalSearchModal: React.FC<GlobalSearchModalProps> = ({
           <input
             ref={inputRef}
             type="text"
-            placeholder="Search cards, high-yield debit deals, guides, statutory sources..."
+            placeholder={t('searchModal.placeholder')}
             value={query}
             onChange={(e) => {
               setQuery(e.target.value);
@@ -218,7 +221,7 @@ export const GlobalSearchModal: React.FC<GlobalSearchModalProps> = ({
                 : 'text-slate-600 hover:bg-slate-200/60'
             }`}
           >
-            All Results
+            {t('searchModal.allResults')}
           </button>
           <button
             onClick={() => { setActiveFilter('cards'); setSelectedIndex(0); }}
@@ -229,7 +232,7 @@ export const GlobalSearchModal: React.FC<GlobalSearchModalProps> = ({
             }`}
           >
             <CreditCardIcon className="w-3 h-3" />
-            <span>Cards & Deals (24)</span>
+            <span>{t('searchModal.creditCards')}</span>
           </button>
           <button
             onClick={() => { setActiveFilter('articles'); setSelectedIndex(0); }}
@@ -240,7 +243,7 @@ export const GlobalSearchModal: React.FC<GlobalSearchModalProps> = ({
             }`}
           >
             <BookOpen className="w-3 h-3" />
-            <span>Daily Guides (24)</span>
+            <span>{t('searchModal.guidesAndDeals')}</span>
           </button>
           <button
             onClick={() => { setActiveFilter('sources'); setSelectedIndex(0); }}
@@ -251,7 +254,7 @@ export const GlobalSearchModal: React.FC<GlobalSearchModalProps> = ({
             }`}
           >
             <ShieldCheck className="w-3 h-3" />
-            <span>Statutory Sources (15)</span>
+            <span>{t('searchModal.officialSources')}</span>
           </button>
         </div>
 
@@ -259,7 +262,7 @@ export const GlobalSearchModal: React.FC<GlobalSearchModalProps> = ({
         <div className="overflow-y-auto flex-1 divide-y divide-slate-100 p-2">
           {results.length === 0 ? (
             <div className="p-8 text-center text-slate-500 space-y-2">
-              <p className="text-sm font-semibold text-slate-700">No matching results found</p>
+              <p className="text-sm font-semibold text-slate-700">{t('searchModal.noResults')}</p>
               <p className="text-xs text-slate-400">
                 Try searching for "PhonePe", "SBI", "Debit", "Lounge", "Forex", "Infinia", or "Section 80CCD".
               </p>
@@ -270,6 +273,7 @@ export const GlobalSearchModal: React.FC<GlobalSearchModalProps> = ({
 
               if (item.type === 'card') {
                 const card = item.data;
+                const localizedCard = getLocalizedCard(card, language);
                 const isDebit = card.cardType === 'debit';
                 return (
                   <div
@@ -289,7 +293,7 @@ export const GlobalSearchModal: React.FC<GlobalSearchModalProps> = ({
                       <div className="min-w-0">
                         <div className="flex items-center gap-2 flex-wrap">
                           <span className="text-sm font-bold text-slate-900 truncate">
-                            {card.name}
+                            {localizedCard.name}
                           </span>
                           <span className={`text-[10px] font-bold px-1.5 py-0.2 rounded-sm ${
                             isDebit ? 'bg-purple-50 text-purple-800 border border-purple-200' : 'bg-slate-100 text-slate-700'
@@ -303,14 +307,14 @@ export const GlobalSearchModal: React.FC<GlobalSearchModalProps> = ({
                           )}
                         </div>
                         <p className="text-xs text-slate-500 truncate mt-0.5">
-                          {card.acceleratedRewardRate} • Fee: ₹{card.annualFee.toLocaleString('en-IN')}
+                          {localizedCard.acceleratedRewardRate} • Fee: ₹{card.annualFee.toLocaleString('en-IN')}
                         </p>
                       </div>
                     </div>
 
                     <div className="flex items-center gap-2 shrink-0">
                       <span className="text-[11px] text-slate-400 font-medium hidden sm:inline">
-                        View Card
+                        {t('common.viewDetails')}
                       </span>
                       <CornerDownLeft className={`w-3.5 h-3.5 ${isSelected ? 'text-emerald-600' : 'text-slate-300'}`} />
                     </div>
@@ -320,6 +324,7 @@ export const GlobalSearchModal: React.FC<GlobalSearchModalProps> = ({
 
               if (item.type === 'article') {
                 const article = item.data;
+                const localizedArticle = getLocalizedArticle(article, language);
                 return (
                   <div
                     key={`art-${article.id}`}
@@ -336,21 +341,21 @@ export const GlobalSearchModal: React.FC<GlobalSearchModalProps> = ({
                       <div className="min-w-0">
                         <div className="flex items-center gap-2 flex-wrap">
                           <span className="text-sm font-bold text-slate-900 truncate">
-                            {article.title}
+                            {localizedArticle.title}
                           </span>
                           <span className="text-[10px] font-semibold px-1.5 py-0.2 rounded bg-slate-100 text-slate-600">
                             {article.category}
                           </span>
                         </div>
                         <p className="text-xs text-slate-500 truncate mt-0.5">
-                          {article.summary}
+                          {localizedArticle.summary}
                         </p>
                       </div>
                     </div>
 
                     <div className="flex items-center gap-2 shrink-0">
                       <span className="text-[11px] text-slate-400 font-medium hidden sm:inline">
-                        Read Guide
+                        {t('common.readMore')}
                       </span>
                       <CornerDownLeft className={`w-3.5 h-3.5 ${isSelected ? 'text-emerald-600' : 'text-slate-300'}`} />
                     </div>
@@ -406,15 +411,15 @@ export const GlobalSearchModal: React.FC<GlobalSearchModalProps> = ({
             <span className="flex items-center gap-1">
               <kbd className="px-1.5 py-0.5 bg-white rounded border border-slate-200 font-mono text-[10px]">↑</kbd>
               <kbd className="px-1.5 py-0.5 bg-white rounded border border-slate-200 font-mono text-[10px]">↓</kbd>
-              <span>Navigate</span>
+              <span>{t('searchModal.toNavigate')}</span>
             </span>
             <span className="flex items-center gap-1">
               <kbd className="px-1.5 py-0.5 bg-white rounded border border-slate-200 font-mono text-[10px]">↵</kbd>
-              <span>Select</span>
+              <span>{t('searchModal.toSelect')}</span>
             </span>
           </div>
           <span className="font-medium text-emerald-700">
-            Real-time search across 24 Cards, 24 Guides & 15 Sources
+            {t('searchModal.quickResults')}
           </span>
         </div>
       </div>

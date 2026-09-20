@@ -13,6 +13,8 @@ import { CREDIT_CARDS_DATA } from '../data/creditCardsData';
 import { getEffectiveCards } from '../utils/cardStorage';
 import type { CreditCard } from '../types';
 import { CardVisual } from './CardVisual';
+import { useTranslation } from '../i18n/useTranslation';
+import { getLocalizedCard } from '../i18n/contentTranslations';
 
 interface ChecklistFormProps {
   targetCardId?: string | null;
@@ -28,12 +30,15 @@ export const ChecklistForm: React.FC<ChecklistFormProps> = ({
   onGoToGuide,
   cards: propCards
 }) => {
+  const { t, language } = useTranslation();
   const cardsList = propCards || getEffectiveCards();
   // Default to first card if no card selected
   const activeCardId = targetCardId || 'phonepe-sbi-select-black';
   const card: CreditCard = useMemo(() => {
     return cardsList.find(c => c.id === activeCardId) || cardsList[0] || CREDIT_CARDS_DATA[0];
   }, [activeCardId, cardsList]);
+
+  const localizedCard = getLocalizedCard(card, language);
 
   const isDebit = card.cardType === 'debit';
 
@@ -200,11 +205,11 @@ Statutory Reference: ${card.sourceRef.referenceCode}`;
             className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold text-xs transition-colors cursor-pointer"
           >
             <ArrowLeft className="w-3.5 h-3.5" />
-            <span>Back to Card Buying Guide</span>
+            <span>{t('checklist.returnToCardGuide')}</span>
           </button>
 
           <div className="text-xs text-slate-500 hidden md:flex items-center gap-1.5">
-            <span>Card Guide</span>
+            <span>{t('nav.cardGuide')}</span>
             <span>/</span>
             <span className="font-semibold text-slate-800">{card.bank}</span>
             <span>/</span>
@@ -214,7 +219,7 @@ Statutory Reference: ${card.sourceRef.referenceCode}`;
 
         {/* Card Switcher Dropdown */}
         <div className="flex items-center gap-2 text-xs">
-          <span className="text-slate-500 font-medium whitespace-nowrap">Switch Card:</span>
+          <span className="text-slate-500 font-medium whitespace-nowrap">{t('checklist.selectAnotherCard')}:</span>
           <select
             value={card.id}
             onChange={(e) => onSelectTargetCard?.(e.target.value)}
@@ -257,23 +262,23 @@ Statutory Reference: ${card.sourceRef.referenceCode}`;
                 <span className="text-xs text-slate-300 font-semibold">{card.network} Network</span>
               </div>
               <h1 className="text-2xl sm:text-3xl font-black tracking-tight text-white">
-                Prerequisites & Application Steps: {card.name}
+                {t('cardModal.prerequisites')}: {localizedCard.name}
               </h1>
               <p className="text-xs sm:text-sm text-slate-300 leading-relaxed font-normal">
-                {card.whyThisCardWins}
+                {localizedCard.whyThisCardWins}
               </p>
             </div>
 
             {/* 4 Crucial Institutional Underwriting Specs */}
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5 pt-2 border-t border-white/10 text-xs">
               <div className="bg-white/5 p-2.5 rounded-xl border border-white/10">
-                <span className="text-slate-400 text-[10px] uppercase font-bold block">Target CIBIL</span>
+                <span className="text-slate-400 text-[10px] uppercase font-bold block">{t('checklist.cibilScore')}</span>
                 <span className="text-emerald-400 font-black text-sm mt-0.5 block">{targetCibil}</span>
                 <span className="text-[10px] text-slate-400">Zero 30+ DPD defaults</span>
               </div>
 
               <div className="bg-white/5 p-2.5 rounded-xl border border-white/10">
-                <span className="text-slate-400 text-[10px] uppercase font-bold block">Income / ITR</span>
+                <span className="text-slate-400 text-[10px] uppercase font-bold block">{t('checklist.minIncomeReq')}</span>
                 <span className="text-white font-bold text-xs mt-0.5 block truncate" title={minIncome}>{minIncome.split('(')[0]}</span>
                 <span className="text-[10px] text-slate-400">3 mos payslip / 2 yr ITR</span>
               </div>
@@ -285,7 +290,7 @@ Statutory Reference: ${card.sourceRef.referenceCode}`;
               </div>
 
               <div className="bg-white/5 p-2.5 rounded-xl border border-white/10">
-                <span className="text-slate-400 text-[10px] uppercase font-bold block">Annual Fee</span>
+                <span className="text-slate-400 text-[10px] uppercase font-bold block">{t('cardGuide.annualFee')}</span>
                 <span className="text-white font-bold text-xs mt-0.5 block">
                   {card.annualFee === 0 ? '₹0 (Lifetime Free)' : `₹${card.annualFee.toLocaleString('en-IN')}`}
                 </span>
@@ -301,7 +306,7 @@ Statutory Reference: ${card.sourceRef.referenceCode}`;
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div>
             <span className="text-[11px] font-bold text-slate-500 uppercase tracking-wider block">
-              Application Readiness Score
+              {t('checklist.readinessAudit')}
             </span>
             <div className="flex items-center gap-3 mt-1">
               <span className="text-3xl sm:text-4xl font-black text-slate-900">
@@ -315,10 +320,10 @@ Statutory Reference: ${card.sourceRef.referenceCode}`;
                     : 'bg-amber-50 text-amber-800 border-amber-300'
               }`}>
                 {completionPercentage === 100 
-                  ? '✓ 100% Prepared — High Digital Approval Odds' 
+                  ? t('checklist.highProbability') 
                   : completionPercentage >= 70 
-                    ? 'Good Readiness — Review Pending Items' 
-                    : 'Action Needed Before Applying'}
+                    ? t('checklist.moderateProbability') 
+                    : t('checklist.lowProbability')}
               </div>
             </div>
           </div>
@@ -329,7 +334,7 @@ Statutory Reference: ${card.sourceRef.referenceCode}`;
               className="px-3 py-2 text-xs font-semibold rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 transition-colors flex items-center gap-1.5 cursor-pointer"
             >
               {copiedSuccess ? <Check className="w-3.5 h-3.5 text-emerald-600" /> : <Copy className="w-3.5 h-3.5" />}
-              <span>{copiedSuccess ? 'Report Copied!' : 'Copy Summary'}</span>
+              <span>{copiedSuccess ? 'Report Copied!' : t('checklist.copySummary')}</span>
             </button>
             <button
               onClick={handleReset}

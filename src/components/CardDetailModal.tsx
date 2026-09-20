@@ -15,6 +15,8 @@ import {
 } from 'lucide-react';
 import type { CreditCard, ReviewItem } from '../types';
 import { CardVisual } from './CardVisual';
+import { useTranslation } from '../i18n/useTranslation';
+import { getLocalizedCard } from '../i18n/contentTranslations';
 
 interface CardDetailModalProps {
   card: CreditCard | null;
@@ -68,8 +70,11 @@ export const CardDetailModal: React.FC<CardDetailModalProps> = ({
     setValidationError('');
   }, [card?.id]);
 
+  const { t, language } = useTranslation();
+
   if (!card) return null;
 
+  const localizedCard = getLocalizedCard(card, language);
   const isDebit = card.cardType === 'debit';
   const reviews = card.reviews || [];
   const hasReviews = reviews.length > 0;
@@ -182,7 +187,7 @@ export const CardDetailModal: React.FC<CardDetailModalProps> = ({
                 <div className="space-y-1.5">
                   <div className="flex items-center gap-2">
                     <span className="text-xs font-mono font-bold tracking-wider text-emerald-400 uppercase">
-                      Official Specification Sheet
+                      {t('cardModal.officialBankPortal')}
                     </span>
                     {hasReviews ? (
                       <span className="inline-flex items-center gap-1 text-xs font-semibold px-2 py-0.5 rounded-md bg-white/10 text-amber-300">
@@ -201,13 +206,13 @@ export const CardDetailModal: React.FC<CardDetailModalProps> = ({
                 </div>
 
                 <p className="text-xs sm:text-sm text-slate-300 leading-relaxed">
-                  {card.whyThisCardWins}
+                  {localizedCard.whyThisCardWins}
                 </p>
 
                 {/* Quick Highlights Pills */}
                 <div className="space-y-2 pt-2 border-t border-white/10">
                   <span className="text-[11px] uppercase tracking-wider font-bold text-slate-400 block">
-                    Core Strengths:
+                    {t('cardModal.rewardBenefitsHeading')}:
                   </span>
                   <div className="space-y-1.5">
                     {(card.dealHighlights || []).slice(0, 3).map((highlight: string, idx: number) => (
@@ -228,7 +233,7 @@ export const CardDetailModal: React.FC<CardDetailModalProps> = ({
                     className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold text-xs transition-all shadow-md shadow-emerald-500/20"
                   >
                     <Zap className="w-3.5 h-3.5" />
-                    <span>Apply on Official Bank Portal</span>
+                    <span>{t('cardModal.applyDirectly')}</span>
                     <ExternalLink className="w-3 h-3" />
                   </a>
 
@@ -242,7 +247,7 @@ export const CardDetailModal: React.FC<CardDetailModalProps> = ({
                       title={`Inspect prerequisites and application steps for ${card.name}`}
                     >
                       <CheckSquare className="w-3.5 h-3.5 text-emerald-400" />
-                      <span>Pre-Requisite Check & Steps</span>
+                      <span>{t('cardGuide.applyChecklist')}</span>
                       <ChevronRight className="w-3 h-3 text-slate-300" />
                     </button>
                   )}
@@ -262,7 +267,7 @@ export const CardDetailModal: React.FC<CardDetailModalProps> = ({
               }`}
             >
               <FileText className="w-4 h-4 transition-transform duration-200 group-hover:scale-115" />
-              <span>Fact Sheet &amp; Financial Returns</span>
+              <span>{t('cardModal.factSheet')}</span>
             </button>
 
             <button
@@ -274,7 +279,7 @@ export const CardDetailModal: React.FC<CardDetailModalProps> = ({
               }`}
             >
               <CheckSquare className="w-4 h-4 transition-transform duration-200 group-hover:scale-115 group-hover:-rotate-3" />
-              <span>Card Prerequisites &amp; Approval Odds</span>
+              <span>{t('cardModal.prerequisites')}</span>
             </button>
 
             <button
@@ -286,7 +291,7 @@ export const CardDetailModal: React.FC<CardDetailModalProps> = ({
               }`}
             >
               <MessageSquare className="w-4 h-4 transition-transform duration-200 group-hover:scale-115 group-hover:rotate-6" />
-              <span>Cardholder Reviews</span>
+              <span>{t('cardModal.reviews')}</span>
               {hasReviews ? (
                 <span className="px-1.5 py-0.2 rounded-full text-[10px] font-bold bg-slate-100 text-slate-700">
                   {reviews.length}
@@ -306,25 +311,25 @@ export const CardDetailModal: React.FC<CardDetailModalProps> = ({
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
                 <div className="bg-slate-50 p-4 rounded-xl border border-slate-200/80">
                   <span className="text-[11px] font-bold uppercase tracking-wider text-slate-500 block">
-                    Annual Joining / Renewal Fee
+                    {t('cardModal.annualFeeHeading')}
                   </span>
                   <span className="text-base font-bold text-slate-900 mt-1 block">
                     {feeDisplay}
                   </span>
                   <span className="text-xs text-slate-500 mt-0.5 block">
-                    Renewal Waiver: {waiverDisplay}
+                    {t('cardModal.waiverRule')}: {waiverDisplay}
                   </span>
                 </div>
 
                 <div className="bg-emerald-50/60 p-4 rounded-xl border border-emerald-200/80">
                   <span className="text-[11px] font-bold uppercase tracking-wider text-emerald-800 block">
-                    Accelerated Reward Rate
+                    {t('cardModal.rewardBenefitsHeading')}
                   </span>
                   <span className="text-base font-bold text-emerald-950 mt-1 block">
                     {card.acceleratedRewardRate}
                   </span>
                   <span className="text-xs text-emerald-700 mt-0.5 block">
-                    Base Reward: {card.baseRewardRate}
+                    Base: {card.baseRewardRate}
                   </span>
                 </div>
 
@@ -336,20 +341,20 @@ export const CardDetailModal: React.FC<CardDetailModalProps> = ({
                     {card.forexMarkup}% + 18% GST
                   </span>
                   <span className="text-xs text-slate-500 mt-0.5 block">
-                    {card.forexMarkup === 0 ? 'Zero forex markup on all overseas spends' : 'Standard cross-border transaction rate'}
+                    {card.forexMarkup === 0 ? '0% Forex' : 'Standard Bank Forex'}
                   </span>
                 </div>
 
                 <div className="bg-slate-50 p-4 rounded-xl border border-slate-200/80">
                   <span className="text-[11px] font-bold uppercase tracking-wider text-slate-500 block">
-                    Domestic Airport Lounge
+                    {t('cardModal.loungeRulesHeading')}
                   </span>
                   <span className="text-sm font-bold text-slate-900 mt-1 block">
                     {card.loungeAccess.domestic}
                   </span>
                   {card.loungeAccess.condition && (
                     <span className="text-xs text-amber-700 mt-0.5 block">
-                      Condition: {card.loungeAccess.condition}
+                      {card.loungeAccess.condition}
                     </span>
                   )}
                 </div>
@@ -362,19 +367,19 @@ export const CardDetailModal: React.FC<CardDetailModalProps> = ({
                     {card.loungeAccess.international}
                   </span>
                   <span className="text-xs text-slate-500 mt-0.5 block">
-                    Via Priority Pass / LoungeKey / DreamFolks
+                    Priority Pass / LoungeKey
                   </span>
                 </div>
 
                 <div className="bg-slate-50 p-4 rounded-xl border border-slate-200/80">
                   <span className="text-[11px] font-bold uppercase tracking-wider text-slate-500 block">
-                    Interest APR & Grace Period
+                    Interest APR &amp; Grace Period
                   </span>
                   <span className="text-base font-bold text-slate-900 mt-1 block">
                     {(card.interestAPR ?? (isDebit ? 0 : 42))}% p.a.
                   </span>
                   <span className="text-xs text-slate-500 mt-0.5 block">
-                    {isDebit ? 'Zero interest (debit instrument linked to savings)' : 'Up to 50 days interest-free billing cycle'}
+                    {isDebit ? 'Zero interest' : 'Up to 50 days interest-free'}
                   </span>
                 </div>
               </div>
@@ -383,7 +388,7 @@ export const CardDetailModal: React.FC<CardDetailModalProps> = ({
               <div className="bg-rose-50/70 border border-rose-200 rounded-2xl p-5 space-y-3">
                 <div className="flex items-center gap-2 text-rose-900 font-bold text-sm">
                   <AlertTriangle className="w-4 h-4 text-rose-600 shrink-0" />
-                  <span>Hidden Catches, Exclusions & Critical Caveats</span>
+                  <span>{t('cardModal.warningsHeading')}</span>
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs text-slate-700">
@@ -559,7 +564,7 @@ export const CardDetailModal: React.FC<CardDetailModalProps> = ({
               <div className="space-y-3">
                 <div className="flex items-center justify-between">
                   <h4 className="text-xs font-bold uppercase tracking-wider text-slate-700">
-                    Verified Cardholder Experiences ({reviews.length})
+                    {t('cardModal.communityReviews')} ({reviews.length})
                   </h4>
                   {hasReviews && (
                     <div className="flex items-center gap-1 text-xs font-bold text-amber-600">
@@ -575,11 +580,8 @@ export const CardDetailModal: React.FC<CardDetailModalProps> = ({
                       New
                     </span>
                     <h5 className="text-sm font-bold text-slate-800">
-                      No verified reviews recorded yet
+                      {t('cardModal.noReviewsYet')}
                     </h5>
-                    <p className="text-xs text-slate-500 max-w-sm mx-auto">
-                      Be the first cardholder to submit real-world feedback on approval odds, reward speed, and customer service.
-                    </p>
                   </div>
                 ) : (
                   <div className="space-y-3">
@@ -591,7 +593,7 @@ export const CardDetailModal: React.FC<CardDetailModalProps> = ({
                             <span className="text-[11px] text-slate-500">• {rev.location}</span>
                             {rev.verifiedUser && (
                               <span className="px-2 py-0.2 rounded text-[10px] font-semibold bg-emerald-100 text-emerald-800">
-                                Verified Cardholder
+                                {t('cardModal.verifiedUser')}
                               </span>
                             )}
                           </div>
@@ -612,7 +614,7 @@ export const CardDetailModal: React.FC<CardDetailModalProps> = ({
                         </p>
 
                         <div className="flex items-center gap-3 text-[10px] text-slate-400 font-mono pt-1">
-                          <span>Holding: {rev.holdingDuration}</span>
+                          <span>{t('cardModal.holdingPeriod')}: {rev.holdingDuration}</span>
                           <span>•</span>
                           <span>{rev.date}</span>
                         </div>
@@ -626,17 +628,14 @@ export const CardDetailModal: React.FC<CardDetailModalProps> = ({
               <div className="bg-slate-50 p-5 rounded-2xl border border-slate-200/80 space-y-4">
                 <div className="space-y-1">
                   <h4 className="text-sm font-bold text-slate-900">
-                    Have you used this card or debit account? Share your feedback
+                    {t('cardModal.submitReview')}
                   </h4>
-                  <p className="text-xs text-slate-500">
-                    Help fellow Indian consumers understand real-world reward crediting times, lounge rejection experiences, or customer support responsiveness.
-                  </p>
                 </div>
 
                 {submitSuccess ? (
                   <div className="p-4 bg-emerald-50 rounded-xl border border-emerald-200 text-xs text-emerald-900 font-semibold flex items-center gap-2">
                     <ShieldCheck className="w-4 h-4 text-emerald-600 shrink-0" />
-                    <span>✓ Thank you! Your verified cardholder feedback has been recorded and published.</span>
+                    <span>✓ {t('cardModal.successFeedback')}</span>
                   </div>
                 ) : (
                   <form onSubmit={handleReviewSubmit} className="space-y-3.5">
@@ -648,7 +647,7 @@ export const CardDetailModal: React.FC<CardDetailModalProps> = ({
 
                     <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
                       <div>
-                        <label className="text-[11px] font-bold text-slate-600 block mb-1">Your Name</label>
+                        <label className="text-[11px] font-bold text-slate-600 block mb-1">{t('cardModal.yourName')}</label>
                         <input
                           type="text"
                           value={newAuthor}
@@ -659,7 +658,7 @@ export const CardDetailModal: React.FC<CardDetailModalProps> = ({
                       </div>
 
                       <div>
-                        <label className="text-[11px] font-bold text-slate-600 block mb-1">City / Location</label>
+                        <label className="text-[11px] font-bold text-slate-600 block mb-1">{t('cardModal.yourCity')}</label>
                         <input
                           type="text"
                           value={newLocation}
@@ -670,7 +669,7 @@ export const CardDetailModal: React.FC<CardDetailModalProps> = ({
                       </div>
 
                       <div>
-                        <label className="text-[11px] font-bold text-slate-600 block mb-1">Holding Duration</label>
+                        <label className="text-[11px] font-bold text-slate-600 block mb-1">{t('cardModal.holdingPeriod')}</label>
                         <select
                           value={newDuration}
                           onChange={(e) => setNewDuration(e.target.value)}
@@ -685,7 +684,7 @@ export const CardDetailModal: React.FC<CardDetailModalProps> = ({
                     </div>
 
                     <div>
-                      <label className="text-[11px] font-bold text-slate-600 block mb-1">Your Rating</label>
+                      <label className="text-[11px] font-bold text-slate-600 block mb-1">Rating</label>
                       <div className="flex items-center gap-1.5">
                         {[1, 2, 3, 4, 5].map((star) => (
                           <button
@@ -704,7 +703,7 @@ export const CardDetailModal: React.FC<CardDetailModalProps> = ({
                     </div>
 
                     <div>
-                      <label className="text-[11px] font-bold text-slate-600 block mb-1">Authentic Experience & Remarks</label>
+                      <label className="text-[11px] font-bold text-slate-600 block mb-1">{t('cardModal.yourExperience')}</label>
                       <textarea
                         rows={3}
                         value={newComment}
@@ -714,12 +713,15 @@ export const CardDetailModal: React.FC<CardDetailModalProps> = ({
                       />
                     </div>
 
-                    <button
-                      type="submit"
-                      className="px-4 py-2 bg-slate-900 hover:bg-slate-800 text-white font-bold text-xs rounded-xl transition-colors cursor-pointer"
-                    >
-                      Submit Verified Feedback
-                    </button>
+                    <div className="flex justify-end">
+                      <button
+                        type="submit"
+                        className="px-5 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs transition-colors shadow-xs cursor-pointer flex items-center gap-1.5"
+                      >
+                        <ShieldCheck className="w-3.5 h-3.5" />
+                        <span>{t('cardModal.shareFeedback')}</span>
+                      </button>
+                    </div>
                   </form>
                 )}
               </div>

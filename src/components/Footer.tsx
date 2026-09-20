@@ -1,12 +1,15 @@
 import React from 'react';
-import { ShieldCheck, Lock } from 'lucide-react';
+import { ShieldCheck } from 'lucide-react';
 import { PerkWiseLogo } from './PerkWiseLogo';
+import { useTranslation } from '../i18n/useTranslation';
 
 interface FooterProps {
-  onNavigate: (tab: 'library' | 'card-guide' | 'checklist' | 'calculator' | 'life-operations' | 'provenance' | 'bookmarks' | 'admin') => void;
+  onNavigate: (tab: 'library' | 'card-guide' | 'checklist' | 'calculator' | 'life-operations' | 'provenance' | 'bookmarks') => void;
 }
 
 export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
+  const { t } = useTranslation();
+
   return (
     <footer className="bg-slate-950 text-slate-300 border-t border-slate-800 pt-12 pb-16 px-4 sm:px-6 lg:px-8">
       <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-8 mb-12">
@@ -17,53 +20,54 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
             <span className="font-extrabold text-lg text-white tracking-tight">PerkWise India 🇮🇳</span>
           </div>
           <p className="text-xs text-slate-400 max-w-md leading-relaxed">
-            India’s unbiased consumer awareness repository and mathematical personal finance compendium. 
-            Designed to optimize daily life operations, eliminate unnecessary fees, unlock member privileges, 
-            and elevate financial literacy across all strata of consumers.
+            {t('footer.mission')}
           </p>
           <div className="flex items-center gap-2 text-[11px] text-emerald-400 font-medium">
             <ShieldCheck className="w-3.5 h-3.5" />
-            <span>RBI Master Directions &amp; DGCA Passenger Charter Aligned</span>
+            <span>{t('footer.rbiAligned')}</span>
           </div>
         </div>
 
         {/* Quick Links */}
         <div className="space-y-2.5">
-          <h4 className="text-xs font-bold uppercase tracking-wider text-white">Interactive Modules</h4>
+          <h4 className="text-xs font-bold uppercase tracking-wider text-white">
+            {t('footer.interactiveModules')}
+          </h4>
           <ul className="space-y-2 text-xs text-slate-400">
             <li>
               <button onClick={() => onNavigate('card-guide')} className="hover:text-emerald-400 transition-colors cursor-pointer">
-                Credit &amp; Debit Card Buying Guide
+                {t('nav.cardGuide')}
               </button>
             </li>
             <li>
               <button onClick={() => onNavigate('calculator')} className="hover:text-emerald-400 transition-colors cursor-pointer">
-                Spend &amp; Net ROI Simulator
+                {t('calculator.title')}
               </button>
             </li>
             <li>
               <button onClick={() => onNavigate('life-operations')} className="hover:text-emerald-400 transition-colors cursor-pointer">
-                Beyond Cards: Daily Life Operations
+                Beyond Cards: {t('nav.financeHacks')}
               </button>
             </li>
             <li>
-              <button onClick={() => onNavigate('admin')} className="hover:text-purple-400 transition-colors cursor-pointer flex items-center gap-1.5 text-slate-400">
-                <Lock className="w-3 h-3 text-purple-400" />
-                <span>Admin Console &amp; Publishing</span>
+              <button onClick={() => onNavigate('library')} className="hover:text-emerald-400 transition-colors cursor-pointer">
+                {t('nav.dealsHub')}
               </button>
             </li>
           </ul>
         </div>
 
-        {/* Life Facets */}
+        {/* Life Facets / Finance Hacks */}
         <div className="space-y-2.5">
-          <h4 className="text-xs font-bold uppercase tracking-wider text-white">Key Life Facets</h4>
+          <h4 className="text-xs font-bold uppercase tracking-wider text-white">
+            {t('footer.keyLifeFacets')}
+          </h4>
           <ul className="space-y-2 text-xs text-slate-400">
-            <li><span>Hotel Loyalty & 50% Dining (Accor/Marriott)</span></li>
-            <li><span>1% Debit Card Cashbacks & High-Yield Banking</span></li>
-            <li><span>Government Social Security (PMJJBY/PMSBY)</span></li>
-            <li><span>Grocery Passes & Delivery Fee Insulation</span></li>
-            <li><span>Zero Forex Currency & International Travel</span></li>
+            <li><span>{t('financeHacks.hotelLoyalty')}</span></li>
+            <li><span>{t('financeHacks.debitCards')}</span></li>
+            <li><span>{t('financeHacks.govtSchemes')}</span></li>
+            <li><span>{t('financeHacks.groceryFood')}</span></li>
+            <li><span>{t('financeHacks.fuelTransit')}</span></li>
           </ul>
         </div>
       </div>
@@ -71,12 +75,10 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
       {/* Statutory Disclaimer & Copyright */}
       <div className="max-w-7xl mx-auto pt-8 border-t border-slate-900 flex flex-col sm:flex-row items-center justify-between gap-4 text-[11px] text-slate-500">
         <p className="text-center sm:text-left">
-          <strong>Statutory Disclaimer:</strong> PerkWise India is an independent consumer education initiative. 
-          Information is compiled from publicly verified bank disclosures, RBI circulars, and merchant terms. 
-          We do not solicit financial deposits or credit card applications directly.
+          <strong>{t('footer.disclaimerTitle')}:</strong> {t('footer.disclaimerText')}
         </p>
         <div className="flex items-center gap-1 shrink-0 text-slate-400">
-          <span>Crafted for Indian Consumers</span>
+          <span>{t('footer.craftedFor')}</span>
         </div>
       </div>
     </footer>

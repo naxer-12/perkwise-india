@@ -1,16 +1,17 @@
 import React, { useMemo } from 'react';
 import { 
   ArrowRight,
-  CreditCard
+  CreditCard,
+  Layers
 } from 'lucide-react';
 import { CATEGORIES_DATA } from '../data/categoriesData';
 import { ARTICLES_DATA } from '../data/articlesData';
 import { SOURCES_REGISTRY } from '../data/sourcesData';
 import { CREDIT_CARD_SEGMENTS, CREDIT_CARDS_DATA } from '../data/creditCardsData';
 import type { LifeCategory, SiteConfig } from '../types';
-
 import { CategoryIcon } from './CategoryIcon';
-import { Layers } from 'lucide-react';
+import { useTranslation } from '../i18n/useTranslation';
+import { getLocalizedCategory } from '../i18n/contentTranslations';
 
 interface HeroProps {
   selectedCategory: LifeCategory | 'all';
@@ -28,6 +29,8 @@ export const Hero: React.FC<HeroProps> = ({
   siteConfig,
   cardsCount
 }) => {
+  const { t, language } = useTranslation();
+
   const categoryCounts = useMemo(() => {
     const counts: Record<string, number> = {};
     for (const article of ARTICLES_DATA) {
@@ -46,7 +49,7 @@ export const Hero: React.FC<HeroProps> = ({
             <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
             <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
           </span>
-          <span>Empirically audited reference sheets backed by official RBI Master Directions, NPCI mandates, Income Tax sections, and verified bank schedules.</span>
+          <span>{t('hero.regulatoryBadge')}</span>
         </div>
 
         {/* Concise, Powerful Headline */}
@@ -55,9 +58,9 @@ export const Hero: React.FC<HeroProps> = ({
             siteConfig.heroHeadline
           ) : (
             <>
-              Stop Leaving Money on the Table.{' '}
+              {t('hero.headlinePart1')}{' '}
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-600 via-teal-600 to-slate-900">
-                Every Rupee, Loyalty Perk &amp; Scheme Optimized.
+                {t('hero.headlineGradient')}
               </span>
             </>
           )}
@@ -65,8 +68,7 @@ export const Hero: React.FC<HeroProps> = ({
 
         {/* Human-Centered Subtext */}
         <p className="max-w-3xl mx-auto text-sm sm:text-base text-slate-600 leading-relaxed font-normal">
-          {siteConfig?.heroSubheadline || 
-            "India’s unbiased consumer awareness repository and mathematical personal finance compendium. Designed to optimize daily life operations, eliminate unnecessary fees, unlock member privileges, and elevate financial literacy across all strata of consumers."}
+          {siteConfig?.heroSubheadline || t('hero.subheadline')}
         </p>
 
         {/* 1-Click Action Button */}
@@ -76,7 +78,7 @@ export const Hero: React.FC<HeroProps> = ({
             className="group px-6 py-3 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white text-xs sm:text-sm font-semibold shadow-xs flex items-center gap-2 transition-all cursor-pointer hover:shadow-sm"
           >
             <CreditCard className="w-4 h-4 transition-transform duration-200 group-hover:scale-115 group-hover:rotate-6" />
-            <span>Explore Credit &amp; Debit Card Buying Guide</span>
+            <span>{t('hero.exploreGuideCta')}</span>
             <ArrowRight className="w-4 h-4 transition-transform duration-200 group-hover:translate-x-1" />
           </button>
         </div>
@@ -88,31 +90,24 @@ export const Hero: React.FC<HeroProps> = ({
               <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
               <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
             </span>
-            <span className="text-slate-900 font-semibold">{SOURCES_REGISTRY.length}</span> Verified Sources
+            <span className="text-slate-900 font-semibold">{SOURCES_REGISTRY.length}</span> {t('common.verifiedSources')}
           </div>
           <span className="hidden sm:inline text-slate-300">•</span>
           <div className="flex items-center gap-1.5">
-            <span className="text-emerald-700 font-semibold">{cardsCount || CREDIT_CARDS_DATA.length}</span> Audited Cards &amp; Deals
+            <span className="text-emerald-700 font-semibold">{cardsCount || CREDIT_CARDS_DATA.length}</span> {t('common.auditedCards')}
           </div>
           <span className="hidden sm:inline text-slate-300">•</span>
           <div className="flex items-center gap-1.5">
-            <span className="text-slate-900 font-semibold">{CREDIT_CARD_SEGMENTS.length}</span> Buying Segments
-          </div>
-          <span className="hidden sm:inline text-slate-300">•</span>
-          <div className="flex items-center gap-1.5">
-            <span className="text-slate-900 font-semibold">{CATEGORIES_DATA.length}</span> Life Facets
+            <span className="text-slate-900 font-semibold">{CREDIT_CARD_SEGMENTS.length}</span> {t('common.buyingSegments')}
           </div>
           <span className="hidden sm:inline text-slate-300">•</span>
           <div className="flex items-center gap-1.5 text-emerald-700 font-semibold">
-            100% Free &amp; Unbiased
+            100% {t('common.independent')}
           </div>
         </div>
 
-        {/* Scannable, Compact Category Chips with Animated Icons & Counts */}
+        {/* Scannable Category Chips */}
         <div className="pt-4 border-t border-slate-100">
-          <div className="text-[11px] font-semibold text-slate-400 uppercase tracking-wider mb-2.5">
-            Filter Knowledge Base by Daily Operation Category:
-          </div>
           <div className="flex flex-wrap items-center justify-center gap-1.5 max-w-4xl mx-auto">
             <button
               onClick={() => setSelectedCategory('all')}
@@ -123,7 +118,7 @@ export const Hero: React.FC<HeroProps> = ({
               }`}
             >
               <Layers className={`w-3.5 h-3.5 transition-transform duration-200 group-hover:scale-115 ${selectedCategory === 'all' ? 'text-emerald-400' : 'text-slate-500 group-hover:text-slate-900'}`} />
-              <span>All Categories</span>
+              <span>{t('categories.all')}</span>
               <span className={`text-[10px] px-1.5 py-0.2 rounded-full font-semibold ${
                 selectedCategory === 'all' ? 'bg-slate-800 text-slate-200' : 'bg-slate-200 text-slate-600'
               }`}>
@@ -131,6 +126,7 @@ export const Hero: React.FC<HeroProps> = ({
               </span>
             </button>
             {CATEGORIES_DATA.map((cat) => {
+              const localizedCat = getLocalizedCategory(cat, language);
               const isSelected = selectedCategory === cat.id;
               const count = categoryCounts[cat.id] || 0;
               return (
@@ -147,7 +143,7 @@ export const Hero: React.FC<HeroProps> = ({
                     category={cat.id} 
                     className={`w-3.5 h-3.5 ${isSelected ? 'text-emerald-400' : 'text-slate-500 group-hover:text-slate-900'}`} 
                   />
-                  <span>{cat.shortName}</span>
+                  <span>{localizedCat.shortName}</span>
                   <span className={`text-[10px] px-1.5 py-0.2 rounded-full font-semibold ${
                     isSelected ? 'bg-slate-800 text-slate-200' : 'bg-slate-200 text-slate-600'
                   }`}>

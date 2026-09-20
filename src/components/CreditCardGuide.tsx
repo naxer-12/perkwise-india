@@ -22,6 +22,9 @@ import type { CreditCard, ReviewItem } from '../types';
 import { CardVisual } from './CardVisual';
 import { CardDetailModal } from './CardDetailModal';
 
+import { useTranslation } from '../i18n/useTranslation';
+import { getLocalizedCard, getLocalizedRewardChip, getLocalizedCardCap } from '../i18n/contentTranslations';
+
 interface CreditCardGuideProps {
   onGoToChecklist: (card?: CreditCard) => void;
   onSelectCardForCalculator?: (cardName: string) => void;
@@ -88,82 +91,34 @@ function loadReviewsForCard(cardId: string, baseReviews: ReviewItem[]): ReviewIt
   }
 }
 
-function getFeeChip(card: CreditCard): string {
+function getFeeChip(card: CreditCard, ltfText = '₹0 (LTF)', waivedPrefix = 'Waived on'): string {
   if (card.annualFee === 0 || card.feeWaiverSpend === 'Lifetime Free') {
-    return '₹0 (LTF)';
+    return ltfText;
   }
   if (typeof card.feeWaiverSpend === 'number') {
     const waiverLakhs = (card.feeWaiverSpend / 100000).toFixed(1).replace('.0', '');
-    return `₹${card.annualFee.toLocaleString('en-IN')} (Waived on ₹${waiverLakhs}L)`;
+    return `₹${card.annualFee.toLocaleString('en-IN')} (${waivedPrefix} ₹${waiverLakhs}L)`;
   }
   return `₹${card.annualFee.toLocaleString('en-IN')}`;
 }
 
-function getRewardChip(card: CreditCard): string {
-  const text = card.acceleratedRewardRate;
-  if (text.includes('33.3%')) return '33.3% Travel (SmartBuy)';
-  if (text.includes('25%')) return '25% Airtel / 10% Utility';
-  if (text.includes('10% NeuCoins')) return '10% NeuCoins on Tata Apps';
-  if (text.includes('10% cashback on dining') || text.includes('10% cashback on Swiggy')) return '10% Food & Grocery';
-  if (text.includes('7.25%')) return '7.25% Fuel Savings';
-  if (text.includes('5% savings on HPCL')) return '5.0% Fuel Savings';
-  if (text.includes('10% reward points on PhonePe')) return '10% on PhonePe & Bills';
-  if (text.includes('Flat 2% cashback on scan & pay')) return '2% Flat on UPI QR';
-  if (text.includes('1.5% NeuCoins on UPI')) return '1.5% UPI / 10% Tata';
-  if (text.includes('5% flat cashback on ALMOST ALL ONLINE')) return '5% Flat Online Cashback';
-  if (text.includes('5% unlimited cashback')) return '5% Uncapped Cashback';
-  if (text.includes('5% cashback')) return '5% Accelerated Cashback';
-  if (text.includes('Zero Forex Markup') && card.forexMarkup === 0) return '0% Forex + Travel Rewards';
-  if (text.includes('5 EDGE Miles')) return 'Up to 10% Air Miles';
-  if (text.includes('1% CashBack on Wallet Reloads')) return '1% Bill Pay & Wallets';
-  if (text.includes('Buy 1 Get 1 Free on Movie Tickets up to ₹250')) return 'BOGO Movies + 16 Lounges';
-  if (text.includes('0% Foreign Currency Markup on international POS')) return '0% Forex + 2% Fi Coins';
-  if (text.includes('Flat 1% to 2% assured Jewels')) return '1-2% Jewels UPI Cashback';
-  if (text.includes('Buy 1 Get 1 Free on BookMyShow up to ₹500')) return 'BOGO ₹500 IMAX & Lounges';
-  if (text.includes('5X SBI Rewardz points on international usage')) return '8 Lounges + 5X Rewardz';
-  return card.acceleratedRewardRate.split('(')[0].trim().slice(0, 26);
-}
-
-function getCardCapInfo(card: CreditCard): string {
-  switch (card.id) {
-    case 'hdfc-millennia-debit':
-      return 'Cap: ₹400/mo (₹4.8k/yr)';
-    case 'idfc-wealth-debit':
-      return 'Cap: ₹500/mo (Movies)';
-    case 'fi-federal-debit':
-      return 'Cap: Uncapped Forex';
-    case 'jupiter-csb-edge-debit':
-      return 'Cap: ₹500/mo (Jewels)';
-    case 'indusind-exclusive-debit':
-      return 'Cap: ₹500/mo (Movies)';
-    case 'sbi-platinum-debit':
-      return 'Cap: 8 Lounges / Year';
-    case 'phonepe-sbi-select-black':
-      return 'Cap: ₹1,500/mo (PhonePe)';
-    case 'sbi-cashback':
-      return 'Cap: ₹5,000/mo';
-    case 'hdfc-millennia':
-      return 'Cap: ₹1,000/mo';
-    case 'amazon-pay-icici':
-      return 'Cap: Unlimited';
-    case 'airtel-axis':
-      return 'Cap: ₹250+₹250/mo';
-    case 'hdfc-infinia-metal':
-      return 'Cap: 15k pts/mo';
-    default:
-      return 'Cap: Standard Terms';
-  }
-}
 
 export const CreditCardGuide: React.FC<CreditCardGuideProps> = ({ 
   onGoToChecklist, 
   highlightCardId,
   cards: propCards 
 }) => {
+  const { t, language } = useTranslation();
   const [selectedSegmentId, setSelectedSegmentId] = useState<string>('all');
   const [filterType, setFilterType] = useState<'all' | 'credit' | 'debit'>('all');
   const [selectedCardForModal, setSelectedCardForModal] = useState<CreditCard | null>(null);
-  const [cards, setCards] = useState<CreditCard[]>(() => propCards || getEffectiveCards());
+  const [cards, setCards] = useState<CreditCard[]>(() => {
+    const initial = propCards || getEffectiveCards();
+    return initial.map(card => ({
+      ...card,
+      reviews: loadReviewsForCard(card.id, card.reviews)
+    }));
+  });
 
   // Keep cards in sync with props or storage updates
   useEffect(() => {
@@ -185,16 +140,6 @@ export const CreditCardGuide: React.FC<CreditCardGuideProps> = ({
     };
     window.addEventListener('perkwise_cards_updated', handleCardsUpdated);
     return () => window.removeEventListener('perkwise_cards_updated', handleCardsUpdated);
-  }, []);
-
-  // Sync reviews from localStorage on initial hydration
-  useEffect(() => {
-    setCards((prevCards) =>
-      prevCards.map((card) => ({
-        ...card,
-        reviews: loadReviewsForCard(card.id, card.reviews)
-      }))
-    );
   }, []);
 
   // Handle highlightCardId if triggered from search or external link
@@ -267,16 +212,16 @@ export const CreditCardGuide: React.FC<CreditCardGuideProps> = ({
       {/* Section Header */}
       <div className="space-y-3 max-w-3xl">
         <h1 className="text-3xl sm:text-4xl font-extrabold text-slate-900 tracking-tight">
-          Credit & Debit Card Buying Guide
+          {t('cardGuide.title')}
         </h1>
 
         <div className="bg-amber-50/70 border border-amber-200/80 rounded-xl px-3.5 py-2 text-xs text-slate-700 space-y-0.5">
           <div className="font-bold text-amber-950 flex items-center gap-1.5">
             <span className="w-1.5 h-1.5 rounded-full bg-amber-500 inline-block" />
-            <span>Avoid Rejections: Inspect Card Pre-Requisites First</span>
+            <span>{t('cardGuide.avoidRejectionsTitle')}</span>
           </div>
           <p className="text-slate-600 leading-relaxed">
-            Applying without verifying salary slips, 6-month hard inquiries, or 90-day bank cooling-off windows triggers automated rejections. Click any card to review prerequisite steps before submitting personal data.
+            {t('cardGuide.avoidRejectionsDesc')}
           </p>
         </div>
 
@@ -291,7 +236,7 @@ export const CreditCardGuide: React.FC<CreditCardGuideProps> = ({
                   : 'text-slate-600 hover:text-slate-900'
               }`}
             >
-              All Cards ({cards.length})
+              {t('cardGuide.filterAll')} ({cards.length})
             </button>
             <button
               onClick={() => { setFilterType('credit'); if (selectedSegmentId === 'high-yield-debit') setSelectedSegmentId('all'); }}
@@ -301,7 +246,7 @@ export const CreditCardGuide: React.FC<CreditCardGuideProps> = ({
                   : 'text-slate-600 hover:text-slate-900'
               }`}
             >
-              Credit Cards (18)
+              {t('cardGuide.filterCredit')} ({cards.filter(c => c.cardType !== 'debit').length})
             </button>
             <button
               onClick={() => { setFilterType('debit'); setSelectedSegmentId('all'); }}
@@ -311,13 +256,13 @@ export const CreditCardGuide: React.FC<CreditCardGuideProps> = ({
                   : 'text-slate-600 hover:text-slate-900'
               }`}
             >
-              High-Yield Debit Deals (6)
+              {t('cardGuide.filterDebit')} ({cards.filter(c => c.cardType === 'debit').length})
             </button>
           </div>
 
           <div className="text-xs text-slate-500 font-medium px-2 py-1 flex items-center gap-1.5">
             <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 inline-block" />
-            <span>Click any card to view detailed returns fact sheet and application steps</span>
+            <span>{t('cardGuide.clickCardHint')}</span>
           </div>
         </div>
       </div>
@@ -333,12 +278,25 @@ export const CreditCardGuide: React.FC<CreditCardGuideProps> = ({
           }`}
         >
           <Layers className="w-3.5 h-3.5 transition-transform duration-200 group-hover:scale-115" />
-          <span>All Segments</span>
+          <span>{t('cardGuide.allSegments')}</span>
         </button>
 
         {CREDIT_CARD_SEGMENTS.map((seg) => {
           const isSelected = selectedSegmentId === seg.id;
-          const label = SEGMENT_TAB_LABELS[seg.id] || seg.segmentTitle;
+          const getSegmentLabel = (segId: string): string => {
+            switch (segId) {
+              case 'entry-level': return t('cardGuide.entryLevel');
+              case 'cashback-online': return t('cardGuide.cashbackDaily');
+              case 'utilities-hyperlocal': return t('categories.utilities');
+              case 'travel-forex': return t('cardGuide.travelHotels');
+              case 'fuel-commute': return t('cardGuide.fuelCommute');
+              case 'rupay-upi': return 'RuPay UPI';
+              case 'ultra-premium': return t('cardGuide.superPremium');
+              case 'high-yield-debit': return t('cardGuide.filterDebit');
+              default: return SEGMENT_TAB_LABELS[segId] || seg.segmentTitle;
+            }
+          };
+          const label = getSegmentLabel(seg.id);
           return (
             <button
               key={seg.id}
@@ -371,10 +329,11 @@ export const CreditCardGuide: React.FC<CreditCardGuideProps> = ({
       {/* Mintlify Blog-Style Grid of Cards */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {filteredCards.map((card) => {
+          const localizedCard = getLocalizedCard(card, language);
           const isDebit = card.cardType === 'debit';
-          const feeChip = getFeeChip(card);
-          const rewardChip = getRewardChip(card);
-          const capChip = getCardCapInfo(card);
+          const feeChip = getFeeChip(card, t('cardGuide.noAnnualFee'), t('cardGuide.waivable'));
+          const rewardChip = getLocalizedRewardChip(card.acceleratedRewardRate, language);
+          const capChip = getLocalizedCardCap(card.id, language);
           const cardReviews = card.reviews || [];
           const hasReviews = cardReviews.length > 0;
           const avgRating = hasReviews
@@ -406,7 +365,7 @@ export const CreditCardGuide: React.FC<CreditCardGuideProps> = ({
                           ? 'bg-purple-50 text-purple-800 border-purple-200' 
                           : 'bg-slate-100 text-slate-700 border-slate-200'
                       }`}>
-                        {isDebit ? 'Debit Deal' : card.bank}
+                        {isDebit ? t('cardGuide.filterDebit') : card.bank}
                       </span>
                       <span className="text-[10px] font-semibold px-2 py-0.5 rounded-md bg-slate-50 text-slate-600 border border-slate-200">
                         {card.network}
@@ -428,7 +387,7 @@ export const CreditCardGuide: React.FC<CreditCardGuideProps> = ({
 
                   {/* Verdict / Why This Card Wins */}
                   <p className="text-xs text-slate-600 line-clamp-2 leading-relaxed font-normal">
-                    {card.whyThisCardWins}
+                    {localizedCard.whyThisCardWins}
                   </p>
                 </div>
 
@@ -439,7 +398,7 @@ export const CreditCardGuide: React.FC<CreditCardGuideProps> = ({
                       {rewardChip}
                     </span>
                     <span className="text-slate-700 bg-slate-100 px-2 py-0.5 rounded-md font-medium">
-                      Fee: {feeChip}
+                      {t('cardGuide.annualFee')}: {feeChip}
                     </span>
                     <span className="text-slate-600 bg-slate-50 border border-slate-200 px-2 py-0.5 rounded-md font-medium">
                       {capChip}
@@ -451,19 +410,18 @@ export const CreditCardGuide: React.FC<CreditCardGuideProps> = ({
                     {hasReviews ? (
                       <div className="flex items-center gap-1 text-amber-600 font-semibold group/rev">
                         <Star className="w-3 h-3 fill-amber-400 text-amber-400 transition-transform duration-200 group-hover/rev:scale-125" />
-                        <span>{avgRating} ({cardReviews.length} verified cardholders)</span>
+                        <span>{avgRating} ({cardReviews.length})</span>
                       </div>
                     ) : (
                       <div className="flex items-center gap-1.5">
                         <span className="px-1.5 py-0.2 rounded-sm text-[10px] font-bold bg-amber-100 text-amber-800 border border-amber-300">
-                          New
+                          {t('common.audited')}
                         </span>
-                        <span className="text-slate-500 text-[11px]">No verified reviews yet</span>
                       </div>
                     )}
 
                     <span className="text-emerald-700 font-semibold group-hover:translate-x-1 transition-transform duration-200 flex items-center gap-0.5">
-                      <span>Inspect</span>
+                      <span>{t('common.viewDetails')}</span>
                       <ChevronRight className="w-3 h-3 group-hover:translate-x-0.5 transition-transform duration-200" />
                     </span>
                   </div>
@@ -481,7 +439,7 @@ export const CreditCardGuide: React.FC<CreditCardGuideProps> = ({
                     onClick={() => setSelectedCardForModal(card)}
                     className="font-bold text-slate-700 hover:text-emerald-700 text-xs flex items-center gap-1 transition-colors cursor-pointer"
                   >
-                    <span>Fact Sheet</span>
+                    <span>{t('cardModal.factSheet')}</span>
                     <ChevronRight className="w-3 h-3" />
                   </button>
                   <span className="text-slate-300">•</span>
@@ -491,7 +449,7 @@ export const CreditCardGuide: React.FC<CreditCardGuideProps> = ({
                     className="font-bold text-emerald-700 hover:text-emerald-800 text-xs flex items-center gap-1 transition-colors cursor-pointer"
                     title={`Check prerequisites and application steps for ${card.name}`}
                   >
-                    <span>Pre-Requisites</span>
+                    <span>{t('cardGuide.applyChecklist')}</span>
                     <ArrowRight className="w-3 h-3" />
                   </button>
                 </div>
@@ -504,7 +462,7 @@ export const CreditCardGuide: React.FC<CreditCardGuideProps> = ({
                   title={`Direct application on ${card.bank}`}
                 >
                   <Zap className="w-3 h-3 text-emerald-600" />
-                  <span>Apply</span>
+                  <span>{t('common.applyNow')}</span>
                   <ExternalLink className="w-2.5 h-2.5 text-slate-400" />
                 </a>
               </div>
@@ -518,13 +476,13 @@ export const CreditCardGuide: React.FC<CreditCardGuideProps> = ({
         <div className="space-y-2 max-w-xl">
           <div className="inline-flex items-center gap-1.5 text-xs text-emerald-400 font-semibold">
             <ShieldCheck className="w-4 h-4" />
-            <span>Avoid Unnecessary Rejections & Hard Inquiries</span>
+            <span>{t('cardGuide.avoidRejectionsTitle')}</span>
           </div>
           <h3 className="text-xl sm:text-2xl font-bold">
-            Ready to Apply? Inspect Card-Specific Pre-Requisite Steps First.
+            {t('cardGuide.avoidRejectionsTitle')}
           </h3>
           <p className="text-xs sm:text-sm text-slate-300 leading-relaxed font-normal">
-            Applying without preparing salary slips, checking 6-month hard inquiries, or adhering to bank 90-day cooling-off windows leads to automatic algorithmic rejections. Review prerequisites on your chosen card before submitting personal data.
+            {t('cardGuide.avoidRejectionsDesc')}
           </p>
         </div>
 
@@ -532,7 +490,7 @@ export const CreditCardGuide: React.FC<CreditCardGuideProps> = ({
           onClick={() => onGoToChecklist(filteredCards[0] || cards[0])}
           className="shrink-0 px-6 py-3.5 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold text-sm transition-all transform hover:scale-105 shadow-lg shadow-emerald-500/20 flex items-center gap-2 cursor-pointer"
         >
-          <span>Launch Pre-Requisites Guide</span>
+          <span>{t('cardGuide.applyChecklist')}</span>
           <ArrowRight className="w-4 h-4" />
         </button>
       </div>

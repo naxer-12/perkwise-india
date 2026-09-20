@@ -17,6 +17,8 @@ import {
 } from 'lucide-react';
 import { LIFE_OPERATIONS_FACETS } from '../data/lifeOperationsData';
 import type { LifeCategory } from '../types';
+import { useTranslation } from '../i18n/useTranslation';
+import { getLocalizedFacet } from '../i18n/contentTranslations';
 
 interface LifeOperationsHubProps {
   onSelectArticleByCategory?: (category: LifeCategory) => void;
@@ -25,9 +27,11 @@ interface LifeOperationsHubProps {
 export const LifeOperationsHub: React.FC<LifeOperationsHubProps> = ({
   onSelectArticleByCategory
 }) => {
+  const { t, language } = useTranslation();
   const [selectedFacetId, setSelectedFacetId] = useState<string>(LIFE_OPERATIONS_FACETS[0].id);
 
-  const activeFacet = LIFE_OPERATIONS_FACETS.find(f => f.id === selectedFacetId) || LIFE_OPERATIONS_FACETS[0];
+  const rawFacet = LIFE_OPERATIONS_FACETS.find(f => f.id === selectedFacetId) || LIFE_OPERATIONS_FACETS[0];
+  const activeFacet = getLocalizedFacet(rawFacet, language);
 
   const getFacetIcon = (cat: LifeCategory) => {
     switch (cat) {
@@ -50,15 +54,13 @@ export const LifeOperationsHub: React.FC<LifeOperationsHubProps> = ({
       <div className="text-center max-w-3xl mx-auto space-y-3">
         <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-emerald-100 text-emerald-800 border border-emerald-300">
           <Compass className="w-3.5 h-3.5" />
-          <span>Beyond Credit Cards: Holistic Daily Life Optimization</span>
+          <span>{t('financeHacks.badge')}</span>
         </div>
         <h2 className="text-2xl sm:text-4xl font-extrabold text-slate-900 tracking-tight">
-          Ease Out Everyday Life Operations & Unlock Member Arbitrage
+          {t('financeHacks.title')}
         </h2>
         <p className="text-xs sm:text-sm text-slate-600 leading-relaxed">
-          Modern personal finance is not just credit cards. It is how you manage everyday friction points: 
-          telemedicine, 50% dining discounts, zero-delivery grocery passes, 1% debit cashbacks, 
-          and sovereign government micro-insurance schemes.
+          {t('financeHacks.subtitle')}
         </p>
       </div>
 
@@ -68,6 +70,7 @@ export const LifeOperationsHub: React.FC<LifeOperationsHubProps> = ({
           {LIFE_OPERATIONS_FACETS.map(facet => {
             const Icon = getFacetIcon(facet.category);
             const isSelected = facet.id === selectedFacetId;
+            const locFacet = getLocalizedFacet(facet, language);
             return (
               <button
                 key={facet.id}
@@ -79,7 +82,7 @@ export const LifeOperationsHub: React.FC<LifeOperationsHubProps> = ({
                 }`}
               >
                 <Icon className={`w-4 h-4 transition-transform duration-200 group-hover:scale-125 group-hover:-translate-y-0.5 ${isSelected ? 'text-emerald-600' : 'text-slate-400 group-hover:text-slate-700'}`} />
-                <span className="line-clamp-1 text-[11px]">{facet.title.split(':')[0].split(',')[0]}</span>
+                <span className="line-clamp-1 text-[11px]">{locFacet.shortTitle || locFacet.title.split(':')[0].split(',')[0]}</span>
               </button>
             );
           })}
@@ -93,10 +96,10 @@ export const LifeOperationsHub: React.FC<LifeOperationsHubProps> = ({
           <div className="max-w-4xl space-y-3">
             <div className="flex items-center gap-2">
               <span className="px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">
-                Daily Life Blueprint
+                {t('financeHacks.blueprintBanner')}
               </span>
               <span className="text-xs text-slate-400">
-                Average Annual Savings: <strong className="text-emerald-400 font-semibold">{activeFacet.averageAnnualSavings}</strong>
+                {t('financeHacks.avgAnnualSavings')}: <strong className="text-emerald-400 font-semibold">{activeFacet.averageAnnualSavings}</strong>
               </span>
             </div>
             <h3 className="text-xl sm:text-3xl font-extrabold tracking-tight">
@@ -113,7 +116,7 @@ export const LifeOperationsHub: React.FC<LifeOperationsHubProps> = ({
           <div className="p-4 rounded-2xl bg-rose-50/70 border border-rose-200/70 space-y-1.5">
             <div className="text-xs font-bold text-rose-900 uppercase tracking-wider flex items-center gap-1.5">
               <AlertCircle className="w-4 h-4 text-rose-600" />
-              <span>The Daily Consumer Friction Point</span>
+              <span>{t('financeHacks.dailyFrictionPoint')}</span>
             </div>
             <p className="text-xs text-rose-950/80 leading-relaxed font-medium">
               {activeFacet.dailyFrictionPoint}
@@ -123,7 +126,7 @@ export const LifeOperationsHub: React.FC<LifeOperationsHubProps> = ({
           <div className="p-4 rounded-2xl bg-emerald-50/70 border border-emerald-200/70 space-y-1.5">
             <div className="text-xs font-bold text-emerald-900 uppercase tracking-wider flex items-center gap-1.5">
               <Zap className="w-4 h-4 text-emerald-600 animate-pulse-subtle" />
-              <span>The PerkWise Smart Arbitrage Solution</span>
+              <span>{t('financeHacks.smartSolution')}</span>
             </div>
             <p className="text-xs text-emerald-950/80 leading-relaxed font-medium">
               {activeFacet.smartSolution}
@@ -134,9 +137,9 @@ export const LifeOperationsHub: React.FC<LifeOperationsHubProps> = ({
         {/* Top Programs / Schemes Breakdown */}
         <div className="px-6 sm:px-8 space-y-4">
           <h4 className="text-base font-bold text-slate-900 flex items-center gap-2">
-            <span>High-Impact Programs & Schemes</span>
+            <span>{t('financeHacks.highImpactPrograms')}</span>
             <span className="text-xs bg-slate-100 text-slate-700 px-2.5 py-0.5 rounded-full font-semibold border border-slate-200">
-              {activeFacet.topProgramsOrSchemes.length} Essential Options
+              {activeFacet.topProgramsOrSchemes.length} {t('financeHacks.essentialOptions')}
             </span>
           </h4>
 
@@ -150,7 +153,7 @@ export const LifeOperationsHub: React.FC<LifeOperationsHubProps> = ({
                   <div className="border-b border-slate-200 pb-2">
                     <h5 className="font-bold text-slate-900 text-sm">{prog.name}</h5>
                     <span className="text-[11px] font-semibold text-emerald-700 block mt-0.5">
-                      Cost: {prog.cost}
+                      {t('financeHacks.costLabel')}: {prog.cost}
                     </span>
                   </div>
 
@@ -165,7 +168,7 @@ export const LifeOperationsHub: React.FC<LifeOperationsHubProps> = ({
                 </div>
 
                 <div className="p-2.5 rounded-xl bg-amber-50/80 border border-amber-200/70 text-[11px] text-amber-900 font-medium">
-                  <strong>ROI & Break-even:</strong> {prog.breakEven}
+                  <strong>{t('financeHacks.roiAndBreakeven')}:</strong> {prog.breakEven}
                 </div>
               </div>
             ))}
@@ -176,7 +179,7 @@ export const LifeOperationsHub: React.FC<LifeOperationsHubProps> = ({
         <div className="px-6 sm:px-8 pb-8 space-y-3">
           <h4 className="text-sm font-bold text-slate-900 flex items-center gap-1.5">
             <CheckSquare className="w-4 h-4 text-emerald-600" />
-            <span>Immediate Steps to Take for This Facet:</span>
+            <span>{t('financeHacks.actionChecklist')}:</span>
           </h4>
           <div className="bg-slate-50 rounded-2xl p-4 border border-slate-200 space-y-2">
             {activeFacet.actionChecklist.map((step, idx) => (

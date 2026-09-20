@@ -14,6 +14,8 @@ import { ARTICLES_DATA } from '../data/articlesData';
 import { CATEGORIES_DATA } from '../data/categoriesData';
 import type { Article, LifeCategory } from '../types';
 import { CategoryIcon } from './CategoryIcon';
+import { useTranslation } from '../i18n/useTranslation';
+import { getLocalizedCategory, getLocalizedArticle } from '../i18n/contentTranslations';
 
 interface ResourceLibraryProps {
   selectedCategory: LifeCategory | 'all';
@@ -41,6 +43,7 @@ export const ResourceLibrary: React.FC<ResourceLibraryProps> = ({
   onSelectArticle,
   isBookmarksOnly = false
 }) => {
+  const { t, language } = useTranslation();
   const [selectedDifficulty, setSelectedDifficulty] = useState<string>('all');
 
   // Filter logic
@@ -83,17 +86,17 @@ export const ResourceLibrary: React.FC<ResourceLibraryProps> = ({
         <div>
           <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-emerald-50 text-emerald-800 border border-emerald-200/80 mb-2">
             <BookOpen className="w-3.5 h-3.5 text-emerald-600 animate-pulse-subtle" />
-            <span>{isBookmarksOnly ? 'Your Saved Reading List' : 'Actionable Consumer Library'}</span>
+            <span>{isBookmarksOnly ? t('nav.savedItems') : t('nav.dealsHub')}</span>
           </div>
           <h2 className="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">
             {isBookmarksOnly 
-              ? `Saved Fact Sheets (${filteredArticles.length})`
-              : 'Actionable Consumer Fact Sheets, Perks & Schemes'}
+              ? `${t('nav.savedItems')} (${filteredArticles.length})`
+              : t('nav.dealsHub')}
           </h2>
           <p className="text-xs sm:text-sm text-slate-600 mt-1 max-w-3xl leading-relaxed">
             {isBookmarksOnly 
               ? 'Fact sheets and statutory circular breakdowns you have saved for immediate execution.'
-              : 'Empirically audited reference sheets backed by official RBI Master Directions, NPCI mandates, Income Tax sections, and verified bank schedules.'}
+              : t('hero.regulatoryBadge')}
           </p>
         </div>
 
@@ -101,7 +104,7 @@ export const ResourceLibrary: React.FC<ResourceLibraryProps> = ({
         <div className="flex items-center gap-2 self-start md:self-auto">
           <span className="text-xs bg-white text-slate-700 px-3 py-1.5 rounded-xl font-semibold border border-slate-200/80 shadow-2xs flex items-center gap-1.5">
             <ShieldCheck className="w-3.5 h-3.5 text-emerald-600" />
-            <span>{filteredArticles.length} Verified {filteredArticles.length === 1 ? 'Sheet' : 'Sheets'}</span>
+            <span>{filteredArticles.length} {t('common.verifiedSheets')}</span>
           </span>
         </div>
       </div>
@@ -115,14 +118,14 @@ export const ResourceLibrary: React.FC<ResourceLibraryProps> = ({
             type="text"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            placeholder="Search guides, circular codes, statutory authorities, schemes..."
+            placeholder={t('common.searchPlaceholder')}
             className="w-full pl-9 pr-8 py-2 bg-white text-xs sm:text-sm text-slate-900 placeholder-slate-400 border border-slate-200/90 rounded-xl focus:outline-hidden focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 transition-all shadow-2xs"
           />
           {searchQuery && (
             <button
               onClick={() => setSearchQuery('')}
               className="absolute right-2.5 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 text-xs p-1 rounded-full hover:bg-slate-100 transition-colors cursor-pointer"
-              title="Clear search"
+              title={t('common.clear')}
             >
               <X className="w-3.5 h-3.5" />
             </button>
@@ -139,10 +142,10 @@ export const ResourceLibrary: React.FC<ResourceLibraryProps> = ({
               onChange={(e) => setSelectedDifficulty(e.target.value)}
               className="bg-transparent font-medium focus:outline-hidden text-slate-700 cursor-pointer"
             >
-              <option value="all">All Difficulty Levels</option>
-              <option value="beginner">Beginner</option>
-              <option value="intermediate">Intermediate</option>
-              <option value="advanced">Advanced</option>
+              <option value="all">{t('common.allDifficulties')}</option>
+              <option value="beginner">{t('common.beginner')}</option>
+              <option value="intermediate">{t('common.intermediate')}</option>
+              <option value="advanced">{t('common.advanced')}</option>
             </select>
           </div>
 
@@ -155,7 +158,7 @@ export const ResourceLibrary: React.FC<ResourceLibraryProps> = ({
               }}
               className="text-xs text-slate-500 hover:text-slate-800 bg-slate-100 hover:bg-slate-200 px-3 py-2 rounded-xl transition-colors cursor-pointer font-medium"
             >
-              Reset Filters
+              {t('common.resetFilters')}
             </button>
           )}
         </div>
@@ -173,7 +176,7 @@ export const ResourceLibrary: React.FC<ResourceLibraryProps> = ({
             }`}
           >
             <Layers className={`w-3.5 h-3.5 transition-transform duration-200 group-hover:scale-115 ${selectedCategory === 'all' ? 'text-emerald-400' : 'text-slate-400 group-hover:text-slate-700'}`} />
-            <span>All Categories</span>
+            <span>{t('categories.all')}</span>
             <span className={`text-[10px] px-1.5 py-0.2 rounded-full font-bold ${
               selectedCategory === 'all' ? 'bg-slate-700 text-white' : 'bg-slate-100 text-slate-600'
             }`}>
@@ -181,6 +184,7 @@ export const ResourceLibrary: React.FC<ResourceLibraryProps> = ({
             </span>
           </button>
           {CATEGORIES_DATA.map(cat => {
+            const localizedCat = getLocalizedCategory(cat, language);
             const count = ARTICLES_DATA.filter(a => a.category === cat.id).length;
             const isSelected = selectedCategory === cat.id;
             return (
@@ -197,7 +201,7 @@ export const ResourceLibrary: React.FC<ResourceLibraryProps> = ({
                   category={cat.id} 
                   className={`w-3.5 h-3.5 ${isSelected ? 'text-emerald-100' : 'text-slate-400 group-hover:text-slate-700'}`} 
                 />
-                <span>{cat.shortName}</span>
+                <span>{localizedCat.shortName}</span>
                 <span className={`text-[10px] px-1.5 py-0.2 rounded-full font-bold ${
                   isSelected ? 'bg-emerald-700 text-emerald-100' : 'bg-slate-100 text-slate-600'
                 }`}>
@@ -213,9 +217,9 @@ export const ResourceLibrary: React.FC<ResourceLibraryProps> = ({
       {filteredArticles.length === 0 ? (
         <div className="text-center py-16 bg-white rounded-2xl border border-slate-200/80 p-8 space-y-3 shadow-2xs">
           <BookOpen className="w-10 h-10 text-slate-300 mx-auto" />
-          <h3 className="text-base font-bold text-slate-800">No fact sheets match your search criteria</h3>
+          <h3 className="text-base font-bold text-slate-800">{t('common.noResultsMatched')}</h3>
           <p className="text-xs text-slate-500 max-w-md mx-auto">
-            Try adjusting your search query, switching difficulty, or selecting "All Categories" to browse all guides and schemes.
+            {t('common.adjustSearchCriteria')}
           </p>
           <button
             onClick={() => {
@@ -225,14 +229,16 @@ export const ResourceLibrary: React.FC<ResourceLibraryProps> = ({
             }}
             className="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl text-xs font-semibold transition-colors cursor-pointer"
           >
-            Reset All Filters
+            {t('common.resetFilters')}
           </button>
         </div>
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {filteredArticles.map(article => {
             const isBookmarked = bookmarks.includes(article.id);
-            const categoryName = CATEGORY_MAP[article.category] || article.category.replace('-', ' ');
+            const localizedArticle = getLocalizedArticle(article, language);
+            const rawCat = CATEGORIES_DATA.find(c => c.id === article.category);
+            const categoryName = rawCat ? getLocalizedCategory(rawCat, language).shortName : (CATEGORY_MAP[article.category] || article.category);
 
             return (
               <div
@@ -276,25 +282,25 @@ export const ResourceLibrary: React.FC<ResourceLibraryProps> = ({
                   {/* Title and Punchy Summary */}
                   <div className="space-y-1.5">
                     <h3 className="text-base sm:text-lg font-bold text-slate-900 group-hover:text-emerald-700 transition-colors line-clamp-2 leading-snug tracking-tight">
-                      {article.title}
+                      {localizedArticle.title}
                     </h3>
                     <p className="text-xs sm:text-sm text-slate-600 line-clamp-2 leading-relaxed font-normal">
-                      {article.summary}
+                      {localizedArticle.summary}
                     </p>
                   </div>
 
                   {/* Horizontal Scannable Metric Strip: [Value] • [Level] • [Read] • [Verified] */}
                   <div className="flex flex-wrap items-center gap-1.5 sm:gap-2 text-[11px] text-slate-600 pt-0.5 pb-0.5">
                     <span className="inline-flex items-center px-2 py-0.5 rounded-md bg-emerald-50 text-emerald-800 font-semibold border border-emerald-200/80">
-                      Value: {article.annualBenefit}
+                      {article.annualBenefit}
                     </span>
                     <span className="text-slate-300 hidden sm:inline">•</span>
                     <span className="inline-flex items-center px-2 py-0.5 rounded-md bg-slate-50 text-slate-700 font-medium border border-slate-200/80">
-                      Level: {article.difficulty}
+                      {article.difficulty}
                     </span>
                     <span className="text-slate-300 hidden sm:inline">•</span>
                     <span className="inline-flex items-center px-2 py-0.5 rounded-md bg-slate-50 text-slate-700 font-medium border border-slate-200/80">
-                      Read: {article.readTime}
+                      {article.readTime}
                     </span>
                     <span className="text-slate-300 hidden sm:inline">•</span>
                     <span 
@@ -302,7 +308,7 @@ export const ResourceLibrary: React.FC<ResourceLibraryProps> = ({
                       title={`Statutory Reference: ${article.sourceRef.referenceCode} (${article.sourceRef.authority})`}
                     >
                       <ShieldCheck className="w-3 h-3 text-emerald-600 shrink-0" />
-                      <span className="truncate">Verified: {article.sourceRef.referenceCode}</span>
+                      <span className="truncate">{article.sourceRef.referenceCode}</span>
                     </span>
                   </div>
 
@@ -310,10 +316,10 @@ export const ResourceLibrary: React.FC<ResourceLibraryProps> = ({
                   <div className="p-3 rounded-xl bg-slate-50/80 border border-slate-200/70 space-y-1">
                     <div className="text-[10px] font-bold uppercase tracking-wider text-slate-500 flex items-center gap-1.5">
                       <Zap className="w-3 h-3 text-amber-500 shrink-0 transition-transform duration-200 group-hover:scale-125" />
-                      <span>Top Actionable Highlight</span>
+                      <span>{t('common.keyTakeaway')}</span>
                     </div>
                     <p className="text-xs text-slate-700 font-medium line-clamp-2 leading-relaxed">
-                      {article.keyTakeaways[0]}
+                      {localizedArticle.keyAlphaTakeaway || localizedArticle.keyTakeaways[0]}
                     </p>
                   </div>
                 </div>
@@ -331,7 +337,7 @@ export const ResourceLibrary: React.FC<ResourceLibraryProps> = ({
                     }}
                     className="inline-flex items-center gap-1.5 font-semibold text-emerald-700 group-hover:text-emerald-800 transition-colors shrink-0 cursor-pointer"
                   >
-                    <span>Read Fact Sheet &amp; Guide</span>
+                    <span>{t('common.readMore')}</span>
                     <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1.5 transition-transform duration-200" />
                   </button>
                 </div>

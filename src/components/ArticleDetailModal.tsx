@@ -16,6 +16,8 @@ import {
 } from 'lucide-react';
 import { CATEGORIES_DATA } from '../data/categoriesData';
 import type { Article } from '../types';
+import { useTranslation } from '../i18n/useTranslation';
+import { getLocalizedArticle, getLocalizedCategory } from '../i18n/contentTranslations';
 
 interface ArticleDetailModalProps {
   article: Article | null;
@@ -197,15 +199,19 @@ export const ArticleDetailModal: React.FC<ArticleDetailModalProps> = ({
     };
   }, [article, onClose]);
 
+  const { t, language } = useTranslation();
+
   if (!article) return null;
 
-  const categoryName = CATEGORY_MAP[article.category] || article.category.replace('-', ' ');
+  const localizedArticle = getLocalizedArticle(article, language);
+  const rawCat = CATEGORIES_DATA.find(c => c.id === article.category);
+  const categoryName = rawCat ? getLocalizedCategory(rawCat, language).shortName : (CATEGORY_MAP[article.category] || article.category);
 
   const handleShare = () => {
     if (navigator.share) {
       navigator.share({
-        title: article.title,
-        text: article.summary,
+        title: localizedArticle.title,
+        text: localizedArticle.summary,
         url: window.location.href
       }).catch(() => {});
     } else {
@@ -228,7 +234,7 @@ export const ArticleDetailModal: React.FC<ArticleDetailModalProps> = ({
             </span>
             <span className="text-[10px] font-bold px-2.5 py-1 rounded-md bg-emerald-50 text-emerald-800 border border-emerald-200/80 flex items-center gap-1">
               <ShieldCheck className="w-3.5 h-3.5 text-emerald-600" />
-              <span>Audited Fact Sheet</span>
+              <span>{t('articleModal.auditedFactSheet')}</span>
             </span>
           </div>
 
@@ -240,21 +246,21 @@ export const ArticleDetailModal: React.FC<ArticleDetailModalProps> = ({
                   ? 'bg-emerald-50 border-emerald-300 text-emerald-700' 
                   : 'bg-white border-slate-200 text-slate-500 hover:text-slate-800'
               }`}
-              title={isBookmarked ? 'Remove bookmark' : 'Bookmark fact sheet'}
+              title={isBookmarked ? 'Remove bookmark' : t('articleModal.saveArticle')}
             >
               <Bookmark className={`w-4 h-4 ${isBookmarked ? 'fill-emerald-600' : ''}`} />
             </button>
             <button
               onClick={handleShare}
               className="p-2 rounded-xl bg-white border border-slate-200 text-slate-500 hover:text-slate-800 transition-colors cursor-pointer"
-              title="Share fact sheet"
+              title={t('articleModal.shareArticle')}
             >
               <Share2 className="w-4 h-4" />
             </button>
             <button
               onClick={onClose}
               className="p-2 rounded-xl bg-white border border-slate-200 text-slate-400 hover:text-slate-800 transition-colors cursor-pointer"
-              title="Close modal"
+              title={t('articleModal.closeModal')}
             >
               <X className="w-4 h-4" />
             </button>
@@ -267,29 +273,29 @@ export const ArticleDetailModal: React.FC<ArticleDetailModalProps> = ({
           <div className="space-y-3">
             <div className="flex flex-wrap items-center gap-2">
               <span className="text-[11px] font-semibold text-emerald-700 bg-emerald-50 border border-emerald-200/80 px-2 py-0.5 rounded-md">
-                Audited Benefit: {article.annualBenefit}
+                {t('articleModal.auditedBenefit')}: {article.annualBenefit}
               </span>
               <span className="text-slate-300 hidden sm:inline">•</span>
               <span className="text-xs text-slate-500 flex items-center gap-1">
                 <Clock className="w-3.5 h-3.5" />
-                <span>{article.readTime}</span>
+                <span>{localizedArticle.readTime}</span>
               </span>
               <span className="text-slate-300 hidden sm:inline">•</span>
               <span className="text-xs text-slate-500 flex items-center gap-1">
                 <Calendar className="w-3.5 h-3.5" />
-                <span>Updated: {article.lastUpdated}</span>
+                <span>{t('articleModal.updated')}: {article.lastUpdated}</span>
               </span>
               <span className="text-slate-300 hidden sm:inline">•</span>
               <span className="text-xs text-slate-600">
-                Level: <strong className="text-slate-800">{article.difficulty}</strong>
+                {t('articleModal.level')}: <strong className="text-slate-800">{localizedArticle.difficulty}</strong>
               </span>
             </div>
 
             <h2 className="text-xl sm:text-2xl lg:text-3xl font-extrabold text-slate-900 tracking-tight leading-snug">
-              {article.title}
+              {localizedArticle.title}
             </h2>
             <p className="text-sm sm:text-base text-slate-600 leading-relaxed font-normal">
-              {article.summary}
+              {localizedArticle.summary}
             </p>
 
             {/* Verified Statutory Badge with Direct Official Link */}
@@ -301,14 +307,14 @@ export const ArticleDetailModal: React.FC<ArticleDetailModalProps> = ({
                 className="inline-flex items-center gap-1.5 text-xs font-semibold px-3 py-1.5 rounded-lg bg-emerald-50 text-emerald-800 border border-emerald-200 hover:bg-emerald-100 hover:border-emerald-300 transition-colors cursor-pointer"
               >
                 <ShieldCheck className="w-4 h-4 text-emerald-600 shrink-0" />
-                <span>Verified Authority: {article.sourceRef.authority}</span>
+                <span>{t('articleModal.verifiedAuthority')}: {article.sourceRef.authority}</span>
                 <ExternalLink className="w-3 h-3 text-emerald-600 ml-0.5 shrink-0" />
               </a>
               <span className="text-xs text-slate-600 font-mono bg-slate-100 px-2.5 py-1.5 rounded-lg border border-slate-200">
-                Circular: {article.sourceRef.referenceCode}
+                {t('common.circularRef')}: {article.sourceRef.referenceCode}
               </span>
               <span className="text-[11px] font-medium text-slate-500">
-                Audited: {article.sourceRef.lastUpdated}
+                {t('articleModal.updated')}: {article.sourceRef.lastUpdated}
               </span>
             </div>
           </div>
@@ -317,7 +323,7 @@ export const ArticleDetailModal: React.FC<ArticleDetailModalProps> = ({
           <div className="border border-slate-200/80 rounded-2xl overflow-hidden text-xs sm:text-sm bg-white shadow-2xs">
             <div className="bg-slate-50 px-4 py-2.5 border-b border-slate-200/80 flex items-center justify-between">
               <span className="text-[11px] font-bold uppercase tracking-wider text-slate-700">
-                Key Metrics Fact Sheet Table
+                {t('articleModal.keyMetricsTable')}
               </span>
               <span className="text-[11px] text-emerald-700 font-semibold flex items-center gap-1">
                 <ShieldCheck className="w-3.5 h-3.5" />
@@ -328,7 +334,7 @@ export const ArticleDetailModal: React.FC<ArticleDetailModalProps> = ({
               <tbody className="divide-y divide-slate-100">
                 <tr>
                   <td className="w-1/3 sm:w-1/4 bg-slate-50/60 p-3.5 font-semibold text-slate-600 align-top border-r border-slate-100">
-                    Program / Scheme Name
+                    {t('articleModal.programName')}
                   </td>
                   <td className="p-3.5 text-slate-900 font-bold">
                     {article.membershipOrScheme}
@@ -336,7 +342,7 @@ export const ArticleDetailModal: React.FC<ArticleDetailModalProps> = ({
                 </tr>
                 <tr>
                   <td className="w-1/3 sm:w-1/4 bg-slate-50/60 p-3.5 font-semibold text-slate-600 align-top border-r border-slate-100">
-                    Annual Outlay / Cost
+                    {t('articleModal.annualOutlay')}
                   </td>
                   <td className="p-3.5 text-slate-800 font-medium">
                     {getArticleOutlay(article)}
@@ -344,7 +350,7 @@ export const ArticleDetailModal: React.FC<ArticleDetailModalProps> = ({
                 </tr>
                 <tr>
                   <td className="w-1/3 sm:w-1/4 bg-slate-50/60 p-3.5 font-semibold text-slate-600 align-top border-r border-slate-100">
-                    Statutory / Regulatory Authority
+                    {t('articleModal.statutoryAuthority')}
                   </td>
                   <td className="p-3.5 text-slate-800">
                     <div className="flex flex-wrap items-center gap-2">
@@ -357,7 +363,7 @@ export const ArticleDetailModal: React.FC<ArticleDetailModalProps> = ({
                 </tr>
                 <tr>
                   <td className="w-1/3 sm:w-1/4 bg-slate-50/60 p-3.5 font-semibold text-slate-600 align-top border-r border-slate-100">
-                    Reference Circular Code
+                    {t('articleModal.referenceCircular')}
                   </td>
                   <td className="p-3.5 text-slate-800">
                     <code className="font-mono text-xs bg-slate-100 text-slate-800 px-2 py-0.5 rounded border border-slate-200">
@@ -367,7 +373,7 @@ export const ArticleDetailModal: React.FC<ArticleDetailModalProps> = ({
                 </tr>
                 <tr>
                   <td className="w-1/3 sm:w-1/4 bg-slate-50/60 p-3.5 font-semibold text-slate-600 align-top border-r border-slate-100">
-                    Net Estimated Household Gain
+                    {t('articleModal.auditedBenefit')}
                   </td>
                   <td className="p-3.5">
                     <span className="font-bold text-emerald-700 bg-emerald-50 px-2.5 py-1 rounded-md border border-emerald-200 inline-block">
@@ -377,10 +383,10 @@ export const ArticleDetailModal: React.FC<ArticleDetailModalProps> = ({
                 </tr>
                 <tr>
                   <td className="w-1/3 sm:w-1/4 bg-slate-50/60 p-3.5 font-semibold text-slate-600 align-top border-r border-slate-100">
-                    Last Verified Date
+                    {t('articleModal.auditedValidity')}
                   </td>
                   <td className="p-3.5 text-slate-700">
-                    {article.sourceRef.lastUpdated} <span className="text-slate-400 text-xs">(Audited against official gazette & circular disclosures)</span>
+                    {article.sourceRef.lastUpdated}
                   </td>
                 </tr>
               </tbody>
@@ -391,7 +397,7 @@ export const ArticleDetailModal: React.FC<ArticleDetailModalProps> = ({
           <div className="p-5 sm:p-6 rounded-2xl bg-white border border-slate-200/80 space-y-3 shadow-2xs">
             <div className="text-xs font-bold uppercase tracking-wider text-slate-800 flex items-center gap-1.5">
               <Zap className="w-4 h-4 text-amber-500 animate-pulse-subtle" />
-              <span>Core Takeaways &amp; Value Checklist</span>
+              <span>{t('common.keyTakeaway')}</span>
             </div>
             <ul className="space-y-2.5 text-xs sm:text-sm text-slate-700">
               {article.keyTakeaways.map((takeaway, i) => (
@@ -407,7 +413,7 @@ export const ArticleDetailModal: React.FC<ArticleDetailModalProps> = ({
           <div className="p-5 sm:p-6 rounded-2xl bg-white border border-slate-200/80 space-y-3 shadow-2xs">
             <div className="text-xs font-bold uppercase tracking-wider text-slate-800 flex items-center gap-1.5">
               <CheckSquare className="w-4 h-4 text-emerald-600" />
-              <span>Prerequisites & Documents Needed</span>
+              <span>{t('articleModal.prerequisitesTitle')}</span>
             </div>
             <ul className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs sm:text-sm text-slate-700">
               {article.prerequisites.map((prereq, i) => (
@@ -428,7 +434,7 @@ export const ArticleDetailModal: React.FC<ArticleDetailModalProps> = ({
                 <span className="w-5 h-5 rounded-md bg-emerald-600 text-white text-xs flex items-center justify-center font-bold">
                   3
                 </span>
-                <span>3-Step Immediate Action Plan</span>
+                <span>{t('articleModal.actionBlueprint')}</span>
               </h3>
               <span className="text-[11px] font-medium text-slate-500">
                 Zero-friction execution protocol
@@ -524,7 +530,7 @@ export const ArticleDetailModal: React.FC<ArticleDetailModalProps> = ({
           <div className="p-5 sm:p-6 rounded-2xl bg-amber-50/50 border border-amber-200/80 space-y-2.5">
             <div className="text-xs font-bold text-amber-900 uppercase tracking-wider flex items-center gap-1.5">
               <AlertTriangle className="w-4 h-4 text-amber-600 shrink-0" />
-              <span>The Catch: Hidden Pitfalls, Fine Print & Exclusions</span>
+              <span>{t('articleModal.criticalWarningsTitle')}</span>
             </div>
             <ul className="space-y-2 text-xs sm:text-sm text-amber-950/90">
               {article.finePrint.map((fine, i) => (
@@ -541,7 +547,7 @@ export const ArticleDetailModal: React.FC<ArticleDetailModalProps> = ({
             <div className="flex items-center gap-2">
               <FileText className="w-4 h-4 text-emerald-600" />
               <h3 className="text-base font-bold text-slate-900">
-                In-Depth Analytical Breakdown
+                {t('articleModal.deepDiveContent')}
               </h3>
             </div>
             <div className="text-xs sm:text-sm text-slate-700 leading-relaxed space-y-3 bg-white p-5 rounded-2xl border border-slate-200/80 shadow-2xs">
@@ -554,7 +560,7 @@ export const ArticleDetailModal: React.FC<ArticleDetailModalProps> = ({
             <div className="space-y-1 min-w-0">
               <div className="flex items-center gap-1.5 font-bold text-slate-900">
                 <ShieldCheck className="w-4 h-4 text-emerald-600 shrink-0" />
-                <span>Statutory Source Footnote & Official Gazette Reference</span>
+                <span>{t('articleModal.officialCircular')}</span>
               </div>
               <p className="text-slate-600 leading-relaxed">
                 Audited under <strong>{article.sourceRef.authority}</strong> ({article.sourceRef.authorityType}) • Circular Ref: <code className="font-mono text-slate-800 bg-slate-200/80 px-1.5 py-0.5 rounded text-[11px]">{article.sourceRef.referenceCode}</code>
@@ -569,7 +575,7 @@ export const ArticleDetailModal: React.FC<ArticleDetailModalProps> = ({
               rel="noopener noreferrer"
               className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-white hover:bg-slate-100 text-emerald-700 font-semibold border border-slate-200 shadow-2xs transition-colors shrink-0 cursor-pointer"
             >
-              <span>Open Official Regulatory Portal</span>
+              <span>{t('common.officialSource')}</span>
               <ExternalLink className="w-3.5 h-3.5" />
             </a>
           </div>
@@ -578,7 +584,7 @@ export const ArticleDetailModal: React.FC<ArticleDetailModalProps> = ({
         {/* Modal Footer */}
         <div className="px-6 py-4 border-t border-slate-200/80 bg-slate-50 flex flex-col sm:flex-row items-center justify-between gap-3 shrink-0">
           <div className="text-xs text-slate-500 truncate max-w-sm">
-            Scheme: <span className="font-semibold text-slate-800">{article.membershipOrScheme}</span>
+            {t('articleModal.programName')}: <span className="font-semibold text-slate-800">{article.membershipOrScheme}</span>
           </div>
 
           <div className="flex items-center gap-3 w-full sm:w-auto justify-end">
@@ -590,7 +596,7 @@ export const ArticleDetailModal: React.FC<ArticleDetailModalProps> = ({
                 }}
                 className="w-full sm:w-auto px-4 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-semibold text-xs transition-colors flex items-center justify-center gap-1.5 shadow-2xs cursor-pointer"
               >
-                <span>Check Application Prerequisites Checklist</span>
+                <span>{t('articleModal.goToChecklist')}</span>
                 <ArrowRight className="w-3.5 h-3.5" />
               </button>
             )}
