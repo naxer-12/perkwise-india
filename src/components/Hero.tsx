@@ -23,6 +23,7 @@ interface HeroProps {
   onStartChecklistClick?: () => void;
   onExploreLoungesClick?: () => void;
   onExploreHacksClick?: () => void;
+  onSelectCard?: (cardId: string) => void;
   siteConfig?: SiteConfig;
   cardsCount?: number;
 }
@@ -33,6 +34,7 @@ export const Hero: React.FC<HeroProps> = ({
   onExploreCardsClick,
   onExploreLoungesClick,
   onExploreHacksClick,
+  onSelectCard,
   cardsCount
 }) => {
   const { t, language } = useTranslation();
@@ -89,6 +91,7 @@ export const Hero: React.FC<HeroProps> = ({
         <HeroMockup2Isometric
           onExploreCards={onExploreCardsClick}
           onExploreLounges={onExploreLoungesClick}
+          onSelectCard={onSelectCard}
           cardsCount={cardsCount}
         />
       )}

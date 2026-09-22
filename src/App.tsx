@@ -88,6 +88,17 @@ function AppContent() {
     }
   };
 
+  const handleSelectCard = (cardId: string) => {
+    const allEffectiveCards = getEffectiveCards();
+    const foundCard = allEffectiveCards.find(c => c.id === cardId) || cards.find(c => c.id === cardId);
+    setTargetCardForGuide(cardId);
+    setActiveTab('card-guide');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    if (foundCard) {
+      setSelectedCardForDetail(foundCard);
+    }
+  };
+
   return (
     <div className="min-h-screen flex flex-col bg-slate-50 text-slate-900 selection:bg-emerald-500 selection:text-white">
       {/* Sticky Top Header */}
@@ -112,6 +123,7 @@ function AppContent() {
               onStartChecklistClick={() => { setActiveTab('checklist'); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
               onExploreLoungesClick={() => { setActiveTab('lounges'); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
               onExploreHacksClick={() => { setActiveTab('life-operations'); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
+              onSelectCard={handleSelectCard}
               siteConfig={siteConfig}
               cardsCount={cards.length}
             />

@@ -1,19 +1,22 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { 
   ArrowRight, 
   CreditCard, 
   Sparkles, 
-  Plane
+  Plane,
+  ExternalLink
 } from 'lucide-react';
 
 interface HeroMockup2Props {
   onExploreCards: () => void;
   onExploreLounges?: () => void;
+  onSelectCard?: (cardId: string) => void;
   cardsCount?: number;
 }
 
 interface DeckCard {
   id: string;
+  cardId: string;
   name: string;
   bank: string;
   tagline: string;
@@ -27,6 +30,7 @@ interface DeckCard {
 const DECK_CARDS: DeckCard[] = [
   {
     id: 'swiggy',
+    cardId: 'hdfc-swiggy',
     name: 'Swiggy HDFC Bank',
     bank: 'HDFC Bank',
     tagline: 'Best for Everyday Dining & Groceries',
@@ -38,6 +42,7 @@ const DECK_CARDS: DeckCard[] = [
   },
   {
     id: 'scapia',
+    cardId: 'scapia-federal',
     name: 'Scapia Federal Bank',
     bank: 'Federal Bank',
     tagline: 'Best for Travelers & Zero Forex',
@@ -49,6 +54,7 @@ const DECK_CARDS: DeckCard[] = [
   },
   {
     id: 'infinia',
+    cardId: 'hdfc-infinia-metal',
     name: 'HDFC Infinia Metal',
     bank: 'HDFC Bank',
     tagline: 'The Gold Standard for Premium Flights & Hotels',
@@ -60,6 +66,7 @@ const DECK_CARDS: DeckCard[] = [
   },
   {
     id: 'tata-neu',
+    cardId: 'tata-neu-infinity-hdfc',
     name: 'Tata Neu Infinity',
     bank: 'HDFC Bank',
     tagline: 'Best for Everyday UPI QR Payments',
@@ -74,10 +81,36 @@ const DECK_CARDS: DeckCard[] = [
 export const HeroMockup2Isometric: React.FC<HeroMockup2Props> = ({
   onExploreCards,
   onExploreLounges,
+  onSelectCard,
   cardsCount = 26
 }) => {
   const [activeCardIndex, setActiveCardIndex] = useState(0);
+  const hoverTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const activeCard = DECK_CARDS[activeCardIndex];
+
+  // Clean up any pending hover timeouts on unmount
+  useEffect(() => {
+    return () => {
+      if (hoverTimerRef.current) clearTimeout(hoverTimerRef.current);
+    };
+  }, []);
+
+  // Debounced hover handler to eliminate hover jitter / flickering
+  const handleCardHover = (index: number) => {
+    if (activeCardIndex === index) return;
+    if (hoverTimerRef.current) clearTimeout(hoverTimerRef.current);
+    hoverTimerRef.current = setTimeout(() => {
+      setActiveCardIndex(index);
+    }, 45);
+  };
+
+  const handleCardClick = (cardId: string) => {
+    if (onSelectCard) {
+      onSelectCard(cardId);
+    } else {
+      onExploreCards();
+    }
+  };
 
   return (
     <div className="relative overflow-hidden bg-gradient-to-b from-[#FAF8F5] via-white to-[#F4F7F5] text-slate-900 py-12 sm:py-16 px-4 sm:px-6 lg:px-8 border-b border-slate-200/80">
@@ -110,12 +143,16 @@ export const HeroMockup2Isometric: React.FC<HeroMockup2Props> = ({
             Stop guessing at checkout. We mathematically audited India’s credit cards, spend conditions, and airport lounge rules so you always know which card to use.
           </p>
 
-          {/* Exciting Deal Callout Card (Updates with hovered card) */}
-          <div className="p-4 sm:p-5 rounded-2xl bg-white border border-slate-200/90 shadow-sm space-y-3 transition-all">
+          {/* Exciting Deal Callout Card (Updates with hovered card & clickable) */}
+          <div 
+            onClick={() => handleCardClick(activeCard.cardId)}
+            className="p-4 sm:p-5 rounded-2xl bg-white border border-slate-200/90 shadow-sm space-y-3 cursor-pointer hover:border-emerald-400/80 hover:shadow-md transition-all group"
+            title="Click to view detailed card specifications in Card Guide"
+          >
             <div className="flex items-center justify-between gap-2">
               <div className="flex items-center gap-2">
                 <span className="w-2 h-2 rounded-full bg-emerald-500" />
-                <span className="text-xs font-bold text-slate-800">
+                <span className="text-xs font-bold text-slate-800 group-hover:text-emerald-700 transition-colors">
                   {activeCard.name}
                 </span>
               </div>
@@ -128,13 +165,16 @@ export const HeroMockup2Isometric: React.FC<HeroMockup2Props> = ({
               {activeCard.idealFor}
             </p>
 
-            <div className="flex items-center gap-4 pt-1 text-xs text-slate-500 border-t border-slate-100">
+            <div className="flex items-center justify-between pt-1 text-xs text-slate-500 border-t border-slate-100">
               <div className="flex items-center gap-1.5 text-slate-700 font-medium">
                 <Plane className="w-3.5 h-3.5 text-emerald-600" />
                 <span>{activeCard.loungePerk}</span>
               </div>
-              <span className="text-slate-300">•</span>
-              <span className="text-slate-500">{activeCard.bank}</span>
+
+              <span className="text-xs font-bold text-emerald-700 group-hover:underline flex items-center gap-1">
+                <span>View Full Specs</span>
+                <ArrowRight className="w-3.5 h-3.5 transition-transform group-hover:translate-x-1" />
+              </span>
             </div>
           </div>
 
@@ -161,73 +201,82 @@ export const HeroMockup2Isometric: React.FC<HeroMockup2Props> = ({
           </div>
         </div>
 
-        {/* Right Column: Tactile & Calming 3D Card Deck */}
+        {/* Right Column: Tactile & Calming 3D Card Deck with Stationary Hitboxes */}
         <div className="lg:col-span-6 flex flex-col items-center justify-center py-4">
           
           {/* Helpful interactive hint */}
           <div className="text-[11px] font-medium text-slate-400 mb-3 flex items-center gap-1.5">
-            <span>Hover or tap cards to reveal deals:</span>
+            <span>Hover to explore • Click any card for detailed specs:</span>
           </div>
 
+          {/* 3D Deck with Stationary Hitbox Wrappers */}
           <div className="relative w-[320px] sm:w-[380px] h-[300px] flex items-center justify-center [perspective:1000px]">
-            
             {DECK_CARDS.map((card, index) => {
               const isActive = activeCardIndex === index;
-              // Smooth, serene offsets (not frantic or extreme)
               const rotZ = (index - 1.5) * 6;
               const translateY = (index - 1.5) * 14;
               const translateX = (index - 1.5) * 18;
 
               return (
+                /* Stationary Outer Wrapper (Never moves, eliminates all hover flickering) */
                 <div
                   key={card.id}
-                  onMouseEnter={() => setActiveCardIndex(index)}
-                  onClick={() => setActiveCardIndex(index)}
+                  onMouseEnter={() => handleCardHover(index)}
+                  onClick={() => handleCardClick(card.cardId)}
                   style={{
-                    transform: isActive 
-                      ? `translateY(-28px) scale(1.05) rotateZ(0deg) translateZ(40px)` 
-                      : `translateX(${translateX}px) translateY(${translateY}px) rotateZ(${rotZ}deg)`,
-                    zIndex: isActive ? 30 : 10 + index
+                    transform: `translateX(${translateX}px) translateY(${translateY}px) rotateZ(${rotZ}deg)`,
+                    zIndex: isActive ? 40 : 10 + index
                   }}
-                  className={`absolute w-[280px] sm:w-[320px] aspect-[1.58/1] rounded-2xl bg-gradient-to-br ${card.cardTheme} p-5 cursor-pointer transition-all duration-300 shadow-xl flex flex-col justify-between select-none ${
-                    isActive 
-                      ? 'ring-4 ring-emerald-500/30 shadow-2xl scale-105' 
-                      : 'opacity-90 hover:opacity-100 shadow-md'
-                  }`}
+                  className="absolute w-[280px] sm:w-[320px] aspect-[1.58/1] cursor-pointer"
+                  title={`Click to view ${card.name} detailed information in Card Guide`}
                 >
-                  {/* Card Header: Chip & Bank */}
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-2">
-                      {/* Realistic Gold EMV Chip */}
-                      <div className="w-7 h-5 rounded-md bg-amber-300 border border-amber-400/80 shadow-2xs flex items-center justify-center">
-                        <div className="w-4 h-3 border border-amber-500/50 rounded-xs" />
+                  {/* Smoothly Animated Inner Card (pointer-events-none ensures stable mouse tracking) */}
+                  <div
+                    style={{
+                      transform: isActive ? 'translateY(-26px) scale(1.04)' : 'translateY(0) scale(1)',
+                      transition: 'transform 260ms cubic-bezier(0.16, 1, 0.3, 1), box-shadow 260ms ease, opacity 260ms ease'
+                    }}
+                    className={`w-full h-full rounded-2xl bg-gradient-to-br ${card.cardTheme} p-5 shadow-xl flex flex-col justify-between select-none ${
+                      isActive 
+                        ? 'ring-4 ring-emerald-500/40 shadow-2xl opacity-100' 
+                        : 'opacity-90 hover:opacity-100 shadow-md'
+                    }`}
+                  >
+                    {/* Card Header: Chip & Bank */}
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center gap-2">
+                        {/* Realistic Gold EMV Chip */}
+                        <div className="w-7 h-5 rounded-md bg-amber-300 border border-amber-400/80 shadow-2xs flex items-center justify-center">
+                          <div className="w-4 h-3 border border-amber-500/50 rounded-xs" />
+                        </div>
+                        <span className="text-xs font-bold text-white/90 tracking-wide">
+                          {card.bank}
+                        </span>
                       </div>
-                      <span className="text-xs font-bold text-white/90 tracking-wide">
-                        {card.bank}
+
+                      <span className="text-[10px] font-semibold text-white/80 bg-white/15 px-2 py-0.5 rounded-full backdrop-blur-xs flex items-center gap-1">
+                        <span>Details</span>
+                        <ExternalLink className="w-2.5 h-2.5" />
                       </span>
                     </div>
 
-                    <span className="text-[10px] font-semibold text-white/80 bg-white/15 px-2 py-0.5 rounded-full backdrop-blur-xs">
-                      Contactless
-                    </span>
-                  </div>
+                    {/* Card Title & Top Discount */}
+                    <div>
+                      <h4 className="text-base sm:text-lg font-extrabold text-white tracking-tight leading-tight">
+                        {card.name}
+                      </h4>
+                      <span className="text-xs font-semibold text-amber-200 mt-1 block">
+                        {card.keyDiscount}
+                      </span>
+                    </div>
 
-                  {/* Card Title & Top Discount */}
-                  <div>
-                    <h4 className="text-base sm:text-lg font-extrabold text-white tracking-tight leading-tight">
-                      {card.name}
-                    </h4>
-                    <span className="text-xs font-semibold text-amber-200 mt-1 block">
-                      {card.keyDiscount}
-                    </span>
-                  </div>
-
-                  {/* Card Footer: Masked Numbers & Lounge Access */}
-                  <div className="flex items-center justify-between text-[11px] font-mono text-white/70 pt-2 border-t border-white/15">
-                    <span>•••• 4821</span>
-                    <span className="text-white/90 font-medium font-sans text-[10px]">
-                      {card.loungePerk}
-                    </span>
+                    {/* Card Footer: Masked Numbers & Lounge Access */}
+                    <div className="flex items-center justify-between text-[11px] font-mono text-white/70 pt-2 border-t border-white/15">
+                      <span>•••• 4821</span>
+                      <span className="text-white/90 font-medium font-sans text-[10px]">
+                        {card.loungePerk}
+                      </span>
+                    </div>
                   </div>
                 </div>
               );
@@ -240,12 +289,16 @@ export const HeroMockup2Isometric: React.FC<HeroMockup2Props> = ({
               <button
                 key={card.id}
                 type="button"
-                onClick={() => setActiveCardIndex(idx)}
+                onClick={() => {
+                  setActiveCardIndex(idx);
+                  handleCardClick(card.cardId);
+                }}
                 className={`px-2.5 py-1 rounded-full text-[11px] font-semibold transition-all cursor-pointer ${
                   activeCardIndex === idx
                     ? 'bg-slate-900 text-white shadow-xs'
                     : 'bg-white text-slate-600 hover:bg-slate-100 border border-slate-200/80'
                 }`}
+                title={`View ${card.name} details`}
               >
                 {card.name.split(' ')[0]} {card.name.split(' ')[1] || ''}
               </button>
