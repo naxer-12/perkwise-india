@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react';
+import React, { useMemo } from 'react';
 import { 
   Layers
 } from 'lucide-react';
@@ -9,12 +9,7 @@ import { CategoryIcon } from './CategoryIcon';
 import { useTranslation } from '../i18n/useTranslation';
 import { getLocalizedCategory } from '../i18n/contentTranslations';
 
-import { MockupSelectorBar, type MockupId } from './homepage/MockupSelectorBar';
-import { HeroMockup1Bento } from './homepage/HeroMockup1Bento';
 import { HeroMockup2Isometric } from './homepage/HeroMockup2Isometric';
-import { HeroMockup3Terminal } from './homepage/HeroMockup3Terminal';
-import { HeroMockup4Runway } from './homepage/HeroMockup4Runway';
-import { HeroMockup5Timeline } from './homepage/HeroMockup5Timeline';
 
 interface HeroProps {
   selectedCategory: LifeCategory | 'all';
@@ -33,33 +28,11 @@ export const Hero: React.FC<HeroProps> = ({
   setSelectedCategory,
   onExploreCardsClick,
   onExploreLoungesClick,
-  onExploreHacksClick,
+  onExploreHacksClick: _onExploreHacksClick,
   onSelectCard,
   cardsCount
 }) => {
   const { t, language } = useTranslation();
-
-  // Mockup selector state stored in localStorage
-  const [activeMockup, setActiveMockup] = useState<MockupId>(() => {
-    try {
-      const saved = localStorage.getItem('perkwise_homepage_mockup');
-      if (saved && ['bento', 'isometric', 'terminal', 'runway', 'timeline'].includes(saved)) {
-        return saved as MockupId;
-      }
-      return 'bento';
-    } catch {
-      return 'bento';
-    }
-  });
-
-  const handleSelectMockup = (id: MockupId) => {
-    setActiveMockup(id);
-    try {
-      localStorage.setItem('perkwise_homepage_mockup', id);
-    } catch (e) {
-      console.error(e);
-    }
-  };
 
   const categoryCounts = useMemo(() => {
     const counts: Record<string, number> = {};
@@ -71,54 +44,13 @@ export const Hero: React.FC<HeroProps> = ({
 
   return (
     <div className="w-full">
-      {/* 1. Interactive Mockup Selector Banner (5 Live Mockup Iterations) */}
-      <MockupSelectorBar
-        currentMockup={activeMockup}
-        onSelectMockup={handleSelectMockup}
+      {/* Primary Hero: Calming 3D Card Deck & Exciting Deals */}
+      <HeroMockup2Isometric
+        onExploreCards={onExploreCardsClick}
+        onExploreLounges={onExploreLoungesClick}
+        onSelectCard={onSelectCard}
+        cardsCount={cardsCount}
       />
-
-      {/* 2. Active Animated Mockup Canvas */}
-      {activeMockup === 'bento' && (
-        <HeroMockup1Bento
-          onExploreCards={onExploreCardsClick}
-          onExploreLounges={onExploreLoungesClick}
-          onExploreHacks={onExploreHacksClick}
-          cardsCount={cardsCount}
-        />
-      )}
-
-      {activeMockup === 'isometric' && (
-        <HeroMockup2Isometric
-          onExploreCards={onExploreCardsClick}
-          onExploreLounges={onExploreLoungesClick}
-          onSelectCard={onSelectCard}
-          cardsCount={cardsCount}
-        />
-      )}
-
-      {activeMockup === 'terminal' && (
-        <HeroMockup3Terminal
-          onExploreCards={onExploreCardsClick}
-          onExploreLounges={onExploreLoungesClick}
-          cardsCount={cardsCount}
-        />
-      )}
-
-      {activeMockup === 'runway' && (
-        <HeroMockup4Runway
-          onExploreCards={onExploreCardsClick}
-          onExploreLounges={onExploreLoungesClick}
-          cardsCount={cardsCount}
-        />
-      )}
-
-      {activeMockup === 'timeline' && (
-        <HeroMockup5Timeline
-          onExploreCards={onExploreCardsClick}
-          onExploreHacks={onExploreHacksClick}
-          cardsCount={cardsCount}
-        />
-      )}
 
       {/* 3. Scannable Category Filter Chips Strip */}
       <div className="bg-white border-b border-slate-200/80 py-4 px-4 sm:px-6">
