@@ -1002,6 +1002,7 @@ export const AdminApp: React.FC = () => {
         {/* TAB: AUTONOMOUS CARD & DEAL DISCOVERY AGENT */}
         {activeTab === 'discovery' && (
           <CardDiscoveryAgent
+            apiUrl={apiUrl}
             onCardPublished={() => setCardsList(getAllCards())}
             showToast={showToast}
           />

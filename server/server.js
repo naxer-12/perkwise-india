@@ -111,7 +111,7 @@ const server = http.createServer(async (req, res) => {
   }
 
   const url = new URL(req.url, `http://${req.headers.host || 'localhost'}`);
-  const pathname = url.pathname;
+  const pathname = url.pathname.replace(/^\/api\/api\//, '/api/');
 
   // JSON helper
   const sendJson = (statusCode, data) => {
