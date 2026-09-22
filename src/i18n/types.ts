@@ -70,6 +70,7 @@ export interface TranslationSchema {
     calculator: string;
     financeHacks: string;
     savedItems: string;
+    loungeFinder: string;
     search: string;
     menu: string;
     language: string;
@@ -283,5 +284,34 @@ export interface TranslationSchema {
     toNavigate: string;
     toSelect: string;
     toClose: string;
+  };
+  loungeFinder: {
+    badge: string;
+    title: string;
+    subtitle: string;
+    liveSyncBadge: string;
+    lastUpdatedPrefix: string;
+    syncButton: string;
+    searchCardPlaceholder: string;
+    quickPicks: string;
+    selectedCard: string;
+    domesticQuota: string;
+    railwayQuota: string;
+    spendCondition: string;
+    guestPolicy: string;
+    allLounges: string;
+    airportsOnly: string;
+    railwayOnly: string;
+    internationalOnly: string;
+    cityFilter: string;
+    allCities: string;
+    searchLoungePlaceholder: string;
+    eligibleBadge: string;
+    ineligibleBadge: string;
+    viewDirections: string;
+    timingsLabel: string;
+    amenitiesLabel: string;
+    noLoungesFound: string;
+    clearCardSelection: string;
   };
 }

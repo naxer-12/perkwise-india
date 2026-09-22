@@ -9,17 +9,18 @@ import {
   Menu, 
   X, 
   ArrowRight,
-  Globe
+  Globe,
+  Plane
 } from 'lucide-react';
 
 import { PerkWiseLogo } from './PerkWiseLogo';
 import { LanguageSelector } from './LanguageSelector';
 import { useTranslation } from '../i18n/useTranslation';
-import type { SiteConfig } from '../types';
+import type { SiteConfig, NavigationTab } from '../types';
 
 interface HeaderProps {
-  activeTab: 'library' | 'card-guide' | 'checklist' | 'calculator' | 'life-operations' | 'provenance' | 'bookmarks';
-  setActiveTab: (tab: 'library' | 'card-guide' | 'checklist' | 'calculator' | 'life-operations' | 'provenance' | 'bookmarks') => void;
+  activeTab: NavigationTab;
+  setActiveTab: (tab: NavigationTab) => void;
   bookmarkCount: number;
   searchQuery: string;
   setSearchQuery: (query: string) => void;
@@ -127,6 +128,23 @@ export const Header: React.FC<HeaderProps> = ({
                 >
                   <CreditCard className={`w-3.5 h-3.5 transition-transform duration-200 group-hover:scale-110 shrink-0 ${activeTab === 'card-guide' || activeTab === 'checklist' ? 'text-emerald-600' : 'text-slate-400 group-hover:text-slate-700'}`} />
                   <span className="whitespace-nowrap">{t('nav.cardGuide')}</span>
+                </button>
+              )}
+
+              {/* Lounge Recogniser */}
+              {(!siteConfig || siteConfig.showLounges !== false) && (
+                <button
+                  type="button"
+                  onClick={() => setActiveTab('lounges')}
+                  className={`h-8 whitespace-nowrap shrink-0 group flex items-center gap-1.5 px-3 py-1 text-xs font-semibold rounded-lg transition-all cursor-pointer ${
+                    activeTab === 'lounges' 
+                      ? 'text-emerald-800 bg-white font-bold shadow-xs' 
+                      : 'text-slate-600 hover:text-slate-900 hover:bg-white/60'
+                  }`}
+                  title="Airport & Railway Lounge Access Recogniser"
+                >
+                  <Plane className={`w-3.5 h-3.5 transition-transform duration-200 group-hover:scale-110 shrink-0 ${activeTab === 'lounges' ? 'text-emerald-600' : 'text-slate-400 group-hover:text-slate-700'}`} />
+                  <span className="whitespace-nowrap">{t('nav.loungeFinder')}</span>
                 </button>
               )}
 
@@ -359,6 +377,23 @@ export const Header: React.FC<HeaderProps> = ({
               <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider px-2 block">
                 Tools &amp; Features
               </span>
+              {(!siteConfig || siteConfig.showLounges !== false) && (
+                <button
+                  type="button"
+                  onClick={() => { setActiveTab('lounges'); setMobileMenuOpen(false); }}
+                  className={`w-full flex items-center justify-between px-3 py-2 rounded-xl text-xs font-semibold cursor-pointer ${
+                    activeTab === 'lounges' ? 'bg-emerald-50 text-emerald-800' : 'text-slate-700 hover:bg-slate-50'
+                  }`}
+                >
+                  <div className="flex items-center gap-2">
+                    <Plane className="w-4 h-4 text-emerald-600" />
+                    <span>{t('nav.loungeFinder')}</span>
+                  </div>
+                  <span className="text-[10px] font-bold px-1.5 py-0.5 rounded bg-emerald-100 text-emerald-800 border border-emerald-200">
+                    Live
+                  </span>
+                </button>
+              )}
               {(!siteConfig || siteConfig.showCalculator) && (
                 <button
                   type="button"

@@ -135,6 +135,16 @@ export interface CreditCard {
   customImageUrl?: string;
 }
 
+export type NavigationTab = 
+  | 'library' 
+  | 'card-guide' 
+  | 'checklist' 
+  | 'calculator' 
+  | 'life-operations' 
+  | 'lounges' 
+  | 'provenance' 
+  | 'bookmarks';
+
 export interface SiteConfig {
   showNotificationBar: boolean;
   notificationMessage?: string;
@@ -142,6 +152,7 @@ export interface SiteConfig {
   showCardGuide: boolean;
   showCalculator: boolean;
   showLifeOperations: boolean;
+  showLounges?: boolean;
   showHeroSection: boolean;
   enableUserReviews: boolean;
   heroHeadline?: string;
@@ -177,4 +188,54 @@ export interface LifeOperationFacet {
     linkUrl?: string;
   }[];
   actionChecklist: string[];
+}
+
+export interface LoungeLocation {
+  id: string;
+  type: 'airport' | 'railway';
+  city: string;
+  airportOrStation: string;
+  terminal: string;
+  name: string;
+  operator: string;
+  locationDirections: string;
+  accessType: string;
+  timings: string;
+  amenities: string[];
+  networksAccepted: string[];
+}
+
+export interface LoungeCardEligibility {
+  id: string;
+  name: string;
+  bank: string;
+  network: string;
+  cardType: 'credit' | 'debit';
+  tier: string;
+  domesticAirportQuota: string;
+  internationalAirportQuota: string;
+  railwayLoungeQuota: string;
+  spendRequirement: string;
+  spendThresholdAmount: number;
+  guestAccess: string;
+  loungeAccessProgram: string;
+  authFee: string;
+  eligibleLoungesType: string;
+}
+
+export interface LoungeDatabaseMetadata {
+  lastUpdated: string;
+  lastUpdatedDisplay: string;
+  verifiedSources: {
+    name: string;
+    authority: string;
+    referenceUrl: string;
+    lastAudited: string;
+  }[];
+}
+
+export interface LoungeDatabase {
+  metadata: LoungeDatabaseMetadata;
+  lounges: LoungeLocation[];
+  cards: LoungeCardEligibility[];
 }

@@ -22,7 +22,8 @@ import {
   Download, 
   Upload, 
   Globe, 
-  Server
+  Server,
+  Radar
 } from 'lucide-react';
 import { CREDIT_CARD_SEGMENTS } from '../data/creditCardsData';
 import type { CreditCard, DataSource, SiteConfig } from '../types';
@@ -43,8 +44,9 @@ import {
 } from '../utils/api';
 import { CardVisual } from '../components/CardVisual';
 import { DataProvenance } from '../components/DataProvenance';
+import { CardDiscoveryAgent } from './CardDiscoveryAgent';
 
-type AdminTab = 'cards' | 'site-controls' | 'official-rules' | 'bridge';
+type AdminTab = 'cards' | 'discovery' | 'site-controls' | 'official-rules' | 'bridge';
 
 export const AdminApp: React.FC = () => {
   const [activeTab, setActiveTab] = useState<AdminTab>('cards');
@@ -509,6 +511,21 @@ export const AdminApp: React.FC = () => {
               <span>Card Publishing Studio</span>
               <span className="text-[10px] px-1.5 py-0.2 rounded-full bg-purple-950/80 text-purple-200 font-mono">
                 {cardsList.length}
+              </span>
+            </button>
+
+            <button
+              onClick={() => setActiveTab('discovery')}
+              className={`flex items-center gap-2 px-3.5 py-1.5 rounded-xl text-xs font-semibold transition-all cursor-pointer ${
+                activeTab === 'discovery'
+                  ? 'bg-purple-600 text-white shadow-md'
+                  : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800/60'
+              }`}
+            >
+              <Radar className="w-3.5 h-3.5 text-purple-400" />
+              <span>Card Discovery Agent</span>
+              <span className="text-[10px] font-bold px-1.5 py-0.5 rounded bg-emerald-950 text-emerald-300 border border-emerald-700/50">
+                New
               </span>
             </button>
 
@@ -980,6 +997,14 @@ export const AdminApp: React.FC = () => {
               </div>
             </div>
           </div>
+        )}
+
+        {/* TAB: AUTONOMOUS CARD & DEAL DISCOVERY AGENT */}
+        {activeTab === 'discovery' && (
+          <CardDiscoveryAgent
+            onCardPublished={() => setCardsList(getAllCards())}
+            showToast={showToast}
+          />
         )}
 
         {/* TAB 2: SITE VISIBILITY & LAYOUT CONTROLS */}

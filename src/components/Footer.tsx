@@ -2,9 +2,10 @@ import React from 'react';
 import { ShieldCheck } from 'lucide-react';
 import { PerkWiseLogo } from './PerkWiseLogo';
 import { useTranslation } from '../i18n/useTranslation';
+import type { NavigationTab } from '../types';
 
 interface FooterProps {
-  onNavigate: (tab: 'library' | 'card-guide' | 'checklist' | 'calculator' | 'life-operations' | 'provenance' | 'bookmarks') => void;
+  onNavigate: (tab: NavigationTab) => void;
 }
 
 export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
@@ -37,6 +38,11 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
             <li>
               <button onClick={() => onNavigate('card-guide')} className="hover:text-emerald-400 transition-colors cursor-pointer">
                 {t('nav.cardGuide')}
+              </button>
+            </li>
+            <li>
+              <button onClick={() => onNavigate('lounges')} className="hover:text-emerald-400 transition-colors cursor-pointer">
+                {t('nav.loungeFinder')} (Airport & Railway Access)
               </button>
             </li>
             <li>

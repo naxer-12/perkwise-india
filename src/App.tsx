@@ -6,18 +6,19 @@ import { CreditCardGuide } from './components/CreditCardGuide';
 import { ChecklistForm } from './components/ChecklistForm';
 import { SavingsCalculator } from './components/SavingsCalculator';
 import { LifeOperationsHub } from './components/LifeOperationsHub';
+import { LoungeRecogniser } from './components/LoungeRecogniser';
 import { DataProvenance } from './components/DataProvenance';
 import { ArticleDetailModal } from './components/ArticleDetailModal';
 import { CardDetailModal } from './components/CardDetailModal';
 import { GlobalSearchModal } from './components/GlobalSearchModal';
 import { Footer } from './components/Footer';
 import { LanguageProvider } from './i18n/LanguageContext';
-import type { Article, CreditCard, LifeCategory, SiteConfig } from './types';
+import type { Article, CreditCard, LifeCategory, SiteConfig, NavigationTab } from './types';
 import { getSiteConfig, getEffectiveCards, syncWithBackend } from './utils/cardStorage';
 import { initLiveSyncListener } from './utils/api';
 
 function AppContent() {
-  const [activeTab, setActiveTab] = useState<'library' | 'card-guide' | 'checklist' | 'calculator' | 'life-operations' | 'provenance' | 'bookmarks'>('library');
+  const [activeTab, setActiveTab] = useState<NavigationTab>('library');
   const [selectedCategory, setSelectedCategory] = useState<LifeCategory | 'all'>('all');
   const [searchQuery, setSearchQuery] = useState<string>('');
   const [isSearchModalOpen, setIsSearchModalOpen] = useState<boolean>(false);
@@ -107,8 +108,10 @@ function AppContent() {
             <Hero
               selectedCategory={selectedCategory}
               setSelectedCategory={setSelectedCategory}
-              onExploreCardsClick={() => setActiveTab('card-guide')}
-              onStartChecklistClick={() => setActiveTab('checklist')}
+              onExploreCardsClick={() => { setActiveTab('card-guide'); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
+              onStartChecklistClick={() => { setActiveTab('checklist'); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
+              onExploreLoungesClick={() => { setActiveTab('lounges'); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
+              onExploreHacksClick={() => { setActiveTab('life-operations'); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
               siteConfig={siteConfig}
               cardsCount={cards.length}
             />
@@ -166,6 +169,18 @@ function AppContent() {
               setSelectedCategory(cat);
               setActiveTab('library');
               window.scrollTo({ top: 300, behavior: 'smooth' });
+            }}
+          />
+        )}
+
+        {activeTab === 'lounges' && (
+          <LoungeRecogniser
+            onNavigateToCardGuide={(cardId) => {
+              if (cardId) {
+                setTargetCardForGuide(cardId);
+              }
+              setActiveTab('card-guide');
+              window.scrollTo({ top: 0, behavior: 'smooth' });
             }}
           />
         )}
