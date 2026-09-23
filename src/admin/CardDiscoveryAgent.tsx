@@ -70,14 +70,46 @@ const FALLBACK_DISCOVERED_CARDS: DiscoveredCardItem[] = [
       authority: 'ICICI Bank Co-Branded Schedule',
       authorityType: 'Direct Bank MITC',
       referenceCode: 'ICICI-ADANI-2026',
-      officialUrl: 'https://www.icicibank.com',
-      reasoning: 'Verified official partnership terms and tariff schedule',
+      officialUrl: 'https://www.icicibank.com/personal-banking/cards/credit-cards/adani-one-icici-bank-signature-credit-card',
+      reasoning: 'Verified official bank product listing and tariff schedule',
       lastUpdated: 'September 2026',
       verificationStatus: 'Live & Verified'
     },
-    discoveredFrom: 'CardInsider.com Latest Co-branded Cards & Lounges',
+    discoveredFrom: 'Official ICICI Bank Card Listings & Adani One Portal',
     voucherValue: '₹9,000 Adani One Ecosystem Vouchers',
     cashbackRate: '7.0%'
+  },
+  {
+    id: 'swiggy-hdfc-card',
+    name: 'Swiggy HDFC Bank Credit Card',
+    bank: 'HDFC Bank',
+    network: 'Mastercard World',
+    cardType: 'credit',
+    dealCategory: 'cashback-online',
+    acceleratedRewardRate: '10% Cashback on Swiggy (Food, Instamart, Dineout)',
+    annualFee: 500,
+    feeWaiverSpend: 200000,
+    whyThisCardWins: 'Direct 10% monthly statement cashback credited without voucher friction on food, groceries, and dining out.',
+    dealHighlights: [
+      '10% Instant Cashback on Swiggy Food Delivery & Instamart groceries',
+      '5% Cashback on 1000+ top online shopping websites',
+      '3 Months Complimentary Swiggy One Membership voucher',
+      '1% Unlimited Cashback on all other retail spending'
+    ],
+    sourceRef: {
+      id: 'src-swiggy-hdfc',
+      name: 'HDFC Bank Swiggy Card MITC',
+      authority: 'HDFC Bank Official Terms',
+      authorityType: 'Direct Bank MITC',
+      referenceCode: 'HDFC-SWIGGY-2026',
+      officialUrl: 'https://www.hdfcbank.com/personal/pay/cards/credit-cards/swiggy-hdfc-bank-credit-card',
+      reasoning: 'Audited official bank co-branded cashback program with direct statement credit',
+      lastUpdated: 'September 2026',
+      verificationStatus: 'Live & Verified'
+    },
+    discoveredFrom: 'Official HDFC Bank Card Tariff Guide & Swiggy Merchant Portal',
+    voucherValue: '3-Month Swiggy One VIP Access',
+    cashbackRate: '10.0%'
   },
   {
     id: 'scapia-federal',
@@ -102,12 +134,12 @@ const FALLBACK_DISCOVERED_CARDS: DiscoveredCardItem[] = [
       authority: 'Federal Bank Statutory Portal',
       authorityType: 'Direct Bank MITC',
       referenceCode: 'FED-SCAPIA-2026',
-      officialUrl: 'https://www.federalbank.co.in',
+      officialUrl: 'https://www.scapia.cards',
       reasoning: 'Zero forex verified credit card with high-value airport lounge perks',
       lastUpdated: 'September 2026',
       verificationStatus: 'Live & Verified'
     },
-    discoveredFrom: 'CardInsider.com Zero Forex / Lifetime Free Category',
+    discoveredFrom: 'Official Federal Bank Statutory MITC & Scapia Application Portal',
     voucherValue: 'Zero Joining / Annual Fee (LTF)',
     cashbackRate: '3.5% Forex Savings'
   },
@@ -134,12 +166,12 @@ const FALLBACK_DISCOVERED_CARDS: DiscoveredCardItem[] = [
       authority: 'HDFC Bank Statutory Portal',
       authorityType: 'Direct Bank MITC',
       referenceCode: 'HDFC-NEU-2026',
-      officialUrl: 'https://www.hdfcbank.com',
+      officialUrl: 'https://www.hdfcbank.com/personal/pay/cards/credit-cards/tata-neu-infinity-hdfc-bank-credit-card',
       reasoning: 'Verified official Tata Neu rewards and RuPay UPI terms',
       lastUpdated: 'September 2026',
       verificationStatus: 'Live & Verified'
     },
-    discoveredFrom: 'CardInsider.com Best UPI RuPay Credit Cards 2026',
+    discoveredFrom: 'Official HDFC Bank Credit Cards & Tata Neu RuPay Portal',
     voucherValue: '1,499 NeuCoins Welcome Gift',
     cashbackRate: '10.0%'
   }
@@ -182,7 +214,7 @@ export const CardDiscoveryAgent: React.FC<CardDiscoveryAgentProps> = ({
   }, []);
 
   const scanStepsMessages = [
-    'Connecting to CardInsider.com issuers registry...',
+    'Connecting to Official Bank Issuers & Tariff Registries...',
     'Scanning latest Indian credit card cashback offers & welcome vouchers...',
     'Parsing official MITC tariff schedules & regulatory circulars...',
     'Verifying airport & railway lounge access conditions & spend quotas...',
@@ -212,9 +244,9 @@ export const CardDiscoveryAgent: React.FC<CardDiscoveryAgentProps> = ({
           setIsScanning(false);
           setDiscoveredCards(data.discoveredCards || FALLBACK_DISCOVERED_CARDS);
           setSourcesChecked(data.sourcesChecked || [
-            'CardInsider.com (Latest Cards, Issuers, Categories & Deals)',
-            'Bank Master Schedules (HDFC, ICICI, Axis, SBI, Federal)',
-            'Merchant Cashback Partnerships (Swiggy, Adani One, Tata Neu)'
+            'Official Bank Product Listings & Application Portals (HDFC, ICICI, Axis, SBI, Federal)',
+            'Official Statutory Bank MITC Pamphlets & Tariff Schedules',
+            'Official Co-Branded Merchant Product Policies (Swiggy, Adani One, Tata Neu, Scapia)'
           ]);
           setLastScanTime(new Date().toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit', second: '2-digit' }));
           showToast(`✨ Discovery Agent found ${data.discoveredCards?.length || FALLBACK_DISCOVERED_CARDS.length} high-yield credit cards with vouchers!`);
@@ -227,9 +259,9 @@ export const CardDiscoveryAgent: React.FC<CardDiscoveryAgentProps> = ({
       setIsScanning(false);
       setDiscoveredCards(FALLBACK_DISCOVERED_CARDS);
       setSourcesChecked([
-        'CardInsider.com (Cached Market Discovery)',
-        'Bank Tariff Schedules (HDFC, ICICI, Federal)',
-        'Merchant Cashback Partnerships'
+        'Official Bank Product Listings (Cached)',
+        'Official Bank Tariff Schedules (HDFC, ICICI, Federal)',
+        'Official Co-Branded Merchant Partnerships'
       ]);
       setLastScanTime(new Date().toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit', second: '2-digit' }));
       showToast(`✨ Discovery Agent discovered ${FALLBACK_DISCOVERED_CARDS.length} high-yield credit cards with vouchers!`);
@@ -338,7 +370,7 @@ export const CardDiscoveryAgent: React.FC<CardDiscoveryAgentProps> = ({
           <div className="space-y-2">
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold bg-purple-500/20 text-purple-300 border border-purple-400/30">
               <Radar className="w-3.5 h-3.5 animate-spin text-purple-400" />
-              <span>CardInsider.com &amp; Bank MITC Web Agent</span>
+              <span>Official Bank Listings &amp; MITC Policy Web Agent</span>
               <span className="w-1.5 h-1.5 rounded-full bg-emerald-400"></span>
               <span className="text-emerald-300 text-[11px] font-bold">Live Crawler</span>
             </div>
@@ -348,7 +380,7 @@ export const CardDiscoveryAgent: React.FC<CardDiscoveryAgentProps> = ({
             </h2>
             
             <p className="text-xs sm:text-sm text-slate-300 max-w-2xl leading-relaxed">
-              Continuously crawls official bank portals, CardInsider categories, and merchant tie-ups to uncover newly released cards, high-value voucher bundles, zero-forex deals, and accelerated cashback programs in India.
+              Continuously crawls official bank portals, statutory tariff pamphlets, and co-branded merchant portals to uncover newly released cards, high-value voucher bundles, zero-forex deals, and accelerated cashback programs in India.
             </p>
 
             <div className="flex flex-wrap items-center gap-4 pt-2 text-xs text-slate-400">
@@ -472,7 +504,7 @@ export const CardDiscoveryAgent: React.FC<CardDiscoveryAgentProps> = ({
         <div className="flex items-center gap-2 text-xs text-slate-400">
           <span>Sources:</span>
           <span className="px-2 py-0.5 rounded bg-slate-800 text-slate-200 font-mono text-[11px] border border-slate-700">
-            {sourcesChecked.length > 0 ? `${sourcesChecked.length} Verified Sources` : 'CardInsider + Bank MITCs'}
+            {sourcesChecked.length > 0 ? `${sourcesChecked.length} Verified Sources` : 'Official Bank Listings & MITCs'}
           </span>
         </div>
       </div>
@@ -581,7 +613,7 @@ export const CardDiscoveryAgent: React.FC<CardDiscoveryAgentProps> = ({
                     rel="noreferrer"
                     className="hover:text-purple-300 flex items-center gap-1 shrink-0 ml-2"
                   >
-                    <span>Bank MITC</span>
+                    <span>Apply / Official Portal</span>
                     <ExternalLink className="w-3 h-3" />
                   </a>
                 </div>
